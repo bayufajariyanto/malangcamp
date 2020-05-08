@@ -112,7 +112,7 @@ if($transaksi['selesai'] == 1){
                     <p class="card-text"><?= $selesai ?></p>
                 </div>
             </div>
-<br>
+            <br>
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -171,5 +171,3 @@ if($transaksi['selesai'] == 1){
 
 </div>
 <!-- End of Main Content -->
-
-<!-- Ini file terbaru -->
