@@ -334,7 +334,7 @@ class Admin extends CI_Controller
                     'id_barang' => $id_barang,
                     'tanggal_order' => time(),
                     'tanggal_sewa' => $jam_sewa,
-                    'tanggal_kembali' => $jam_kembali,
+                    'batas_kembali' => $jam_kembali,
                     'tanggal_bayar' => $tbayar,
                     'jumlah_barang' => $jumlah,
                     'total' => $harga,
@@ -426,7 +426,22 @@ class Admin extends CI_Controller
 
     public function peminjaman_selesai($id)
     {
+        $peminjaman = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $sehari = 60*60*24;
+        if($peminjaman['batas_kembali']< time()){
+            $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+            $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+            $denda = ($peminjaman['total']*$hariTerlambat);
+            // $total = $denda+$peminjaman['total'];
+            // var_dump();die;
+          }else{
+            $batas = '(Belum Terlambat)';
+            $denda = 0;
+          }
+        // var_dump($denda);die;
         $data = [
+            'denda' => $denda,
+            'tanggal_kembali' => time(),
             'selesai' => 1
         ];
         $this->db->update('pesanan', $data, ['id' => $id]);

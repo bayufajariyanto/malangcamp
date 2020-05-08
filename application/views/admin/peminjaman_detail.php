@@ -7,8 +7,8 @@ if ($peminjaman['selesai'] == 0) {
 $sehari = 60*60*24;
 $batas = '';
 // var_dump
-if($peminjaman['tanggal_kembali']< time()){
-  $hariTerlambat = (int)ceil((time()-$peminjaman['tanggal_kembali'])/$sehari);
+if($peminjaman['batas_kembali']< time()){
+  $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
   $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
   $denda = ($peminjaman['total']*$hariTerlambat);
   // $total = $denda+$peminjaman['total'];
@@ -64,7 +64,7 @@ if($peminjaman['tanggal_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Batas Pengembalian</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['tanggal_kembali']) ?> <?= $batas ?></p>
+          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
         </div>
       </div>
       <div class="row">
