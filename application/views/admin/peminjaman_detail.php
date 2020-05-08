@@ -38,15 +38,34 @@ if($peminjaman['batas_kembali']< time()){
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Nama</p>
+        <p class="col-sm-2">Nama Member</p>
         <div class="col-sm">
-          <p class="card-text"><?= $nama['nama'] ?></p>
+          <h5 class="card-title"><?= $nama['nama'] ?></h5>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <p class="col-sm-2">Nama Barang</p>
+        <div class="col-sm">
+          <p class="card-text"><?= $barang['nama'] ?> (<?= $barang['kategori'] ?>)</p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Jumlah Barang</p>
+        <div class="col-sm">
+          <p class="card-text"><?= $peminjaman['jumlah_barang'] ?></p>
         </div>
       </div>
       <div class="row">
         <p class="col-sm-2">Tanggal Order</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['tanggal_order']) ?></p>
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_order']) ?></p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Tanggal Sewa</p>
+        <div class="col-sm">
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_sewa']) ?></p>
         </div>
       </div>
       <div class="row">
@@ -58,13 +77,13 @@ if($peminjaman['batas_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Tanggal Pembayaran</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['tanggal_bayar']) ?></p>
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_bayar']) ?></p>
         </div>
       </div>
       <div class="row">
         <p class="col-sm-2">Batas Pengembalian</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
         </div>
       </div>
       <div class="row">

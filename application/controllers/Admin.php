@@ -16,7 +16,34 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $this->member();
+        $data['title'] = 'Profile';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        
+        // var_dump($akhirHari);
+        // var_dump(date('d m Y | H:i:s', $akhirHari));die;
+        var_dump($this->_hariIni());die;
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/index', $data);
+        $this->load->view('templates/footer');
+    }
+
+    private function _hariIni(){
+        $this->load->model('Index_model', 'index');
+        $awalHari = mktime(0,0,0,(int)date('m'),(int)date('d'),(int)date('Y'));
+        $akhirHari = mktime(23,59,59,(int)date('m'),(int)date('d'),(int)date('Y'));
+        $hariIni = $this->index->getToday($awalHari,$akhirHari);
+        $dendaHariIni = $this->index->getTodayDenda($awalHari,$akhirHari);
+        if($hariIni){
+            $a = 'ada';
+            // var_dump($a);
+            // $data['hari_ini'] = $hariIni;
+        }else{
+            $a = 'belum ada';
+            // var_dump($a);
+        }
+        return $a;
     }
 
     public function profile()
@@ -416,7 +443,7 @@ class Admin extends CI_Controller
         $data['peminjaman'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
         $username = $data['peminjaman']['username'];
         $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
-
+        $data['barang'] = $this->db->get_where('barang', ['id' => $data['peminjaman']['id_barang']])->row_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -427,6 +454,7 @@ class Admin extends CI_Controller
     public function peminjaman_selesai($id)
     {
         $peminjaman = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $barang = $this->db->get_where('barang', ['id' => $peminjaman['id_barang']])->row_array();
         $sehari = 60*60*24;
         if($peminjaman['batas_kembali']< time()){
             $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
@@ -439,11 +467,17 @@ class Admin extends CI_Controller
             $denda = 0;
           }
         // var_dump($denda);die;
+        $stok = $barang['stok']+$peminjaman['jumlah_barang'];
+        $dataBarang = [
+            'stok' => $stok
+        ];
+
         $data = [
             'denda' => $denda,
             'tanggal_kembali' => time(),
             'selesai' => 1
         ];
+        $this->db->update('barang', $dataBarang, ['id' => $peminjaman['id_barang']]);
         $this->db->update('pesanan', $data, ['id' => $id]);
         redirect('admin/peminjaman');
     }
@@ -465,6 +499,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
         $username = $data['transaksi']['username'];
+        $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
         $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
