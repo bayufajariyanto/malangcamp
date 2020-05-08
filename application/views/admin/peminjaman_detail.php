@@ -56,9 +56,21 @@ if($peminjaman['batas_kembali']< time()){
         </div>
       </div>
       <div class="row">
+        <p class="col-sm-2">Tanggal Sewa</p>
+        <div class="col-sm">
+          <p class="card-text"><?= date('d F Y, H:i:s', $peminjaman['tanggal_sewa']) ?></p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Tanggal Kembali</p>
+        <div class="col-sm">
+          <p class="card-text"><?= date('d F Y, H:i:s', $peminjaman['tanggal_kembali']) ?></p>
+        </div>
+      </div>
+      <div class="row">
         <p class="col-sm-2">Tanggal Pembayaran</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y, H:i', $peminjaman['tanggal_bayar']) ?></p>
+          <p class="card-text"><?= date('d F Y, H:i:s', $peminjaman['tanggal_bayar']) ?></p>
         </div>
       </div>
       <div class="row">
