@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Bulan Mei 2020 pada 08.40
+-- Waktu pembuatan: 08 Bulan Mei 2020 pada 16.26
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -41,23 +41,23 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
-(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 2),
-(3, 'Tenda Bestway Kap 4-5', 'Tenda', 22000, 1),
+(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 3),
+(3, 'Tenda Bestway Kap 4-5', 'Tenda', 22000, 3),
 (4, 'Tenda Consina Kap 4 org', 'Tenda', 25000, 1),
-(5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 0),
-(6, 'Tenda Dhaulagiri 4 org Ultralight', 'Tenda', 30000, 1),
+(5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 3),
+(6, 'Tenda Dhaulagiri 4 org Ultralight', 'Tenda', 30000, 3),
 (7, 'Tenda Great Outdoor Kap 5-6 org', 'Tenda', 35000, 3),
 (8, 'Tenda Great Outdoor Kap 6-8 org', 'Tenda', 35000, 3),
 (9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 3),
 (10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
-(12, 'Cover Bag', 'Other', 2500, 2),
-(13, 'Sepatu Trekking', 'Sepatu', 15000, 1),
+(12, 'Cover Bag', 'Other', 2500, 3),
+(13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
 (14, 'Sandal Trekking', 'Sandal', 5000, 3),
 (15, 'Hammock', 'Other', 5000, 3),
 (16, 'Jacket', 'Jacket', 10000, 3),
-(17, 'Flysheet', 'Other', 7500, 2),
+(17, 'Flysheet', 'Other', 7500, 3),
 (18, 'Sarung Tangan Polar', 'Other', 4000, 3),
-(19, 'Kompor Lapang', 'Cooking Set', 5000, 1),
+(19, 'Kompor Lapang', 'Cooking Set', 5000, 3),
 (20, 'Nesting / Panci', 'Cooking Set', 5000, 3),
 (21, 'Sleeping Bag', 'Other', 5000, 3),
 (22, 'Trekking Pole', 'Other', 6000, 3),
@@ -65,9 +65,9 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (24, 'Gaiter', 'Other', 4000, 3),
 (25, 'Headlamp / Senter', 'Lighting', 4000, 3),
 (26, 'Lampu Tenda', 'Lighting', 4000, 2),
-(27, 'Jerigen Lipat 5L', 'Other', 3000, 2),
-(28, 'Kompas', 'Other', 2500, 2),
-(29, 'Pisau Lipat', 'Other', 2500, 0);
+(27, 'Jerigen Lipat 5L', 'Other', 3000, 3),
+(28, 'Kompas', 'Other', 2500, 3),
+(29, 'Pisau Lipat', 'Other', 2500, 3);
 
 -- --------------------------------------------------------
 
@@ -163,14 +163,12 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal_order`, `tanggal_sewa`, `batas_kembali`, `tanggal_kembali`, `tanggal_bayar`, `jumlah_barang`, `denda`, `total`, `status`, `konfirmasi`, `selesai`) VALUES
-(19, 'OTH-202004270001', 'bayufajariyanto', 17, 1587987936, 1587987936, 1588247136, 0, 1587987936, 1, 0, 7500, 1, 1, 1),
-(23, 'TEN-202005010001', 'dellyagus', 5, 1588316173, 1588316173, 1588402573, 0, 1588316173, 1, 0, 25000, 1, 1, 1),
-(24, 'TEN-202005010001', 'dellyagus', 3, 1588316729, 1588316729, 1588403129, 0, 1588316762, 2, 0, 44000, 1, 1, 1),
 (25, 'COO-202005010001', 'bayufajariyanto', 19, 1588316911, 1588320511, 1588406911, 1588844781, 1588316927, 1, 30000, 5000, 1, 1, 1),
 (26, 'TEN-202005070001', 'bayufajariyanto', 6, 1588843800, 1588847340, 1589020140, 1588844012, 1588843808, 2, 0, 60000, 1, 1, 1),
-(27, 'TEN-202005070001', 'bayufajariyanto', 5, 1588844527, 1588848067, 1589020867, 0, 1588844539, 1, 0, 25000, 1, 1, 0),
+(27, 'TEN-202005070001', 'bayufajariyanto', 5, 1588844527, 1588848067, 1589020867, 1588944669, 1588844539, 1, 0, 25000, 1, 1, 1),
 (28, 'LIG-202005080001', 'bayufajariyanto', 26, 1588918354, 1588921954, 1589008354, 0, 1588918407, 1, 0, 4000, 1, 1, 0),
-(29, 'TEN-202005080001', 'anandanurj', 2, 1588918435, 1588918435, 1589004835, 0, 1588918435, 1, 0, 19000, 1, 1, 0);
+(29, 'TEN-202005080001', 'anandanurj', 2, 1588918435, 1588918435, 1589004835, 1588944743, 1588918435, 1, 0, 19000, 1, 1, 1),
+(30, 'TEN-202005080001', 'bayufajariyanto', 4, 1588945701, 1588945701, 1589032101, 0, 0, 2, 0, 50000, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -286,7 +284,7 @@ ALTER TABLE `kode_transaksi`
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`
