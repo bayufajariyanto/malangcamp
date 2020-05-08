@@ -77,13 +77,14 @@ if($pesanan['tanggal_bayar']>1){
                 </div>
             </div>
             <div class="row">
-                <p class="col-sm-2">Nama</p>
+                <p class="col-sm-2">Nama Member</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= $nama['nama'] ?></p>
+                    <h5 class="card-title"><?= $nama['nama'] ?></h5>
                 </div>
             </div>
+            <hr>
             <div class="row">
-                <p class="col-sm-2">Barang</p>
+                <p class="col-sm-2">Nama Barang</p>
                 <div class="col-sm-10">
                     <p class="card-text"><?= $barang['nama'] ?></p>
                 </div>
