@@ -165,7 +165,6 @@ if($transaksi['selesai'] == 1){
             <!-- </div> -->
         </div>
     </div>
-    <!-- ini catatan -->
 
 </div>
 <!-- /.container-fluid -->
