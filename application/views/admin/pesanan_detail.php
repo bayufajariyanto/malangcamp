@@ -1,3 +1,11 @@
+<?php 
+if($pesanan['tanggal_bayar']>1){
+    $tbayar = date('d F Y | H:i:s', $pesanan['tanggal_bayar']);
+}else{
+    $tbayar = '-';
+}
+?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -81,27 +89,33 @@
                 </div>
             </div>
             <div class="row">
+                <p class="col-sm-2">Jumlah Barang</p>
+                <div class="col-sm-10">
+                    <p class="card-text"><?= $pesanan['jumlah_barang'] ?></p>
+                </div>
+            </div>
+            <div class="row">
                 <p class="col-sm-2">Tanggal Order</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y, H:i:s', $pesanan['tanggal_order']) ?></p>
+                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['tanggal_order']) ?></p>
                 </div>
             </div>
             <div class="row">
                 <p class="col-sm-2">Tanggal Sewa</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y, H:i:s', $pesanan['tanggal_sewa']) ?></p>
+                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['tanggal_sewa']) ?></p>
                 </div>
             </div>
             <div class="row">
-                <p class="col-sm-2">Tanggal Kembali</p>
+                <p class="col-sm-2">Batas Pengembalian</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y, H:i:s', $pesanan['tanggal_kembali']) ?></p>
+                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['batas_kembali']) ?></p>
                 </div>
             </div>
             <div class="row">
-                <p class="col-sm-2">Jumlah Barang</p>
+                <p class="col-sm-2">Tanggal Bayar</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= $pesanan['jumlah_barang'] ?></p>
+                    <p class="card-text"><?= $tbayar; ?></p>
                 </div>
             </div>
 

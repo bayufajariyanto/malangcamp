@@ -165,9 +165,9 @@ class Admin extends CI_Controller
     {
         $data['title'] = 'Barang';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['barang'] = $this->db->get_where('barang')->result_array();
+        $data['barang'] = $this->db->get('barang')->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
-
+        
         $nama = ucwords($this->input->post('nama'));
         $kategori = $this->input->post('kategori');
         $stok = $this->input->post('stok');
@@ -229,17 +229,6 @@ class Admin extends CI_Controller
         redirect('admin/barang');
     }
 
-    public function ajax($keyword){
-        // var_dump(strlen($keyword));die;
-        $data['keyword'] = $keyword;
-        $this->load->model('Pesanan_model', 'barang');
-        $data['barang'] = $this->barang->getBarangByKeyword($keyword);
-        $data['kategori'] = $this->barang->getKategoriByKeyword($keyword);
-        $this->load->view('ajax/index',$data);
-    }
-
-
-
     public function pesanan()
     {
         $data['title'] = 'Pesanan';
@@ -247,25 +236,32 @@ class Admin extends CI_Controller
         $data['username'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
-        $data['sejam'] = 60*60*1;
-        // var_dump($data['pesanan']);
-        // foreach($data['pesanan'] as $p):
-        //     if($p['tanggal_order']+$data['sejam']<time()):
-        //         redirect('admin/pesanan_batal/.$p[$id]');
-        //     endif;
-        // endforeach;
+        $pesanan = $data['pesanan'];
+
         // load model
         $this->load->model('Pesanan_model', 'barang');
         $data['barang'] = $this->barang->getBarangStok();
-
+        $data['sejam'] = 60*60;
         $username = $this->input->post('username');
         $id_barang = $this->input->post('barang');
         $jumlah = $this->input->post('jumlah');
-        $sewa = $this->input->post('sewa');
-        $hari = $this->input->post('hari');
         $status = $this->input->post('status');
+        $hari = $this->input->post('hari');
+        $tsewa = $this->input->post('sewa');
         $barang = $this->db->get_where('barang', ['id' => $id_barang])->row_array();
-        // var_dump($total);
+        $tbayar = 0;
+        
+        // hapus pesanan ketika sudah melewati 1 jam
+        $sejam = 60*60;
+        foreach($pesanan as $p):
+            $order = $p['tanggal_order'] + $sejam;
+            if($order<time()){
+                $url = base_url('admin/pesanan_batal/'.$p['id']);
+                redirect($url);
+            }
+        endforeach;
+        // var_dump($data['pesanan']);die;
+
         if ($this->form_validation->run('pesanan') == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar');
@@ -274,20 +270,29 @@ class Admin extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $harga = $barang['harga'] * $jumlah;
+            $sewa = explode(":",$tsewa);
+            $jam = (int) $sewa[0];
+            $menit = (int) $sewa[1];
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
             $tanggal = date('Ymd', time());
             $angka = 1;
+            if($status == 1){
+                $tbayar = time();
+            }else{
+                $tbayar = 0;
+            }
+
             if ($angka < 10) {
                 $kode = $kategori . '-' . $tanggal . "000" . $angka;
-            } else if ($angka < 100) {
+            } else if ($angka < 1000) {
                 $kode = $kategori . '-' . $tanggal . "00" . $angka;
             } else if ($angka < 1000) {
                 $kode = $kategori . '-' . $tanggal . "0" . $angka;
             } else {
                 $kode = $kategori . '-' . $tanggal . $angka;
             }
-            foreach ($data['pesanan'] as $p) {
+            foreach ($data['pesanan'] as $p) :
                 $b = 'masuk';
                 if ($kode == $p['kode_transaksi']) {
                     $a = 'benar';
@@ -305,18 +310,16 @@ class Admin extends CI_Controller
                     // $a = 'salah';
                     break;
                 }
-            }
+            endforeach;
+            // var_dump($barang['stok']);die;
             // Akhir kode transaksi
-            $jam_bayar = 0;
-            if($status == 1){
-                $jam_bayar = time();
-            }
-            $sewa = explode(':', $sewa);
-            $jam = (int) $sewa[0];
-            $menit = (int) $sewa[1];
             $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
             $jam_kembali = $jam_sewa+(60*60*24*$hari);
             $total = $barang['harga'];
+            if($id_barang == null){
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pilih barang yang mau disewa!</div>');
+                redirect('admin/pesanan');
+            }else
             if ($barang['stok'] < $jumlah) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Jumlah melebihi batas, stok hanya ' . $barang['stok'] . ' </div>');
                 redirect('admin/pesanan');
@@ -331,8 +334,8 @@ class Admin extends CI_Controller
                     'id_barang' => $id_barang,
                     'tanggal_order' => time(),
                     'tanggal_sewa' => $jam_sewa,
-                    'tanggal_kembali' => $jam_kembali,
-                    'tanggal_bayar' => $jam_bayar,
+                    'batas_kembali' => $jam_kembali,
+                    'tanggal_bayar' => $tbayar,
                     'jumlah_barang' => $jumlah,
                     'total' => $harga,
                     'status' => $status,
@@ -348,20 +351,21 @@ class Admin extends CI_Controller
 
     public function pesanan_batal($id)
     {
-        $pesanan = $this->db->get_where('pesanan', ['id' => $id, 'status' => 0])->row_array();
+        $pesanan = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $jumlah = $pesanan['jumlah_barang'];
         $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
-        $stok = $pesanan['jumlah_barang']+$barang['stok'];
-        // $pesanan['']
+        $jumlah = $barang['stok']+$jumlah;
         $data = [
-            'stok' => $stok
+            'stok' => $jumlah
         ];
-        $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
+    $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
         $this->db->delete('pesanan', ['id' => $id]);
         redirect('admin/pesanan');
     }
     public function pesanan_konfirmasi($id)
     {
         $data = [
+            'tanggal_bayar' => time(),
             'status' => 1,
             'konfirmasi' => 1
         ];
@@ -422,7 +426,22 @@ class Admin extends CI_Controller
 
     public function peminjaman_selesai($id)
     {
+        $peminjaman = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $sehari = 60*60*24;
+        if($peminjaman['batas_kembali']< time()){
+            $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+            $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+            $denda = ($peminjaman['total']*$hariTerlambat);
+            // $total = $denda+$peminjaman['total'];
+            // var_dump();die;
+          }else{
+            $batas = '(Belum Terlambat)';
+            $denda = 0;
+          }
+        // var_dump($denda);die;
         $data = [
+            'denda' => $denda,
+            'tanggal_kembali' => time(),
             'selesai' => 1
         ];
         $this->db->update('pesanan', $data, ['id' => $id]);
@@ -452,5 +471,48 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/transaksi_detail');
         $this->load->view('templates/footer');
+    }
+
+    public function kode_transaksi(){
+        $data['pesanan']=$this->db->get('pesanan')->result_array();
+        $kategori = $this->input->post('kategori');
+        $this->form_validation->set_rules('kategori', 'Kategori','required');
+        if($this->form_validation->run() == false){
+            
+            $this->load->view('kode',$data);
+        }else{
+            $kode = $kategori."-".date("Ymd");
+            $dt = [
+                'kode' => $kode
+            ];
+            $this->db->insert('kode_transaksi', $dt);
+            $urut = (int)substr($kode, -4,4);
+            if($urut<10){
+                echo "urut kurang dari 10";
+            }else if($urut<100){
+                echo "urut kurang dari 100";
+                
+            }else if($urut<1000){
+                echo "urut kurang dari 1000";
+                
+            }else if($urut<10000){
+                echo "urut kurang dari 10000";
+
+            }
+
+            var_dump($dt);
+            $this->load->view('kode',$data);
+
+            // redirect('admin/kode_transaksi');
+        }
+    }
+
+    public function ajax($keyword){
+        // var_dump($keyword);die;
+        $data['keyword'] = $keyword;
+        $this->load->model('Pesanan_model', 'barang');
+        $data['barang'] = $this->barang->getBarangByKeyword($keyword);
+        $data['kategori'] = $this->barang->getKategoriByKeyword($keyword);
+        $this->load->view('ajax/index',$data);
     }
 }

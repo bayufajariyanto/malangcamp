@@ -112,7 +112,7 @@ if($transaksi['selesai'] == 1){
                     <p class="card-text"><?= $selesai ?></p>
                 </div>
             </div>
-<br>
+            <br>
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -122,7 +122,7 @@ if($transaksi['selesai'] == 1){
                                 <th>Tanggal Sewa</th>
                                 <th>Tanggal Akhir Sewa</th>
                                 <th>Tanggal Pengembalian</th>
-                                <th>Harga Per Hari</th>
+                                <th>Total</th>
                                 <th>Denda</th>
                                 <th>Total Bayar</th>
                             </tr>
@@ -133,7 +133,7 @@ if($transaksi['selesai'] == 1){
                                 <th>Tanggal Sewa</th>
                                 <th>Tanggal Akhir Sewa</th>
                                 <th>Tanggal Pengembalian</th>
-                                <th>Harga Per Hari</th>
+                                <th>Total</th>
                                 <th>Denda</th>
                                 <th>Total Bayar</th>
                             </tr>
@@ -148,12 +148,12 @@ if($transaksi['selesai'] == 1){
                             ?>
                             <tr>
                                 <td>Ini Barang</td>
-                                <td><?= date('d F Y, H:i', $transaksi['tanggal_sewa']) ?></td>
-                                <td>ini tanggal akhir sewa</td>
-                                <td><?= date('d F Y, H:i', $transaksi['tanggal_kembali']) ?></td>
+                                <td><?= date('d F Y | H:i', $transaksi['tanggal_sewa']) ?></td>
+                                <td><?= date('d F Y | H:i', $transaksi['batas_kembali']) ?></td>
+                                <td><?= date('d F Y | H:i', $transaksi['tanggal_kembali']) ?></td>
                                 <td>Rp <?= $transaksi['total'] ?></td>
-                                <td>Ini Denda</td>
-                                <td>Ini total</td>
+                                <td>Rp <?= $transaksi['denda'] ?></td>
+                                <td>Rp <?= ($transaksi['total']+$transaksi['denda']) ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -171,3 +171,4 @@ if($transaksi['selesai'] == 1){
 
 </div>
 <!-- End of Main Content -->
+<!-- Ini beneran baru -->
