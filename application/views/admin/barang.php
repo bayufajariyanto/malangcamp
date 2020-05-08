@@ -32,7 +32,7 @@
               <label for="kategori">Kategori</label>
               <select class="form-control" id="kategori" name="kategori">
               <?php foreach($kategori as $k): ?>
-                <option><?= $k['nama'] ?></option>
+                <option><?= $k['nama']; ?></option>
               <?php endforeach; ?>
               </select>
             </div>
