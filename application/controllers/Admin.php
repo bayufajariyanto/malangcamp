@@ -20,11 +20,22 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
         $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
-        // var_dump($akhirHari);
-        // var_dump(date('d m Y | H:i:s', $akhirHari));die;
+        
         $data['hari_ini'] = $this->_hariIni();
-        $data['bulan_ini'] = $this->_bulanIni();
-        // var_dump($this->_hariIni());die;
+        $data['bulan_ini'] = $this->_bulanIni(date('m'));
+        $data['januari'] = $this->_bulanIni(1);
+        $data['februari'] = $this->_bulanIni(2);
+        $data['maret'] = $this->_bulanIni(3);
+        $data['april'] = $this->_bulanIni(4);
+        $data['mei'] = $this->_bulanIni(5);
+        $data['juni'] = $this->_bulanIni(6);
+        $data['juli'] = $this->_bulanIni(7);
+        $data['agustus'] = $this->_bulanIni(8);
+        $data['september'] = $this->_bulanIni(9);
+        $data['oktober'] = $this->_bulanIni(10);
+        $data['november'] = $this->_bulanIni(11);
+        $data['desember'] = $this->_bulanIni(12);
+        
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -47,38 +58,199 @@ class Admin extends CI_Controller
         foreach ($dendaHariIni as $dhi) {
             $totaldhi = $totaldhi + $dhi['total'];
         }
-        // var_dump($total);
-        // var_dump($dendaHariIni);die;
-        if($dendaHariIni){
-            $total = $totaldhi+$total;
-        }else{
-            $total = $total;
-        }
+        $total = $total+$totaldhi;
         return $total;
     }
 
-    private function _bulanIni(){
+    private function _bulanIni($bulan){
         $this->load->model('Index_model', 'index');
-        $awalBulan = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
-        $akhirBulan = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
-        $bulanIni = $this->index->getToday($awalBulan,$akhirBulan);
-        $dendaBulanIni = $this->index->getTodayDenda($awalBulan,$akhirBulan);
+        $awalBulan = mktime(0,0,0,(int)$bulan,1,(int)date('Y'));
+        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)date('t'),(int)date('Y'));
+        $bulanIni = $this->index->getThisMonth($awalBulan,$akhirBulan);
+        $dendaBulanIni = $this->index->getThisMonthDenda($awalBulan,$akhirBulan);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanIni as $bi) {
             $total = $total + $bi['total'];
         }
         foreach ($dendaBulanIni as $dbi) {
-            $totaldbi = $totaldbi + $dbi['total'];
+            $totaldbi = $totaldbi + $dbi['denda'];
         }
-        // var_dump($total);
-        // var_dump($dendaBulanIni);die;
-        if($dendaBulanIni){
-            $total = $totaldbi+$total;
-        }else{
-            $total = $total;
-        }
+        $total = $total+$totaldbi;
         return $total;
+    }
+
+    private function _annual(){
+        $this->load->model('Index_model', 'index');
+        $awalJanuari = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirJanuari = mktime(23,59,59,1,(int)date('t'),(int)date('Y'));
+        $bulanJanuari = $this->index->getThisMonth($awalJanuari,$akhirJanuari);
+        $dendaBulanJanuari = $this->index->getThisMonthDenda($awalJanuari,$akhirJanuari);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanJanuari as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanJanuari as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $januari = $total+$totaldbi;
+        
+        $awalFebruari = mktime(0,0,0,2,1,(int)date('Y'));
+        $akhirFebruari = mktime(23,59,59,2,(int)date('t'),(int)date('Y'));
+        $bulanFebruari = $this->index->getThisMonth($awalFebruari,$akhirFebruari);
+        $dendaBulanFebruari = $this->index->getThisMonthDenda($awalFebruari,$akhirFebruari);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanFebruari as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanFebruari as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $februari = $total+$totaldbi;
+        
+        $awalMaret = mktime(0,0,0,3,1,(int)date('Y'));
+        $akhirMaret = mktime(23,59,59,3,(int)date('t'),(int)date('Y'));
+        $bulanMaret = $this->index->getThisMonth($awalMaret,$akhirMaret);
+        $dendaBulanMaret = $this->index->getThisMonthDenda($awalMaret,$akhirMaret);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanMaret as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanMaret as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $maret = $total+$totaldbi;
+        
+        $awalApril = mktime(0,0,0,4,1,(int)date('Y'));
+        $akhirApril = mktime(23,59,59,4,(int)date('t'),(int)date('Y'));
+        $bulanApril = $this->index->getThisMonth($awalApril,$akhirApril);
+        $dendaBulanApril = $this->index->getThisMonthDenda($awalApril,$akhirApril);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanApril as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanApril as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $april = $total+$totaldbi;
+        
+        $awalMei = mktime(0,0,0,5,1,(int)date('Y'));
+        $akhirMei = mktime(23,59,59,5,(int)date('t'),(int)date('Y'));
+        $bulanMei = $this->index->getThisMonth($awalMei,$akhirMei);
+        $dendaBulanMei = $this->index->getThisMonthDenda($awalMei,$akhirMei);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanMei as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanMei as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $mei = $total+$totaldbi;
+        
+        $awalJuni = mktime(0,0,0,6,1,(int)date('Y'));
+        $akhirJuni = mktime(23,59,59,6,(int)date('t'),(int)date('Y'));
+        $bulanJuni = $this->index->getThisMonth($awalJuni,$akhirJuni);
+        $dendaBulanJuni = $this->index->getThisMonthDenda($awalJuni,$akhirJuni);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanJuni as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanJuni as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $juni = $total+$totaldbi;
+
+        $awalJuli = mktime(0,0,0,6,1,(int)date('Y'));
+        $akhirJuli = mktime(23,59,59,6,(int)date('t'),(int)date('Y'));
+        $bulanJuli = $this->index->getThisMonth($awalJuli,$akhirJuli);
+        $dendaBulanJuli = $this->index->getThisMonthDenda($awalJuli,$akhirJuli);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanJuli as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanJuli as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $juli = $total+$totaldbi;
+        
+        $awalAgustus = mktime(0,0,0,8,1,(int)date('Y'));
+        $akhirAgustus = mktime(23,59,59,8,(int)date('t'),(int)date('Y'));
+        $bulanAgustus = $this->index->getThisMonth($awalAgustus,$akhirAgustus);
+        $dendaBulanAgustus = $this->index->getThisMonthDenda($awalAgustus,$akhirAgustus);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanAgustus as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanAgustus as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $agustus = $total+$totaldbi;
+        
+        $awalSeptember = mktime(0,0,0,9,1,(int)date('Y'));
+        $akhirSeptember = mktime(23,59,59,9,(int)date('t'),(int)date('Y'));
+        $bulanSeptember = $this->index->getThisMonth($awalSeptember,$akhirSeptember);
+        $dendaBulanSeptember = $this->index->getThisMonthDenda($awalSeptember,$akhirSeptember);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanSeptember as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanSeptember as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $september = $total+$totaldbi;
+        
+        $awalOktober = mktime(0,0,0,10,1,(int)date('Y'));
+        $akhirOktober = mktime(23,59,59,10,(int)date('t'),(int)date('Y'));
+        $bulanOktober = $this->index->getThisMonth($awalOktober,$akhirOktober);
+        $dendaBulanOktober = $this->index->getThisMonthDenda($awalOktober,$akhirOktober);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanOktober as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanOktober as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $oktober = $total+$totaldbi;
+        
+        $awalNovember = mktime(0,0,0,11,1,(int)date('Y'));
+        $akhirNovember = mktime(23,59,59,11,(int)date('t'),(int)date('Y'));
+        $bulanNovember = $this->index->getThisMonth($awalNovember,$akhirNovember);
+        $dendaBulanNovember = $this->index->getThisMonthDenda($awalNovember,$akhirNovember);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanNovember as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanNovember as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $november = $total+$totaldbi;
+        
+        $awalDesember = mktime(0,0,0,12,1,(int)date('Y'));
+        $akhirDesember = mktime(23,59,59,12,(int)date('t'),(int)date('Y'));
+        $bulanDesember = $this->index->getThisMonth($awalDesember,$akhirDesember);
+        $dendaBulanDesember = $this->index->getThisMonthDenda($awalDesember,$akhirDesember);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanDesember as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanDesember as $dbi) {
+            $totaldbi = $totaldbi + $dbi['denda'];
+        }
+        $desember = $total+$totaldbi;
+        
+        return $total=$januari+$februari+$maret+$april+$mei+$juni+$juli+$agustus+$september+$oktober+$november+$desember;
     }
 
     public function profile()
