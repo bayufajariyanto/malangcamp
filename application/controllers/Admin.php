@@ -16,10 +16,11 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Profile';
+        $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
         $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
+        $data['kategori'] = $this->db->get('kategori')->result_array();
         
         $data['hari_ini'] = $this->_hariIni();
         $data['bulan_ini'] = $this->_bulanIni(date('m'));
@@ -41,7 +42,14 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/index', $data);
         $this->load->view('templates/footer');
+        $this->load->view('admin/pengeluaran');
         $this->load->view('admin/chart-area');
+        $this->load->view('admin/chart-pie');
+    }
+
+    private function _kategori(){
+        $pesanan = $this->db->get_where('pesanan', ['status' => 1])->result_array();
+
     }
 
     private function _hariIni(){
@@ -76,7 +84,11 @@ class Admin extends CI_Controller
         foreach ($dendaBulanIni as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
+
         $total = $total+$totaldbi;
+        if($bulan>(int)date('m')){
+            $total = null;
+        }
         return $total;
     }
 
