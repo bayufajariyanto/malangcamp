@@ -23,8 +23,8 @@
               <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
+              <th>Batas Kembali</th>
               <th>Total Pembayaran</th>
-              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -33,8 +33,8 @@
               <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
+              <th>Batas Kembali</th>
               <th>Total Pembayaran</th>
-              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </tfoot>
@@ -50,8 +50,8 @@
                 <td><?= $p['kode_transaksi'] ?></td>
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
+                <td><?= date('d F Y', $p['batas_kembali']) ?></td>
                 <td>Rp. <?= $p['total'] ?></td>
-                <td><?= $status ?></td>
                 <td><a href="<?= base_url('admin/peminjaman_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>

@@ -18,15 +18,19 @@ class Admin extends CI_Controller
     {
         $data['title'] = 'Profile';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        
+        $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
+        $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
         // var_dump($akhirHari);
         // var_dump(date('d m Y | H:i:s', $akhirHari));die;
-        var_dump($this->_hariIni());die;
+        $data['hari_ini'] = $this->_hariIni();
+        $data['bulan_ini'] = $this->_bulanIni();
+        // var_dump($this->_hariIni());die;
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/index', $data);
         $this->load->view('templates/footer');
+        $this->load->view('admin/chart-area');
     }
 
     private function _hariIni(){
@@ -35,15 +39,46 @@ class Admin extends CI_Controller
         $akhirHari = mktime(23,59,59,(int)date('m'),(int)date('d'),(int)date('Y'));
         $hariIni = $this->index->getToday($awalHari,$akhirHari);
         $dendaHariIni = $this->index->getTodayDenda($awalHari,$akhirHari);
-        if($hariIni){
-            $a = 'ada';
-            // var_dump($a);
-            // $data['hari_ini'] = $hariIni;
-        }else{
-            $a = 'belum ada';
-            // var_dump($a);
+        $total = 0;
+        $totaldhi = 0;
+        foreach ($hariIni as $hi) {
+            $total = $total + $hi['total'];
         }
-        return $a;
+        foreach ($dendaHariIni as $dhi) {
+            $totaldhi = $totaldhi + $dhi['total'];
+        }
+        // var_dump($total);
+        // var_dump($dendaHariIni);die;
+        if($dendaHariIni){
+            $total = $totaldhi+$total;
+        }else{
+            $total = $total;
+        }
+        return $total;
+    }
+
+    private function _bulanIni(){
+        $this->load->model('Index_model', 'index');
+        $awalBulan = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
+        $akhirBulan = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
+        $bulanIni = $this->index->getToday($awalBulan,$akhirBulan);
+        $dendaBulanIni = $this->index->getTodayDenda($awalBulan,$akhirBulan);
+        $total = 0;
+        $totaldbi = 0;
+        foreach ($bulanIni as $bi) {
+            $total = $total + $bi['total'];
+        }
+        foreach ($dendaBulanIni as $dbi) {
+            $totaldbi = $totaldbi + $dbi['total'];
+        }
+        // var_dump($total);
+        // var_dump($dendaBulanIni);die;
+        if($dendaBulanIni){
+            $total = $totaldbi+$total;
+        }else{
+            $total = $total;
+        }
+        return $total;
     }
 
     public function profile()
