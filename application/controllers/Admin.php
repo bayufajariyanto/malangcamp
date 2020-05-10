@@ -40,11 +40,15 @@ class Admin extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/index', $data);
+        $this->load->view('admin/pendapatan', $data);
+        $this->load->view('admin/pengeluaran', $data);
         $this->load->view('templates/footer');
-        $this->load->view('admin/pengeluaran');
-        $this->load->view('admin/chart-area');
-        $this->load->view('admin/chart-pie');
+        $this->load->view('other/pendapatan');
+        $this->load->view('other/pengeluaran');
+        $this->load->view('other/chart-area');
+        $this->load->view('other/chart-area-pengeluaran');
+        $this->load->view('other/chart-pie');
+        $this->load->view('other/chart-pie-pengeluaran');
     }
 
     private function _kategori(){
