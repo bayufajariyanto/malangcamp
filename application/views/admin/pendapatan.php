@@ -16,7 +16,7 @@ foreach($disewa as $d ){
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Pendapatan</h1>
-    <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Tambah Data</a>
+    <!-- <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Tambah Data</a> -->
   </div>
 
   <!-- Content Row -->
@@ -160,8 +160,7 @@ foreach($disewa as $d ){
               <th>#</th>
               <th>Nama</th>
               <th>Tanggal</th>
-              <th>Jumlah</th>
-              <th>Aksi</th>
+              <th>Nominal</th>
             </tr>
           </thead>
           <tfoot>
@@ -169,32 +168,18 @@ foreach($disewa as $d ){
               <th>#</th>
               <th>Nama</th>
               <th>Tanggal</th>
-              <th>Jumlah</th>
-              <th>Aksi</th>
+              <th>Nominal</th>
             </tr>
           </tfoot>
           <tbody>
+          <?php $no=1;foreach($pesanan as $p) : ?>
             <tr>
-              <td>1</td>
-              <td>asd</td>
-              <td>asd</td>
-              <td>asd</td>
-              <td><button class="btn btn-sm btn-primary">Ubah</button></td>
+              <td><?= $no++ ?></td>
+              <td><?= $p['username'] ?></td>
+              <td><?= date('d F Y', $p['tanggal_bayar']) ?></td>
+              <td>Rp <?= $p['total']+$p['denda'] ?></td>
             </tr>
-            <tr>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-            </tr>
-            <tr>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-            </tr>
+          <?php endforeach; ?>
           </tbody>
         </table>
       </div>
