@@ -20,6 +20,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
         $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
+        $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 1])->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
         
         $data['hari_ini'] = $this->_hariIni();
@@ -37,6 +38,9 @@ class Admin extends CI_Controller
         $data['november'] = $this->_bulanIni(11);
         $data['desember'] = $this->_bulanIni(12);
         
+        $data['sewa'] = $this->_sewa();
+        $data['denda'] = $this->_denda();
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -49,6 +53,30 @@ class Admin extends CI_Controller
         $this->load->view('other/chart-area-pengeluaran');
         $this->load->view('other/chart-pie');
         $this->load->view('other/chart-pie-pengeluaran');
+    }
+
+    private function _sewa(){
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $sewa = $this->index->getThisMonth($awalTahun, $akhirTahun);
+        $total = 0;
+        foreach($sewa as $s) :
+            $total = $total+$s['total'];
+        endforeach;
+        return $total;
+    }
+
+    private function _denda(){
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $denda = $this->index->getThisMonthDenda($awalTahun, $akhirTahun);
+        $total = 0;
+        foreach($denda as $d) :
+            $total = $total+$d['denda'];
+        endforeach;
+        return $total;
     }
 
     private function _kategori(){
@@ -74,10 +102,14 @@ class Admin extends CI_Controller
         return $total;
     }
 
+    private function _lastOfMonth($year, $month) {
+        return date("d", strtotime('-1 second', strtotime('+1 month',strtotime($month . '/01/' . $year. ' 00:00:00'))));
+    }
+
     private function _bulanIni($bulan){
         $this->load->model('Index_model', 'index');
         $awalBulan = mktime(0,0,0,(int)$bulan,1,(int)date('Y'));
-        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)date('t'),(int)date('Y'));
+        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)$this->_lastOfMonth((int)date('Y'),(int)$bulan),(int)date('Y'));
         $bulanIni = $this->index->getThisMonth($awalBulan,$akhirBulan);
         $dendaBulanIni = $this->index->getThisMonthDenda($awalBulan,$akhirBulan);
         $total = 0;

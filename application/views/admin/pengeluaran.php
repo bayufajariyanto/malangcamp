@@ -13,7 +13,7 @@ foreach($disewa as $d ){
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Pengeluaran</h1>
-    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pengeluaran</a>
   </div>
 
   <!-- Content Row -->
@@ -61,7 +61,7 @@ foreach($disewa as $d ){
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Karyawan</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $jumlah_barang ?></div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp 0</div>
                 </div>
                 <!-- <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -86,7 +86,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Perawatan</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 0</div>
             </div>
             <div class="col-auto">
               <i class="fas fa-users fa-2x text-gray-300"></i>

@@ -23,8 +23,8 @@ class Index_model extends CI_Model
         return $this->db->query($query)->result_array();
     }
     
-    // public function getJanuaryDenda($awalBulan, $akhirBulan){
-    //     $query = "SELECT * FROM pesanan WHERE `tanggal_kembali`>= $awalBulan AND `tanggal_kembali` <= $akhirBulan AND `denda` > 0";
-    //     return $this->db->query($query)->result_array();
-    // }
+    public function getAllDenda(){
+        $query = "SELECT * FROM pesanan WHERE `denda` > 0";
+        return $this->db->query($query)->result_array();
+    }
 }
