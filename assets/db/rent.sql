@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Bulan Mei 2020 pada 16.26
+-- Waktu pembuatan: 17 Bulan Mei 2020 pada 06.00
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -43,7 +43,7 @@ CREATE TABLE `barang` (
 INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 3),
 (3, 'Tenda Bestway Kap 4-5', 'Tenda', 22000, 3),
-(4, 'Tenda Consina Kap 4 org', 'Tenda', 25000, 1),
+(4, 'Tenda Consina Kap 4 org', 'Tenda', 25000, 3),
 (5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 3),
 (6, 'Tenda Dhaulagiri 4 org Ultralight', 'Tenda', 30000, 3),
 (7, 'Tenda Great Outdoor Kap 5-6 org', 'Tenda', 35000, 3),
@@ -64,7 +64,7 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (23, 'Matras', 'Other', 2500, 3),
 (24, 'Gaiter', 'Other', 4000, 3),
 (25, 'Headlamp / Senter', 'Lighting', 4000, 3),
-(26, 'Lampu Tenda', 'Lighting', 4000, 2),
+(26, 'Lampu Tenda', 'Lighting', 4000, 3),
 (27, 'Jerigen Lipat 5L', 'Other', 3000, 3),
 (28, 'Kompas', 'Other', 2500, 3),
 (29, 'Pisau Lipat', 'Other', 2500, 3);
@@ -137,6 +137,20 @@ CREATE TABLE `menu` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `pengeluaran`
+--
+
+CREATE TABLE `pengeluaran` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(256) NOT NULL,
+  `tanggal` bigint(20) NOT NULL,
+  `kategori` varchar(256) NOT NULL,
+  `nominal` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `pesanan`
 --
 
@@ -166,9 +180,10 @@ INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal
 (25, 'COO-202005010001', 'bayufajariyanto', 19, 1588316911, 1588320511, 1588406911, 1588844781, 1588316927, 1, 30000, 5000, 1, 1, 1),
 (26, 'TEN-202005070001', 'bayufajariyanto', 6, 1588843800, 1588847340, 1589020140, 1588844012, 1588843808, 2, 0, 60000, 1, 1, 1),
 (27, 'TEN-202005070001', 'bayufajariyanto', 5, 1588844527, 1588848067, 1589020867, 1588944669, 1588844539, 1, 0, 25000, 1, 1, 1),
-(28, 'LIG-202005080001', 'bayufajariyanto', 26, 1588918354, 1588921954, 1589008354, 0, 1588918407, 1, 0, 4000, 1, 1, 0),
+(28, 'LIG-202005080001', 'bayufajariyanto', 26, 1588918354, 1588921954, 1589008354, 1589683626, 1588918407, 1, 32000, 4000, 1, 1, 1),
 (29, 'TEN-202005080001', 'anandanurj', 2, 1588918435, 1588918435, 1589004835, 1588944743, 1588918435, 1, 0, 19000, 1, 1, 1),
-(30, 'TEN-202005080001', 'bayufajariyanto', 4, 1588945701, 1588945701, 1589032101, 0, 0, 2, 0, 50000, 0, 0, 0);
+(30, 'TEN-202005080001', 'bayufajariyanto', 4, 1588945701, 1588945701, 1589032101, 1589375716, 1588948946, 2, 200000, 50000, 1, 1, 1),
+(31, 'CAR-202005170001', 'ahmadzulfikar', 9, 1589683664, 1589683664, 1590115664, 1589683673, 1589683664, 3, 0, 37500, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -216,7 +231,8 @@ INSERT INTO `user` (`id`, `username`, `password`, `nama`, `no_kitas`, `jenis_kit
 (1, 'admin', '1234', 'Admin', '', '', '', '', 1585144105, 1),
 (4, 'bayufajariyanto', '$2y$10$UrJvWuSHG.ZhRWNvOLw4jOh/Y08Wt5/mEl.OEwvpFi2ZByWjpLC0G', 'Bayu Fajariyanto', '1731710033', 'KTM', 'Pasuruan Jawa Timur', '083851350939', 1585816190, 2),
 (5, 'anandanurj', '$2y$10$NJC78efYLrEq5Y.tTASfFO3gMZq1o38lIiHis6qhsBw6d8uSkqh2m', 'Ananda Nur Juliansyah', '1731710100', 'KTM', 'Surabaya Jawa Timur', '085257256782', 1585830779, 2),
-(6, 'dellyagus', '$2y$10$Wc0wJYhiGm9fJ0gPa5qbpeP7XEnjMKMmjdl2oSYzBU1IKnY/q9gWa', 'Delly Agus Prasetyo', '1731710174', 'KTP', 'Pujon, Jawa Timur', '085964112370', 1586486110, 2);
+(6, 'dellyagus', '$2y$10$Wc0wJYhiGm9fJ0gPa5qbpeP7XEnjMKMmjdl2oSYzBU1IKnY/q9gWa', 'Delly Agus Prasetyo', '1731710174', 'KTP', 'Pujon, Jawa Timur', '085964112370', 1586486110, 2),
+(7, 'ahmadzulfikar', '$2y$10$qMkD2rOo3zMGhCpJdTgm1uDnMFQc8prXJC5EtKH29chRloT3UupOu', 'Ahmad Zulfikar Rizaldi', '1731710171', 'KTM', 'Bojonegoro', '085790651005', 1589100996, 2);
 
 --
 -- Indexes for dumped tables
@@ -238,6 +254,12 @@ ALTER TABLE `kategori`
 -- Indeks untuk tabel `kode_transaksi`
 --
 ALTER TABLE `kode_transaksi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -281,10 +303,16 @@ ALTER TABLE `kode_transaksi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT untuk tabel `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`
@@ -296,7 +324,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

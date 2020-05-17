@@ -1,6 +1,6 @@
 <?php
-$jumlah = null;
-$jumlah_barang = null;
+$jumlah = 0;
+$jumlah_barang = 0;
 foreach($member as $m ){
   $jumlah++;
 }
@@ -25,7 +25,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hari ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $hari_ini ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $pengeluaran_hari_ini ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -42,7 +42,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $bulan_ini ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $pengeluaran_bulan_ini ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -58,10 +58,10 @@ foreach($disewa as $d ){
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Karyawan</div>
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Gaji Karyawan (Bulan Ini)</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp 0</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp <?= $karyawan ?></div>
                 </div>
                 <!-- <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -85,8 +85,8 @@ foreach($disewa as $d ){
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Perawatan</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 0</div>
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Perawatan (Bulan Ini)</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $perawatan ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -174,27 +174,15 @@ foreach($disewa as $d ){
             </tr>
           </tfoot>
           <tbody>
+          <?php $no = 1; foreach($pengeluaran as $p) : ?>
             <tr>
-              <td>asd</td>
-              <td>asd</td>
-              <td>asd</td>
-              <td>asd</td>
+              <td><?= $no++ ?></td>
+              <td><?= $p['nama'] ?></td>
+              <td><?= $p['tanggal'] ?></td>
+              <td><?= $p['nominal'] ?></td>
               <td><button class="btn btn-sm btn-primary">Ubah</button></td>
             </tr>
-            <tr>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-              <td>qwerty</td>
-            </tr>
-            <tr>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-              <td>asdf</td>
-            </tr>
+          <?php endforeach;?>
           </tbody>
         </table>
       </div>

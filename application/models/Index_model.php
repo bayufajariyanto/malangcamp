@@ -27,4 +27,20 @@ class Index_model extends CI_Model
         $query = "SELECT * FROM pesanan WHERE `denda` > 0";
         return $this->db->query($query)->result_array();
     }
+
+    // Pengeluaran
+    public function getPengeluaranToday($awalHari, $akhirHari){
+        $query = "SELECT * FROM pengeluaran WHERE `tanggal`>= $awalHari AND `tanggal` <= $akhirHari";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getPengeluaranThisMonth($awalHari, $akhirHari){
+        $query = "SELECT * FROM pengeluaran WHERE `tanggal`>= $awalHari AND `tanggal` <= $akhirHari";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function getPengeluaranByKategori($kategori){
+        $query = "SELECT * FROM pengeluaran WHERE 'kategori' LIKE '$kategori'";
+        return $this->db->query($query)->result_array();
+    }
 }
