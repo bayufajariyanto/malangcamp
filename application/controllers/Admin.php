@@ -40,12 +40,12 @@ class Admin extends CI_Controller
         
         $data['sewa'] = $this->_sewa();
         $data['denda'] = $this->_denda();
-
+        
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/pendapatan', $data);
-        $this->load->view('admin/pengeluaran', $data);
+        $this->_pengeluaran();
         $this->load->view('templates/footer');
         $this->load->view('other/pendapatan');
         $this->load->view('other/pengeluaran');
@@ -55,6 +55,50 @@ class Admin extends CI_Controller
         $this->load->view('other/chart-pie-pengeluaran');
     }
 
+    private function _pengeluaran(){
+        $this->load->model('Index_model', 'index');
+        $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
+        $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
+        $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni();
+        $data['karyawan'] = $this->_pengeluaranByKategori('karyawan');
+        $data['perawatan'] = $this->_pengeluaranByKategori('perawatan');
+        $this->load->view('admin/pengeluaran', $data);
+    }
+    
+    private function _pengeluaranByKategori($kategori){
+        $this->load->model('Index_model', 'index');
+        $kategori = $this->index->getPengeluaranByKategori($kategori);
+        $total = 0;
+        foreach ($kategori as $k) {
+            $total = $total + $k['nominal'];
+        }
+        return $total;
+    }
+    
+    private function _pengeluaranHariIni(){
+        $this->load->model('Index_model', 'index');
+        $awalHari = mktime(0,0,0,(int)date('m'),(int)date('d'),(int)date('Y'));
+        $akhirHari = mktime(23,59,59,(int)date('m'),(int)date('d'),(int)date('Y'));
+        $hariIni = $this->index->getPengeluaranToday($awalHari,$akhirHari);
+        $total = 0;
+        foreach ($hariIni as $hi) {
+            $total = $total + $hi['nominal'];
+        }
+        return $total;
+    }
+    
+    private function _pengeluaranBulanIni(){
+        $this->load->model('Index_model', 'index');
+        $awalBulan = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
+        $akhirBulan = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
+        $bulanIni = $this->index->getPengeluaranThisMonth($awalBulan,$akhirBulan);
+        $total = 0;
+        foreach ($bulanIni as $hi) {
+            $total = $total + $hi['nominal'];
+        }
+        return $total;
+    }
+    
     private function _sewa(){
         $this->load->model('Index_model', 'index');
         $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
