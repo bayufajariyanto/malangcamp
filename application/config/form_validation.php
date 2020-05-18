@@ -229,5 +229,37 @@ $config = [
                 'integer' => '%s hanya berisi angka'
             ]
         ]
+    ],
+    'pengeluaran' => [
+        [
+            'field' => 'nama',
+            'label' => 'Nama',
+            'rules' => 'trim|required|min_length[3]|max_length[25]',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 4 karakter',
+                'max_length' => '%s tidak lebih dari 25 karakter',
+            ]
+        ],
+        [
+            'field' => 'kategori',
+            'label' => 'Kategori',
+            'rules' => 'trim|required|min_length[1]',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+            ]
+        ],
+        [
+            'field' => 'nominal',
+            'label' => 'Nominal',
+            'rules' => 'trim|required|min_length[1]|max_length[15]|integer',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 15 digit',
+                'integer' => '%s hanya berisi angka'
+            ]
+        ]
     ]
 ];

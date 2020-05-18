@@ -20,8 +20,8 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
         $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
+        $this->db->order_by('tanggal_bayar', 'DESC');
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 1])->result_array();
-        $data['kategori'] = $this->db->get('kategori')->result_array();
         
         $data['hari_ini'] = $this->_hariIni();
         $data['bulan_ini'] = $this->_bulanIni(date('m'));
@@ -41,28 +41,96 @@ class Admin extends CI_Controller
         $data['sewa'] = $this->_sewa();
         $data['denda'] = $this->_denda();
         
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('admin/pendapatan', $data);
-        $this->_pengeluaran();
-        $this->load->view('templates/footer');
-        $this->load->view('other/pendapatan');
-        $this->load->view('other/pengeluaran');
-        $this->load->view('other/chart-area');
-        $this->load->view('other/chart-area-pengeluaran');
-        $this->load->view('other/chart-pie');
-        $this->load->view('other/chart-pie-pengeluaran');
+        // Pengeluaran
+        $this->load->model('Index_model', 'index');
+        $this->db->order_by('tanggal', 'DESC');
+        $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
+        $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
+        $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni();
+        $data['karyawan'] = $this->_pengeluaranByKategori('Gaji');
+        $data['perawatan'] = $this->_pengeluaranByKategori('Perawatan');
+        $data['kategori_pengeluaran'] = [
+            [
+                'nama' => 'Gaji'
+            ],
+            [
+                'nama' => 'Perawatan'
+            ],
+            [
+                'nama' => 'Lainnya'
+                ]
+                
+            ];
+            
+        $nama = ucwords($this->input->post('nama'));
+        $kategori = $this->input->post('kategori');
+        $nominal = $this->input->post('nominal');
+        
+        
+        if ($this->form_validation->run('pengeluaran') == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/pendapatan', $data);
+            $this->load->view('admin/pengeluaran', $data);
+            $this->load->view('templates/footer');
+            $this->load->view('other/pendapatan');
+            $this->load->view('other/pengeluaran');
+            $this->load->view('other/chart-area');
+            $this->load->view('other/chart-area-pengeluaran');
+            $this->load->view('other/chart-pie');
+            $this->load->view('other/chart-pie-pengeluaran');
+        } else {
+            $data = [
+                'nama' => $nama,
+                'tanggal' => time(),
+                'kategori' => $kategori,
+                'nominal' => $nominal
+            ];
+            $this->db->insert('pengeluaran', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pengeluaran baru berhasil ditambahkan!</div>');
+            redirect('admin');
+        }
     }
 
-    private function _pengeluaran(){
+    public function pengeluaran(){
         $this->load->model('Index_model', 'index');
         $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
         $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
         $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni();
         $data['karyawan'] = $this->_pengeluaranByKategori('karyawan');
         $data['perawatan'] = $this->_pengeluaranByKategori('perawatan');
-        $this->load->view('admin/pengeluaran', $data);
+        $data['kategori_pengeluaran'] = [
+            [
+                'nama' => 'Gaji'
+            ],
+            [
+                'nama' => 'Perawatan'
+            ],
+            [
+                'nama' => 'Lainnya'
+            ]
+        
+        ];
+
+        $nama = ucwords($this->input->post('nama'));
+        $kategori = $this->input->post('kategori');
+        $nominal = $this->input->post('nominal');
+
+        if ($this->form_validation->run('pengeluaran') == false) {
+            $this->load->view('admin/pengeluaran', $data);
+        } else {
+            $data = [
+                'nama' => $nama,
+                'tanggal' => time(),
+                'kategori' => $kategori,
+                'nominal' => $nominal
+            ];
+            $this->db->insert('pengeluaran', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pengeluaran baru berhasil ditambahkan!</div>');
+            redirect('admin');
+        }
+        
     }
     
     private function _pengeluaranByKategori($kategori){

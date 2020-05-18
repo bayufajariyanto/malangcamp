@@ -1,19 +1,47 @@
-<?php
-$jumlah = 0;
-$jumlah_barang = 0;
-foreach($member as $m ){
-  $jumlah++;
-}
-foreach($disewa as $d ){
-  $jumlah_barang = $jumlah_barang+$d['jumlah_barang'];
-}
-
-?>
   <hr class="mt-5 mb-5">
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Pengeluaran</h1>
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pengeluaran</a>
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#tambahPengeluaran"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pengeluaran</button>
+  </div>
+
+  <div class="modal fade" id="tambahPengeluaran" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Tambah Pengeluaran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="<?= base_url('admin/index'); ?>">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="nama">Nama</label>
+              <input type="text" class="form-control" name="nama" id="nama" value="<?= set_value('nama'); ?>" placeholder="cth: Nama Karyawan, Perawatan, dll">
+              <?= form_error('nama', '<small class="text-danger pl-2">', '</small>') ?>
+            </div>
+            <div class="form-group">
+              <label for="kategori">Kategori</label>
+              <select class="form-control" id="kategori" name="kategori">
+              <?php foreach($kategori_pengeluaran as $k): ?>
+                <option><?= $k['nama'] ?></option>
+              <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nominal">Nominal</label>
+              <input type="number" class="form-control" name="nominal" id="nominal" value="<?= set_value('nominal'); ?>" placeholder="Rp xxx">
+              <?= form_error('nominal', '<small class="text-danger pl-2">', '</small>') ?>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
   <!-- Content Row -->
@@ -25,7 +53,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hari ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $pengeluaran_hari_ini ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_hari_ini) ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -42,7 +70,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $pengeluaran_bulan_ini ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_bulan_ini) ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -61,7 +89,7 @@ foreach($disewa as $d ){
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Gaji Karyawan (Bulan Ini)</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp <?= $karyawan ?></div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp <?= rupiah($karyawan) ?></div>
                 </div>
                 <!-- <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -86,7 +114,7 @@ foreach($disewa as $d ){
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Perawatan (Bulan Ini)</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= $perawatan ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($perawatan) ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -178,8 +206,8 @@ foreach($disewa as $d ){
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $p['nama'] ?></td>
-              <td><?= $p['tanggal'] ?></td>
-              <td><?= $p['nominal'] ?></td>
+              <td><?= date('d F Y | H:i', $p['tanggal']) ?></td>
+              <td>Rp <?= rupiah($p['nominal']) ?></td>
               <td><button class="btn btn-sm btn-primary">Ubah</button></td>
             </tr>
           <?php endforeach;?>

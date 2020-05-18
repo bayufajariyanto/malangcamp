@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Bulan Mei 2020 pada 06.00
+-- Waktu pembuatan: 18 Bulan Mei 2020 pada 15.48
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -97,34 +97,6 @@ INSERT INTO `kategori` (`id`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kode_transaksi`
---
-
-CREATE TABLE `kode_transaksi` (
-  `id` int(11) NOT NULL,
-  `kode` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `kode_transaksi`
---
-
-INSERT INTO `kode_transaksi` (`id`, `kode`) VALUES
-(1, 0),
-(2, 0),
-(3, 0),
-(4, 0),
-(5, 1588080800),
-(6, 1588080843),
-(7, 0),
-(8, 0),
-(9, 0),
-(10, 0),
-(11, 0);
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `menu`
 --
 
@@ -147,6 +119,14 @@ CREATE TABLE `pengeluaran` (
   `kategori` varchar(256) NOT NULL,
   `nominal` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `pengeluaran`
+--
+
+INSERT INTO `pengeluaran` (`id`, `nama`, `tanggal`, `kategori`, `nominal`) VALUES
+(1, 'Aditya Eka Pradana', 1589805061, 'Gaji', 3500000),
+(2, 'Cuci Sepatu', 1589808535, 'Perawatan', 20000);
 
 -- --------------------------------------------------------
 
@@ -251,12 +231,6 @@ ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `kode_transaksi`
---
-ALTER TABLE `kode_transaksi`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
@@ -297,16 +271,10 @@ ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT untuk tabel `kode_transaksi`
---
-ALTER TABLE `kode_transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`

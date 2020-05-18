@@ -40,7 +40,7 @@ class Index_model extends CI_Model
     }
 
     public function getPengeluaranByKategori($kategori){
-        $query = "SELECT * FROM pengeluaran WHERE 'kategori' LIKE '$kategori'";
+        $query = "SELECT * FROM pengeluaran WHERE `kategori` = '".$kategori."'";
         return $this->db->query($query)->result_array();
     }
 }

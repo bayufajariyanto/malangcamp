@@ -10,19 +10,19 @@ var myPieChart = new Chart(ctx, {
   data: {
     labels: [
       <?php
-        foreach ($kategori as $k) {
+        foreach ($kategori_pengeluaran as $k) {
           echo "'".$k['nama']."',";
         }
       ?>
     ],
     datasets: [{
-      data: [30, 20, 100, 20, 5, 80, 64,36],
-      // backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#0779e4', '#12AF92', '#4cbbb9', '#ffd31d', '#00909e'],
+      data: [30, 20, 100],
+      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+      // backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#0779e4', '#12AF92', '#4cbbb9', '#ffd31d', '#00909e'],
       // backgroundColor: ['#0779e4', '#12AF92', '#d63447', '#00909e', '#4cbbb9', '#f57b51', '#ffd31d', '#00909e'],
-      // hoverBackgroundColor: ['#4cbbb9', '#17a673', '#2c9faf'],
-      // hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-      // hoverBorderColor: "rgba(234, 236, 244, 1)",
+      hoverBackgroundColor: ['#4cbbb9', '#17a673', '#2c9faf'],
+      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
   options: {
@@ -34,7 +34,7 @@ var myPieChart = new Chart(ctx, {
       borderWidth: 1,
       xPadding: 15,
       yPadding: 15,
-      displayColors: false,
+      displayColors: true,
       caretPadding: 10,
     },
     legend: {
