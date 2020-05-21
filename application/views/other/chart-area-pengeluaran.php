@@ -47,7 +47,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [<?= $januari ?>, <?= $februari ?>, <?= $maret ?>, <?= $april ?>, <?= $mei ?>, <?= $juni ?>, <?= $juli ?>, <?= $agustus ?>, <?= $september ?>, <?= $oktober ?>, <?= $november ?>, <?= $desember ?>],
+      data: [<?= $pengeluaran_januari ?>, <?= $pengeluaran_februari ?>, <?= $pengeluaran_maret ?>, <?= $pengeluaran_april ?>, <?= $pengeluaran_mei ?>, <?= $pengeluaran_juni ?>, <?= $pengeluaran_juli ?>, <?= $pengeluaran_agustus ?>, <?= $pengeluaran_september ?>, <?= $pengeluaran_oktober ?>, <?= $pengeluaran_november ?> , <?= $pengeluaran_desember ?>],
     }],
   },
   options: {

@@ -70,7 +70,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_bulan_ini) ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_mei) ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -156,13 +156,13 @@
           </div>
           <div class="mt-4 text-center small">
             <span class="mr-2">
-              <i class="fas fa-circle text-primary"></i> Direct
+              <i class="fas fa-circle text-primary"></i> Gaji
             </span>
             <span class="mr-2">
-              <i class="fas fa-circle text-success"></i> Social
+              <i class="fas fa-circle text-success"></i> Perawatan
             </span>
             <span class="mr-2">
-              <i class="fas fa-circle text-info"></i> Referral
+              <i class="fas fa-circle text-info"></i> Lainnya
             </span>
           </div>
         </div>
@@ -188,8 +188,8 @@
               <th>#</th>
               <th>Nama</th>
               <th>Tanggal</th>
+              <!-- <th>Kategori</th> -->
               <th>Jumlah</th>
-              <th>Aksi</th>
             </tr>
           </thead>
           <tfoot>
@@ -197,8 +197,8 @@
               <th>#</th>
               <th>Nama</th>
               <th>Tanggal</th>
+              <!-- <th>Kategori</th> -->
               <th>Jumlah</th>
-              <th>Aksi</th>
             </tr>
           </tfoot>
           <tbody>
@@ -207,8 +207,8 @@
               <td><?= $no++ ?></td>
               <td><?= $p['nama'] ?></td>
               <td><?= date('d F Y | H:i', $p['tanggal']) ?></td>
+              <!-- <td></td> -->
               <td>Rp <?= rupiah($p['nominal']) ?></td>
-              <td><button class="btn btn-sm btn-primary">Ubah</button></td>
             </tr>
           <?php endforeach;?>
           </tbody>

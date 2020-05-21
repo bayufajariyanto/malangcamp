@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Bulan Mei 2020 pada 15.48
+-- Waktu pembuatan: 21 Bulan Mei 2020 pada 05.07
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -125,8 +125,9 @@ CREATE TABLE `pengeluaran` (
 --
 
 INSERT INTO `pengeluaran` (`id`, `nama`, `tanggal`, `kategori`, `nominal`) VALUES
-(1, 'Aditya Eka Pradana', 1589805061, 'Gaji', 3500000),
-(2, 'Cuci Sepatu', 1589808535, 'Perawatan', 20000);
+(1, 'Aditya Eka Pradana', 1589805061, 'Gaji', 500000),
+(2, 'Cuci Sepatu', 1589808535, 'Perawatan', 20000),
+(3, 'Listrik', 1590025099, 'Lainnya', 53000);
 
 -- --------------------------------------------------------
 
@@ -262,7 +263,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT untuk tabel `kategori`
@@ -274,7 +275,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`

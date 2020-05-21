@@ -16,7 +16,7 @@ var myPieChart = new Chart(ctx, {
       ?>
     ],
     datasets: [{
-      data: [30, 20, 100],
+      data: [<?= $gaji ?>, <?= $perawatan ?>, <?= $lainnya ?>],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       // backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#0779e4', '#12AF92', '#4cbbb9', '#ffd31d', '#00909e'],
       // backgroundColor: ['#0779e4', '#12AF92', '#d63447', '#00909e', '#4cbbb9', '#f57b51', '#ffd31d', '#00909e'],

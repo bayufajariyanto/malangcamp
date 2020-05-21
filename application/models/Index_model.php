@@ -43,4 +43,9 @@ class Index_model extends CI_Model
         $query = "SELECT * FROM pengeluaran WHERE `kategori` = '".$kategori."'";
         return $this->db->query($query)->result_array();
     }
+
+    public function getPengeluaranByKategoriThisMonth($kategori, $awalHari, $akhirHari){
+        $query = "SELECT * FROM pengeluaran WHERE `kategori` = '".$kategori."' AND `tanggal`>= $awalHari AND `tanggal` <= $akhirHari";
+        return $this->db->query($query)->result_array();
+    }
 }

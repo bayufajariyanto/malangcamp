@@ -40,13 +40,30 @@ class Admin extends CI_Controller
         
         $data['sewa'] = $this->_sewa();
         $data['denda'] = $this->_denda();
+
         
         // Pengeluaran
+        $data['gaji'] = $this->_gaji();
+        $data['perawatan'] = $this->_perawatan();
+        $data['lainnya'] = $this->_lainnya();
         $this->load->model('Index_model', 'index');
         $this->db->order_by('tanggal', 'DESC');
         $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
         $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
-        $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni();
+        $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni(date('m'));
+        $data['pengeluaran_januari'] = $this->_pengeluaranBulanIni(1);
+        $data['pengeluaran_februari'] = $this->_pengeluaranBulanIni(2);
+        $data['pengeluaran_maret'] = $this->_pengeluaranBulanIni(3);
+        $data['pengeluaran_april'] = $this->_pengeluaranBulanIni(4);
+        $data['pengeluaran_mei'] = $this->_pengeluaranBulanIni(5);
+        $data['pengeluaran_juni'] = $this->_pengeluaranBulanIni(6);
+        $data['pengeluaran_juli'] = $this->_pengeluaranBulanIni(7);
+        $data['pengeluaran_agustus'] = $this->_pengeluaranBulanIni(8);
+        $data['pengeluaran_september'] = $this->_pengeluaranBulanIni(9);
+        $data['pengeluaran_oktober'] = $this->_pengeluaranBulanIni(10);
+        $data['pengeluaran_november'] = $this->_pengeluaranBulanIni(11);
+        $data['pengeluaran_desember'] = $this->_pengeluaranBulanIni(12);
+        // var_dump($data['pengeluaran_mei']);die;
         $data['karyawan'] = $this->_pengeluaranByKategori('Gaji');
         $data['perawatan'] = $this->_pengeluaranByKategori('Perawatan');
         $data['kategori_pengeluaran'] = [
@@ -77,7 +94,7 @@ class Admin extends CI_Controller
             $this->load->view('other/pendapatan');
             $this->load->view('other/pengeluaran');
             $this->load->view('other/chart-area');
-            $this->load->view('other/chart-area-pengeluaran');
+            $this->load->view('other/chart-area-pengeluaran', $data);
             $this->load->view('other/chart-pie');
             $this->load->view('other/chart-pie-pengeluaran');
         } else {
@@ -96,10 +113,9 @@ class Admin extends CI_Controller
     public function pengeluaran(){
         $this->load->model('Index_model', 'index');
         $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
-        $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
-        $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni();
-        $data['karyawan'] = $this->_pengeluaranByKategori('karyawan');
-        $data['perawatan'] = $this->_pengeluaranByKategori('perawatan');
+        // $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
+        // $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni(date('m'));
+        
         $data['kategori_pengeluaran'] = [
             [
                 'nama' => 'Gaji'
@@ -155,14 +171,17 @@ class Admin extends CI_Controller
         return $total;
     }
     
-    private function _pengeluaranBulanIni(){
+    private function _pengeluaranBulanIni($bulan){
         $this->load->model('Index_model', 'index');
-        $awalBulan = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
-        $akhirBulan = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
+        $awalBulan = mktime(0,0,0,(int)$bulan,1,(int)date('Y'));
+        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)$this->_lastOfMonth((int)date('Y'),(int)$bulan),(int)date('Y'));
         $bulanIni = $this->index->getPengeluaranThisMonth($awalBulan,$akhirBulan);
         $total = 0;
-        foreach ($bulanIni as $hi) {
-            $total = $total + $hi['nominal'];
+        foreach ($bulanIni as $bi) {
+            $total = $total + $bi['nominal'];
+        }
+        if($bulan>(int)date('m')){
+            $total = null;
         }
         return $total;
     }
@@ -187,6 +206,42 @@ class Admin extends CI_Controller
         $total = 0;
         foreach($denda as $d) :
             $total = $total+$d['denda'];
+        endforeach;
+        return $total;
+    }
+
+    private function _gaji(){
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $gaji = $this->index->getPengeluaranByKategoriThisMonth('Gaji', $awalTahun, $akhirTahun);
+        $total = 0;
+        foreach($gaji as $g) :
+            $total = $total+$g['nominal'];
+        endforeach;
+        return $total;
+    }
+
+    private function _perawatan(){
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $perawatan = $this->index->getPengeluaranByKategoriThisMonth('Perawatan', $awalTahun, $akhirTahun);
+        $total = 0;
+        foreach($perawatan as $g) :
+            $total = $total+$g['nominal'];
+        endforeach;
+        return $total;
+    }
+
+    private function _lainnya(){
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $lainnya = $this->index->getPengeluaranByKategoriThisMonth('Lainnya', $awalTahun, $akhirTahun);
+        $total = 0;
+        foreach($lainnya as $g) :
+            $total = $total+$g['nominal'];
         endforeach;
         return $total;
     }
