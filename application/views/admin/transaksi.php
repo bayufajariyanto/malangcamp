@@ -1,3 +1,9 @@
+<?php
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
+?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -51,7 +57,7 @@
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
                 <td><?= date('d F Y', $p['tanggal_kembali']) ?></td>
-                <td>Rp. <?= $p['total'] ?></td>
+                <td>Rp <?= rupiah($p['total']+$p['denda']) ?></td>
                 <td><a href="<?= base_url('admin/transaksi_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>

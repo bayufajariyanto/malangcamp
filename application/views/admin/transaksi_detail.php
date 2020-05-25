@@ -1,4 +1,8 @@
 <?php
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
 if($transaksi['konfirmasi'] == 1){
     $konfirmasi = 'Sudah dibayar';
 }else{
@@ -151,9 +155,9 @@ if($transaksi['selesai'] == 1){
                                 <td><?= date('d F Y | H:i', $transaksi['tanggal_sewa']) ?></td>
                                 <td><?= date('d F Y | H:i', $transaksi['batas_kembali']) ?></td>
                                 <td><?= date('d F Y | H:i', $transaksi['tanggal_kembali']) ?></td>
-                                <td>Rp <?= $transaksi['total'] ?></td>
-                                <td>Rp <?= $transaksi['denda'] ?></td>
-                                <td>Rp <?= ($transaksi['total']+$transaksi['denda']) ?></td>
+                                <td>Rp <?= rupiah($transaksi['total']) ?></td>
+                                <td>Rp <?= rupiah($transaksi['denda']) ?></td>
+                                <td>Rp <?= rupiah($transaksi['total']+$transaksi['denda']) ?></td>
                             </tr>
                         </tbody>
                     </table>

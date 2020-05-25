@@ -1,17 +1,12 @@
-<?php
-function rupiah($angka)
-{
-  return number_format($angka, 0, '.', '.');
-}
-
-foreach($pesanan as $p):
-  if($p['tanggal_order']+$sejam<time() && $p['status'] != 1){
-    redirect(base_url('admin/pesanan_batal/'.$p['id']));
-  }
-  if($p['tanggal_sewa'] <= time() && $p['status'] == 1){
-    redirect(base_url('admin/pesanan_konfirmasi/'.$p ['id']));
-  }
-endforeach;
+<?php 
+// foreach($pesanan as $p):
+//   if($p['tanggal_order']+$sejam<time() && $p['status'] != 1){
+//     redirect(base_url('admin/pesanan_batal/'.$p['id']));
+//   }
+//   if($p['tanggal_sewa'] <= time() && $p['status'] == 1){
+//     redirect(base_url('admin/pesanan_konfirmasi/'.$p ['id']));
+//   }
+// endforeach;
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -40,19 +35,6 @@ endforeach;
         ?>
         <form method="post" action="<?= base_url('admin/pesanan'); ?>">
           <div class="modal-body">
-            <!-- <div class="form-group">
-              <label for="nama">Kode Transaksi</label>
-              <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=" ">
-              <?= form_error('nama', '<small class="text-danger pl-2">', '</small>') ?>
-            </div> -->
-            <div class="form-group">
-              <label for="username">Username</label>
-              <select class="form-control" id="username" name="username">
-                <?php foreach ($username as $u) : ?>
-                  <option><?= $u['username'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
             <div class="form-group">
               <label for="barang">Barang yang tersedia</label>
               <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Masukkan keyword ...">
@@ -152,7 +134,7 @@ endforeach;
                 <td><?= $p['kode_transaksi'] ?></td>
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
-                <td>Rp. <?= rupiah($p['total']) ?></td>
+                <td>Rp. <?= $p['total'] ?></td>
                 <td><?= $status ?></td>
                 <td><a href="<?= base_url() ?>admin/pesanan_detail/<?= $p['id'] ?>" class="btn btn-primary">Detail</a></td>
               </tr>

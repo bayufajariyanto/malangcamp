@@ -1,4 +1,8 @@
 <?php
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
 if ($peminjaman['selesai'] == 0) {
   $status = 'Berjalan';
 } else if ($peminjaman['selesai'] == 1) {
@@ -71,7 +75,7 @@ if($peminjaman['batas_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Total Pembayaran</p>
         <div class="col-sm">
-          <p class="card-text">Rp. <?= $peminjaman['total'] ?></p>
+          <p class="card-text">Rp <?= rupiah($peminjaman['total']) ?></p>
         </div>
       </div>
       <div class="row">
@@ -89,7 +93,7 @@ if($peminjaman['batas_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Denda</p>
         <div class="col-sm">
-          <p class="card-text">Rp <?= $denda ?></p>
+          <p class="card-text">Rp <?= rupiah($denda) ?></p>
         </div>
       </div>
       <div class="row">
