@@ -1,12 +1,17 @@
-<?php 
-// foreach($pesanan as $p):
-//   if($p['tanggal_order']+$sejam<time() && $p['status'] != 1){
-//     redirect(base_url('admin/pesanan_batal/'.$p['id']));
-//   }
-//   if($p['tanggal_sewa'] <= time() && $p['status'] == 1){
-//     redirect(base_url('admin/pesanan_konfirmasi/'.$p ['id']));
-//   }
-// endforeach;
+<?php
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
+
+foreach($pesanan as $p):
+  if($p['tanggal_order']+$sejam<time() && $p['status'] != 1){
+    redirect(base_url('member/pesanan_batal/'.$p['id']));
+  }
+  if($p['tanggal_sewa'] <= time() && $p['status'] == 1){
+    redirect(base_url('member/pesanan_konfirmasi/'.$p ['id']));
+  }
+endforeach;
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -33,7 +38,7 @@
         <?php
 
         ?>
-        <form method="post" action="<?= base_url('admin/pesanan'); ?>">
+        <form method="post" action="<?= base_url('member/pesanan'); ?>">
           <div class="modal-body">
             <div class="form-group">
               <label for="barang">Barang yang tersedia</label>
@@ -71,9 +76,8 @@
             </div>
             <div class="form-group">
               <label for="status">Bayar</label>
-              <select class="form-control" id="status" name="status">
+              <select class="form-control" id="status" name="status" readonly>
                   <option value="0">Belum Lunas</option>
-                  <option value="1">Lunas</option>
               </select>
             </div>
             <!-- <div class="form-group">
@@ -134,9 +138,9 @@
                 <td><?= $p['kode_transaksi'] ?></td>
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
-                <td>Rp. <?= $p['total'] ?></td>
+                <td>Rp <?= rupiah($p['total']) ?></td>
                 <td><?= $status ?></td>
-                <td><a href="<?= base_url() ?>admin/pesanan_detail/<?= $p['id'] ?>" class="btn btn-primary">Detail</a></td>
+                <td><a href="<?= base_url() ?>member/pesanan_detail/<?= $p['id'] ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach;
             ?>

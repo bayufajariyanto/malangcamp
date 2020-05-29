@@ -35,10 +35,6 @@ if($transaksi['selesai'] == 1){
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
-                <?php
-
-                ?>
                 <form method="post" action="<?= base_url('admin/pesanan_konfirmasi'); ?>">
                     <div class="modal-body">
                         <p>Apakah member sudah membayar lunas?</p>
@@ -61,10 +57,6 @@ if($transaksi['selesai'] == 1){
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
-                <?php
-
-                ?>
                 <form method="post" action="<?= base_url('admin/batal_pesanan'); ?>">
                     <div class="modal-body">
                         <p>Apakah anda yakin membatalkan pesanan?</p>
@@ -95,13 +87,13 @@ if($transaksi['selesai'] == 1){
             <div class="row">
                 <p class="col-sm-2">Tanggal Order</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i', $transaksi['tanggal_order']) ?></p>
+                    <p class="card-text"><?= date('d F Y | H:i:s', $transaksi['tanggal_order']) ?></p>
                 </div>
             </div>
             <div class="row">
                 <p class="col-sm-2">Tanggal Pembayaran</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i', $transaksi['tanggal_bayar']) ?></p>
+                    <p class="card-text"><?= date('d F Y | H:i:s', $transaksi['tanggal_bayar']) ?></p>
                 </div>
             </div>
             <div class="row">
@@ -152,9 +144,9 @@ if($transaksi['selesai'] == 1){
                             ?>
                             <tr>
                                 <td><?= $barang['nama'] ?></td>
-                                <td><?= date('d F Y | H:i', $transaksi['tanggal_sewa']) ?></td>
-                                <td><?= date('d F Y | H:i', $transaksi['batas_kembali']) ?></td>
-                                <td><?= date('d F Y | H:i', $transaksi['tanggal_kembali']) ?></td>
+                                <td><?= date('d F Y | H:i:s', $transaksi['tanggal_sewa']) ?></td>
+                                <td><?= date('d F Y | H:i:s', $transaksi['batas_kembali']) ?></td>
+                                <td><?= date('d F Y | H:i:s', $transaksi['tanggal_kembali']) ?></td>
                                 <td>Rp <?= rupiah($transaksi['total']) ?></td>
                                 <td>Rp <?= rupiah($transaksi['denda']) ?></td>
                                 <td>Rp <?= rupiah($transaksi['total']+$transaksi['denda']) ?></td>

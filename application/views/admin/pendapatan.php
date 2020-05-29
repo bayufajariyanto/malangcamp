@@ -180,7 +180,7 @@ foreach($disewa as $d ){
             <tr>
               <td><?= $no++ ?></td>
               <td><?= $p['username'] ?></td>
-              <td><?= date('d F Y', $p['tanggal_bayar']) ?></td>
+              <td><?= date('d F Y | H:i', $p['tanggal_bayar']) ?></td>
               <td>Rp <?= rupiah($p['total']+$p['denda']) ?></td>
             </tr>
           <?php endforeach; ?>

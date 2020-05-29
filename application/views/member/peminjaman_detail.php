@@ -81,13 +81,13 @@ if($peminjaman['batas_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Tanggal Pembayaran</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_bayar']) ?></p>
+          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_bayar']) ?></p>
         </div>
       </div>
       <div class="row">
         <p class="col-sm-2">Batas Pengembalian</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
+          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
         </div>
       </div>
       <div class="row">
@@ -104,7 +104,7 @@ if($peminjaman['batas_kembali']< time()){
       </div>
       <br>
       <div class="text-center">
-        <a href="<?= base_url('admin/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
+        <a href="<?= base_url('member/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
       </div>
     </div>
   </div>

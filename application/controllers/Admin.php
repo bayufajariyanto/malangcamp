@@ -6,11 +6,7 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('role_id') == 2) {
-            redirect('member');
-        } else if ($this->session->userdata('role_id') == null) {
-            redirect('auth');
-        }
+        is_logged_in();
         date_default_timezone_set('Asia/Jakarta');
     }
 
@@ -773,10 +769,11 @@ class Admin extends CI_Controller
         $data = [
             'stok' => $jumlah
         ];
-    $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
+        $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
         $this->db->delete('pesanan', ['id' => $id]);
         redirect('admin/pesanan');
     }
+    
     public function pesanan_konfirmasi($id)
     {
         $data = [

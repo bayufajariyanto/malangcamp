@@ -22,11 +22,12 @@ if($this->session->userdata('role_id') == 1){
         Menu
     </div>
 
+
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('member/barang') ?>">
             <i class="fas fa-fw fa-campground"></i>
-            <span>Barang</span></a>
+            <span>Barang Tersedia</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
@@ -47,7 +48,7 @@ if($this->session->userdata('role_id') == 1){
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('member/transaksi') ?>">
             <i class="far fa-fw fa-calendar-check"></i>
-            <span>Transaksi Selesai</span></a>
+            <span>Riwayat Transaksi</span></a>
     </li>
 
     <!-- Divider -->
