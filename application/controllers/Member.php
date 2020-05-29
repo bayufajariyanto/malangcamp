@@ -15,13 +15,14 @@ class Member extends CI_Controller
     }
     public function index()
     {
-        $data['title'] = 'Dashboard';
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('member/index');
-        $this->load->view('templates/footer');
+        // $data['title'] = 'Dashboard';
+        // $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        // $this->load->view('templates/header', $data);
+        // $this->load->view('member/sidebar');
+        // $this->load->view('templates/topbar', $data);
+        // $this->load->view('member/index');
+        // $this->load->view('templates/footer');
+        $this->transaksi();
     }
 
     public function profile(){
@@ -59,6 +60,60 @@ class Member extends CI_Controller
         $this->load->view('member/pesanan2');
         $this->load->view('templates/footer');
 
+    }
+
+    public function peminjaman()
+    {
+        $data['title'] = 'Peminjaman';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('member/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('member/peminjaman');
+        $this->load->view('templates/footer');
+    }
+
+    public function peminjaman_detail($id)
+    {
+        $data['title'] = 'Peminjaman';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['peminjaman'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $username = $data['peminjaman']['username'];
+        $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
+        $data['barang'] = $this->db->get_where('barang', ['id' => $data['peminjaman']['id_barang']])->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('member/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('member/peminjaman_detail');
+        $this->load->view('templates/footer');
+    }
+
+    public function transaksi()
+    {
+        $data['title'] = 'Transaksi';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'username' => $this->session->userdata('username')])->result_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('member/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('member/transaksi');
+        $this->load->view('templates/footer');
+    }
+
+    public function transaksi_detail($id){
+        $data['title'] = 'Transaksi Detail';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['transaksi'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $username = $data['transaksi']['username'];
+        $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
+        $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
+        $this->load->view('templates/header', $data);
+        $this->load->view('member/sidebar');
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('member/transaksi_detail');
+        $this->load->view('templates/footer');
     }
 
     public function ajax($keyword){

@@ -105,7 +105,6 @@ if($peminjaman['batas_kembali']< time()){
       <br>
       <div class="text-center">
         <a href="<?= base_url('admin/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
-        <a href="<?= base_url() ?>admin/peminjaman_selesai/<?= $peminjaman['id'] ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selesai</a>
       </div>
     </div>
   </div>

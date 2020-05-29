@@ -19,7 +19,7 @@ function rupiah($angka)
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Data <?= $title ?></h6>
+      <h6 class="m-0 font-weight-bold text-primary">Data Peminjaman</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -29,8 +29,8 @@ function rupiah($angka)
               <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
-              <th>Tanggal Kembali</th>
-              <th>Total</th>
+              <th>Batas Kembali</th>
+              <th>Total Pembayaran</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -39,13 +39,13 @@ function rupiah($angka)
               <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
-              <th>Tanggal Kembali</th>
-              <th>Total</th>
+              <th>Batas Kembali</th>
+              <th>Total Pembayaran</th>
               <th>Aksi</th>
             </tr>
           </tfoot>
           <tbody>
-            <?php foreach ($transaksi as $p) :
+            <?php foreach ($peminjaman as $p) :
               if ($p['status'] == 1) {
                 $status = 'Lunas';
               } else {
@@ -56,9 +56,9 @@ function rupiah($angka)
                 <td><?= $p['kode_transaksi'] ?></td>
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
-                <td><?= date('d F Y', $p['tanggal_kembali']) ?></td>
-                <td>Rp <?= rupiah($p['total']+$p['denda']) ?></td>
-                <td><a href="<?= base_url('admin/transaksi_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
+                <td><?= date('d F Y', $p['batas_kembali']) ?></td>
+                <td>Rp <?= rupiah($p['total']) ?></td>
+                <td><a href="<?= base_url('member/peminjaman_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>
           </tbody>

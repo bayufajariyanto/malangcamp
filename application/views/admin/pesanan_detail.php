@@ -1,4 +1,8 @@
 <?php 
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
 if($pesanan['tanggal_bayar']>1){
     $tbayar = date('d F Y | H:i:s', $pesanan['tanggal_bayar']);
 }else{
@@ -124,10 +128,10 @@ if($pesanan['tanggal_bayar']>1){
             <div class="row">
                 <p class="col-sm-2">Total</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><small class="text-muted">Rp. <?= $pesanan['total'] ?> <strong>(<?= $lunas ?>)</strong></small></p>
+                    <p class="card-text"><small class="text-muted">Rp <?= rupiah($pesanan['total']) ?> <strong>(<?= $lunas ?>)</strong></small></p>
                 </div>
             </div>
-            <br><br>
+            <br>
             <div class="text-center">
                 <a href="<?= base_url() ?>admin/pesanan" class="btn btn-sm btn-secondary">Kembali</a>
                 <a href="<?= base_url('admin/pesanan_konfirmasi/'.$pesanan['id']) ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Konfirmasi</a>

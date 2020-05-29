@@ -246,11 +246,6 @@ class Admin extends CI_Controller
         return $total;
     }
 
-    private function _kategori(){
-        $pesanan = $this->db->get_where('pesanan', ['status' => 1])->result_array();
-
-    }
-
     private function _hariIni(){
         $this->load->model('Index_model', 'index');
         $awalHari = mktime(0,0,0,(int)date('m'),(int)date('d'),(int)date('Y'));
@@ -724,43 +719,14 @@ class Admin extends CI_Controller
             $menit = (int) $sewa[1];
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
-            $tanggal = date('Ymd', time());
-            $angka = 1;
+            $tanggal = date('YmdHis');
             if($status == 1){
                 $tbayar = time();
             }else{
                 $tbayar = 0;
             }
-
-            if ($angka < 10) {
-                $kode = $kategori . '-' . $tanggal . "000" . $angka;
-            } else if ($angka < 1000) {
-                $kode = $kategori . '-' . $tanggal . "00" . $angka;
-            } else if ($angka < 1000) {
-                $kode = $kategori . '-' . $tanggal . "0" . $angka;
-            } else {
-                $kode = $kategori . '-' . $tanggal . $angka;
-            }
-            foreach ($data['pesanan'] as $p) :
-                $b = 'masuk';
-                if ($kode == $p['kode_transaksi']) {
-                    $a = 'benar';
-                    $angka++;
-                    if ($angka < 10) {
-                        $kode = $kategori . '-' . $tanggal . "000" . $angka;
-                    } else if ($angka < 100) {
-                        $kode = $kategori . '-' . $tanggal . "00" . $angka;
-                    } else if ($angka < 1000) {
-                        $kode = $kategori . '-' . $tanggal . "0" . $angka;
-                    } else {
-                        $kode = $kategori . '-' . $tanggal . $angka;
-                    }
-                } else {
-                    // $a = 'salah';
-                    break;
-                }
-            endforeach;
             // var_dump($barang['stok']);die;
+            $kode = $kategori.'-'.$tanggal;
             // Akhir kode transaksi
             $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
             $jam_kembali = $jam_sewa+(60*60*24*$hari);
@@ -928,40 +894,6 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/transaksi_detail');
         $this->load->view('templates/footer');
-    }
-
-    public function kode_transaksi(){
-        $data['pesanan']=$this->db->get('pesanan')->result_array();
-        $kategori = $this->input->post('kategori');
-        $this->form_validation->set_rules('kategori', 'Kategori','required');
-        if($this->form_validation->run() == false){
-            
-            $this->load->view('kode',$data);
-        }else{
-            $kode = $kategori."-".date("Ymd");
-            $dt = [
-                'kode' => $kode
-            ];
-            $this->db->insert('kode_transaksi', $dt);
-            $urut = (int)substr($kode, -4,4);
-            if($urut<10){
-                echo "urut kurang dari 10";
-            }else if($urut<100){
-                echo "urut kurang dari 100";
-                
-            }else if($urut<1000){
-                echo "urut kurang dari 1000";
-                
-            }else if($urut<10000){
-                echo "urut kurang dari 10000";
-
-            }
-
-            var_dump($dt);
-            $this->load->view('kode',$data);
-
-            // redirect('admin/kode_transaksi');
-        }
     }
 
     public function ajax($keyword){
