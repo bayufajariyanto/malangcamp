@@ -75,10 +75,7 @@
       </div>
     </div>
   </div>
-
   <!-- Content Row -->
-
-
 
   <!-- DataTales Example -->
   <div class="card shadow mb-4">

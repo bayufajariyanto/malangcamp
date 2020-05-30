@@ -6,13 +6,6 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // if($this->session->userdata('role_id') == 1){
-        //     redirect('admin');
-        // }else if(!$this->session->userdata('username')){
-        //     redirect('auth');
-        // }else{
-        //     redirect('member');
-        // }
     }
 
     public function index()
@@ -75,7 +68,11 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('nama');
         $this->session->unset_userdata('role_id');
         $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu telah logout!</div>');
-        $this->session->sess_destroy();
         redirect('auth');
+    }
+
+    public function blocked()
+    {
+        $this->load->view('auth/blocked');
     }
 }

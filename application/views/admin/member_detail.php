@@ -29,13 +29,11 @@
                     <p class="card-text"><?= $user['telp'] ?></p>
                 </div>
             </div>
-
-
             <br>
             <div class="row">
                 <p class="col-sm-2 text-muted">Tanggal Daftar</p>
                 <div class="col-sm-10">
-                    <p class="card-text text-muted">Member sejak <?= date('d F Y, H:i', $user['date_created']); ?></p>
+                    <p class="card-text text-muted">Member sejak <?= date('d F Y | H:i:s', $user['date_created']); ?></p>
                 </div>
             </div>
             <br>

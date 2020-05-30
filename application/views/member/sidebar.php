@@ -10,64 +10,45 @@ if($this->session->userdata('role_id') == 1){
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin') ?>">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('member') ?>">
         <div class="sidebar-brand-icon">
             <i class="fas fa-mountain"></i>
         </div>
         <div class="sidebar-brand-text mx-3">Malang Camp</div>
     </a>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider my-0">
-
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin') ?>">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
     <!-- Heading -->
     <div class="sidebar-heading">
-        Manajemen
+        Menu
     </div>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin/member') ?>">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Member</span></a>
-    </li>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin/barang') ?>">
+        <a class="nav-link" href="<?= base_url('member/barang') ?>">
             <i class="fas fa-fw fa-campground"></i>
-            <span>Barang</span></a>
+            <span>Barang Tersedia</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin/pesanan') ?>">
+        <a class="nav-link" href="<?= base_url('member/pesanan') ?>">
             <i class="fas fa-fw fa-phone-alt"></i>
             <span>Pesanan</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin/peminjaman') ?>">
+        <a class="nav-link" href="<?= base_url('member/peminjaman') ?>">
             <i class="fas fa-fw fa-calendar"></i>
             <span>Proses Peminjaman</span></a>
     </li>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('admin/transaksi') ?>">
+        <a class="nav-link" href="<?= base_url('member/transaksi') ?>">
             <i class="far fa-fw fa-calendar-check"></i>
-            <span>Transaksi Selesai</span></a>
+            <span>Riwayat Transaksi</span></a>
     </li>
 
     <!-- Divider -->

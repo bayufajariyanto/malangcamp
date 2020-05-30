@@ -58,7 +58,7 @@ function rupiah($angka)
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
                 <td><?= date('d F Y', $p['batas_kembali']) ?></td>
                 <td>Rp <?= rupiah($p['total']) ?></td>
-                <td><a href="<?= base_url('admin/peminjaman_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
+                <td><a href="<?= base_url('member/peminjaman_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>
           </tbody>

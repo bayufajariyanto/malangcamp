@@ -196,30 +196,94 @@ $config = [
     ],
     'pesanan' => [
         [
-            'field' => 'barang',
-            'label' => 'Barang',
-            'rules' => 'trim|required',
+            'field' => 'username',
+            'label' => 'Username',
+            'rules' => 'trim|required|min_length[4]|max_length[25]|alpha_dash',
             'errors' => [
-                'required' => '%s harus diisi'
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 4 karakter',
+                'max_length' => '%s tidak lebih dari 25 karakter',
+                'is_unique' => '%s telah dipakai, silakan gunakan yang lain',
+                'alpha_dash' => '%s hanya menggunakan huruf, underscore, atau angka'
             ]
         ],
         [
             'field' => 'jumlah',
             'label' => 'Jumlah Barang',
-            'rules' => 'trim|required|min_length[1]',
+            'rules' => 'trim|required|min_length[1]|max_length[4]|integer',
             'errors' => [
                 'required' => '%s harus diisi',
-                'min_length' => '%s tidak kurang dari 1 digit'
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 4 digit',
+                'integer' => '%s hanya berisi angka'
             ]
         ],
         [
             'field' => 'hari',
-            'label' => 'Hari',
+            'label' => 'Kolom hari',
+            'rules' => 'trim|required|min_length[1]|max_length[3]|integer',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 3 digit',
+                'integer' => '%s hanya berisi angka'
+            ]
+        ]
+    ],
+    'member_pesanan' => [
+        [
+            'field' => 'jumlah',
+            'label' => 'Jumlah Barang',
+            'rules' => 'trim|required|min_length[1]|max_length[4]|integer',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 4 digit',
+                'integer' => '%s hanya berisi angka'
+            ]
+        ],
+        [
+            'field' => 'hari',
+            'label' => 'Kolom hari',
+            'rules' => 'trim|required|min_length[1]|max_length[3]|integer',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 3 digit',
+                'integer' => '%s hanya berisi angka'
+            ]
+        ]
+    ],
+    'pengeluaran' => [
+        [
+            'field' => 'nama',
+            'label' => 'Nama',
+            'rules' => 'trim|required|min_length[3]|max_length[25]',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 4 karakter',
+                'max_length' => '%s tidak lebih dari 25 karakter',
+            ]
+        ],
+        [
+            'field' => 'kategori',
+            'label' => 'Kategori',
             'rules' => 'trim|required|min_length[1]',
             'errors' => [
                 'required' => '%s harus diisi',
-                'min_length' => '%s tidak kurang dari 1 digit'
+                'min_length' => '%s tidak kurang dari 1 digit',
             ]
         ],
+        [
+            'field' => 'nominal',
+            'label' => 'Nominal',
+            'rules' => 'trim|required|min_length[1]|max_length[15]|integer',
+            'errors' => [
+                'required' => '%s harus diisi',
+                'min_length' => '%s tidak kurang dari 1 digit',
+                'max_length' => '%s tidak lebih dari 15 digit',
+                'integer' => '%s hanya berisi angka'
+            ]
+        ]
     ]
 ];

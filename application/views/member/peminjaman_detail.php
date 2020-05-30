@@ -63,13 +63,13 @@ if($peminjaman['batas_kembali']< time()){
       <div class="row">
         <p class="col-sm-2">Tanggal Order</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_order']) ?></p>
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_order']) ?></p>
         </div>
       </div>
       <div class="row">
         <p class="col-sm-2">Tanggal Sewa</p>
         <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_sewa']) ?></p>
+          <p class="card-text"><?= date('d F Y | H:i', $peminjaman['tanggal_sewa']) ?></p>
         </div>
       </div>
       <div class="row">
@@ -104,8 +104,7 @@ if($peminjaman['batas_kembali']< time()){
       </div>
       <br>
       <div class="text-center">
-        <a href="<?= base_url('admin/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
-        <a href="<?= base_url() ?>admin/peminjaman_selesai/<?= $peminjaman['id'] ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selesai</a>
+        <a href="<?= base_url('member/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
       </div>
     </div>
   </div>
