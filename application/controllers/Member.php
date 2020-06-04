@@ -233,4 +233,13 @@ class Member extends CI_Controller
         $data['kategori'] = $this->barang->getKategoriByKeyword($keyword);
         $this->load->view('ajax/index',$data);
     }
+
+    public function ajaxBarang($kategori){
+        // var_dump($keyword);die;
+        $data['kategori'] = $kategori;
+        $this->load->model('Member_barang', 'barang');
+        $data['barang'] = $this->barang->getBarangKategori($kategori);
+        $data['kategori'] = $this->barang->getKategorikategori($kategori);
+        $this->load->view('ajax/kategori',$data);
+    }
 }
