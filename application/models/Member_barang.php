@@ -7,4 +7,9 @@ class Member_barang extends CI_Model
         $query = "SELECT * FROM barang WHERE `stok`>= 1";
         return $this->db->query($query)->result_array();
     }
+    
+    public function getBarangKategori($kategori){
+        $query = "SELECT * FROM barang WHERE `kategori`= $kategori";
+        return $this->db->query($query)->result_array();
+    }
 }
