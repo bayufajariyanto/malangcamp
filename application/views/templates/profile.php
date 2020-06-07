@@ -15,7 +15,7 @@ if ($this->session->userdata('role_id') == 2) {
     </div>
     <!-- Button trigger modal -->
     <?= $this->session->flashdata('message'); ?>
-    <div class="card w-75">
+    <div class="card w-100">
         <div class="card-body">
             <h5 class="card-title"><?= $user['nama'] ?>&nbsp;(<?= $user['username'] ?>)</h5>
             <br>

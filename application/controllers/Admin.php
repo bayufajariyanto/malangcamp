@@ -690,7 +690,7 @@ class Admin extends CI_Controller
         $tsewa = $this->input->post('sewa');
         $barang = $this->db->get_where('barang', ['id' => $id_barang])->row_array();
         $tbayar = 0;
-        
+        $id_user = $this->db->get_where('user', ['username' => $username])->row_array();
         // hapus pesanan ketika sudah melewati 1 jam
         $sejam = 60*60;
         foreach($pesanan as $p):
@@ -706,7 +706,7 @@ class Admin extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar');
             $this->load->view('templates/topbar', $data);
-            $this->load->view('admin/pesanan');
+            $this->load->view('admin/pesanandua');
             $this->load->view('templates/footer');
         } else {
             $harga = $barang['harga'] * $jumlah;
@@ -715,14 +715,14 @@ class Admin extends CI_Controller
             $menit = (int) $sewa[1];
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
-            $tanggal = date('YmdHis');
+            $tanggal = date('ymdHis');
             if($status == 1){
                 $tbayar = time();
             }else{
                 $tbayar = 0;
             }
             // var_dump($barang['stok']);die;
-            $kode = $kategori.'-'.$tanggal;
+            $kode = $kategori.'-'.$tanggal.$id_user['id'];
             // Akhir kode transaksi
             $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
             $jam_kembali = $jam_sewa+(60*60*24*$hari);
