@@ -25,8 +25,8 @@ class Member extends CI_Controller
         $data['title'] = 'Profile';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('templates/profile', $data);
         $this->load->view('templates/footer');
     }
@@ -38,8 +38,8 @@ class Member extends CI_Controller
         $this->load->model('Member_barang', 'barang');
         $data['barang'] = $this->barang->getBarangStok();
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/barang');
         $this->load->view('templates/footer');
     }
@@ -63,7 +63,7 @@ class Member extends CI_Controller
         $tsewa = $this->input->post('sewa');
         $barang = $this->db->get_where('barang', ['id' => $id_barang])->row_array();
         $tbayar = 0;
-        
+        $id_user = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();        
         // hapus pesanan ketika sudah melewati 1 jam
         $sejam = 60*60;
         foreach($pesanan as $p):
@@ -77,9 +77,9 @@ class Member extends CI_Controller
 
         if ($this->form_validation->run('member_pesanan') == false) {
             $this->load->view('templates/header', $data);
-            $this->load->view('member/sidebar');
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('member/pesanan');
+            // $this->load->view('templates/member/sidebar');
+            $this->load->view('templates/member/topbar', $data);
+            $this->load->view('member/pesanandua');
             $this->load->view('templates/footer');
             // var_dump('berhasil');die;
         } else {
@@ -89,14 +89,14 @@ class Member extends CI_Controller
             $menit = (int) $sewa[1];
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
-            $tanggal = date('YmdHis');
+            $tanggal = date('ymdHis');
             if($status == 1){
                 $tbayar = time();
             }else{
                 $tbayar = 0;
             }
             // var_dump($barang['stok']);die;
-            $kode = $kategori.'-'.$tanggal;
+            $kode = $kategori.'-'.$tanggal.$id_user['id'];
             // Akhir kode transaksi
             $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
             $jam_kembali = $jam_sewa+(60*60*24*$hari);
@@ -165,8 +165,8 @@ class Member extends CI_Controller
             $data['lunas'] = 'Belum Lunas';
         }
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/pesanan_detail');
         $this->load->view('templates/footer');
     }
@@ -178,8 +178,8 @@ class Member extends CI_Controller
         $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
 
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/peminjaman');
         $this->load->view('templates/footer');
     }
@@ -193,8 +193,8 @@ class Member extends CI_Controller
         $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
         $data['barang'] = $this->db->get_where('barang', ['id' => $data['peminjaman']['id_barang']])->row_array();
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/peminjaman_detail');
         $this->load->view('templates/footer');
     }
@@ -205,8 +205,8 @@ class Member extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'username' => $this->session->userdata('username')])->result_array();
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/transaksi');
         $this->load->view('templates/footer');
     }
@@ -219,8 +219,8 @@ class Member extends CI_Controller
         $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
         $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
         $this->load->view('templates/header', $data);
-        $this->load->view('member/sidebar');
-        $this->load->view('templates/topbar', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/transaksi_detail');
         $this->load->view('templates/footer');
     }

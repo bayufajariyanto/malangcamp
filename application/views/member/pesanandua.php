@@ -47,7 +47,6 @@ function rupiah($angka)
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
               <th>Total Pembayaran</th>
@@ -57,7 +56,6 @@ function rupiah($angka)
           </thead>
           <tfoot>
             <tr>
-              <th>Kode Transaksi</th>
               <th>Username</th>
               <th>Tanggal Order</th>
               <th>Total Pembayaran</th>
@@ -75,7 +73,6 @@ function rupiah($angka)
               }
             ?>
               <tr>
-                <td><?= $p['kode_transaksi'] ?></td>
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
                 <td>Rp. <?= $p['total'] ?></td>
