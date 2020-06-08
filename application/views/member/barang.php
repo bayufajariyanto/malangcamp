@@ -18,10 +18,9 @@ function rupiah($angka)
   <div class="row">
 
       <div class="col-lg-3">
-        <a href="#" class="text-decoration-none text-reset">
-        <h1 class="my-4">Malang Camp</h1>
-        </a>
+        <h1 class="my-4">Kategori</h1>
         <div class="list-group">
+          <a href="<?= base_url('member/barang') ?>" class="list-group-item text-decoration-none list-group-item-action active">Semua Barang</a>
           <?php foreach($kategori as $k): ?>
           <a href="#" class="list-group-item text-decoration-none list-group-item-action"><?= $k['nama'] ?></a>
           <?php endforeach; ?>
@@ -62,10 +61,10 @@ function rupiah($angka)
           <?php foreach ($barang as $b) : ?>
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="<?= base_url('assets/img/') ?><?= $b['nama'] ?>.png" alt=""></a>
+              <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>"><img class="card-img-top" src="<?= base_url('assets/img/') ?><?= $b['nama'] ?>.png" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#"><?= $b['nama'] ?></a>
+                  <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>" class="text-decoration-none"><?= $b['nama'] ?></a>
                 </h4>
                 <h5>Rp <?= rupiah($b['harga']) ?><small> / hari</small></h5>
                 <p class="card-text"><?= $b['kategori'] ?></p>

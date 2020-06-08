@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 29 Bulan Mei 2020 pada 16.49
+-- Waktu pembuatan: 08 Jun 2020 pada 15.06
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -48,8 +48,8 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (6, 'Tenda Dhaulagiri Kap 3-4 org Ultralight', 'Tenda', 30000, 3),
 (7, 'Tenda Great Outdoor Kap 5-6 org', 'Tenda', 35000, 3),
 (8, 'Tenda Great Outdoor Kap 8 org', 'Tenda', 35000, 3),
-(9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 1),
-(10, 'Tas Carrier 60 L', 'Carrier', 10000, 2),
+(9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 3),
+(10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
 (12, 'Cover Bag', 'Other', 2500, 3),
 (13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
 (14, 'Sandal Trekking', 'Sandal', 5000, 3),
@@ -58,7 +58,7 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (17, 'Flysheet', 'Other', 7500, 3),
 (18, 'Sarung Tangan Polar', 'Other', 4000, 3),
 (19, 'Kompor Lapang', 'Cooking Set', 5000, 2),
-(20, 'Nesting', 'Cooking Set', 5000, 2),
+(20, 'Nesting', 'Cooking Set', 5000, 3),
 (21, 'Sleeping Bag', 'Other', 5000, 3),
 (22, 'Trekking Pole', 'Other', 6000, 3),
 (23, 'Matras', 'Other', 2500, 3),
@@ -93,6 +93,19 @@ INSERT INTO `kategori` (`id`, `nama`) VALUES
 (6, 'Sandal'),
 (7, 'Sepatu'),
 (8, 'Tenda');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `keranjang`
+--
+
+CREATE TABLE `keranjang` (
+  `id` int(11) NOT NULL,
+  `username` varchar(256) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -157,9 +170,8 @@ INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal
 (33, 'COO-202005260001', 'dellyagus', 19, 1590441087, 1590441027, 1590527427, 1590736177, 1590441087, 1, 15000, 5000, 1, 1, 1),
 (35, 'OTH-202005290001', 'ahmadzulfikar', 22, 1590737399, 1590737399, 1590823799, 1590737555, 1590737546, 1, 0, 6000, 1, 1, 1),
 (36, 'CAR-20200529150546', 'ahmadzulfikar', 9, 1590739546, 1590739546, 1590825946, 1590739568, 1590739546, 2, 0, 25000, 1, 1, 1),
-(37, 'CAR-20200529150937', 'bayufajariyanto', 9, 1590739777, 1590739777, 1590912577, 0, 1590739777, 2, 0, 25000, 1, 1, 0),
-(38, 'CAR-20200529214054', 'ahmadzulfikar', 10, 1590763254, 1590763254, 1590849654, 0, 0, 1, 0, 10000, 0, 0, 0),
-(39, 'COO-20200529214741', 'ahmadzulfikar', 20, 1590763661, 1590763661, 1590850061, 0, 1590763706, 1, 0, 5000, 1, 1, 0);
+(37, 'CAR-20200529150937', 'bayufajariyanto', 9, 1590739777, 1590739777, 1590912577, 1591275284, 1590739777, 2, 125000, 25000, 1, 1, 1),
+(39, 'COO-20200529214741', 'ahmadzulfikar', 20, 1590763661, 1590763661, 1590850061, 1591275289, 1590763706, 1, 25000, 5000, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -227,6 +239,12 @@ ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `keranjang`
+--
+ALTER TABLE `keranjang`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
@@ -265,6 +283,12 @@ ALTER TABLE `barang`
 --
 ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT untuk tabel `keranjang`
+--
+ALTER TABLE `keranjang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`

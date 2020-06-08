@@ -8,7 +8,7 @@
         <!-- Nested Row within Card Body -->
         <div class="row">
           <div class="col-lg-6 d-none d-lg-block">
-            <img class="p-0 col-12" src="<?= base_url('assets/img/outdoor1.jpg') ?>" alt="Login">
+            <img class="p-0" width="100%" height="100%" src="<?= base_url('assets/img/outdoor1.jpg') ?>" alt="Login">
           </div>
           <div class="col-lg-6">
             <div class="p-5">
@@ -25,6 +25,7 @@
                   <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">
                   <?= form_error('password', '<small class="text-danger pl-3">','</small>') ?>
                 </div>
+                <hr>
                 <button type="submit" class="btn btn-primary btn-user btn-block">
                   Login
                 </button>
