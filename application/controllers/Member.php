@@ -44,6 +44,29 @@ class Member extends CI_Controller
         $this->load->view('templates/footer');
     }
     
+    public function barangId($id){
+        $data['title'] = 'Rincian Barang';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $this->load->model('Member_barang', 'barang');
+        $data['rincian'] = $this->barang->getBarangId($id);
+        $this->load->view('templates/header', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
+        $this->load->view('member/barang_detail');
+        $this->load->view('templates/footer');
+    }
+
+    public function tambahkeranjang($id){
+        $jumlah = $this->input->post('jumlah');
+        $data = [
+            'username' => $this->session->userdata('username'),
+            'id_barang' => $id,
+            'jumlah' => $jumlah
+        ];
+        $this->db->insert('keranjang', $data);
+        redirect('index');
+    }
+    
     public function pesanan(){
         $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();

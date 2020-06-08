@@ -1,0 +1,16 @@
+.css-yfyd4u-unf-quantity-editor__input {
+    border-top-width: initial;
+    border-right-width: initial;
+    border-left-width: initial;
+    border-top-color: initial;
+    border-right-color: initial;
+    border-left-color: initial;
+    color: rgb(49, 53, 59);
+    font-size: 1.14286rem;
+    width: 66px;
+    text-align: center;
+    outline: none;
+    border-style: none none solid;
+    border-image: initial;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
