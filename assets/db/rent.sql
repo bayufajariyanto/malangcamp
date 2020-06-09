@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Jun 2020 pada 15.06
+-- Waktu pembuatan: 09 Jun 2020 pada 04.37
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -72,6 +72,27 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `coba`
+--
+
+CREATE TABLE `coba` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `coba`
+--
+
+INSERT INTO `coba` (`id`, `nama`) VALUES
+(1, 'inidata'),
+(2, 'inidata'),
+(4, 'Dalam'),
+(5, 'Luar');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `kategori`
 --
 
@@ -103,9 +124,20 @@ INSERT INTO `kategori` (`id`, `nama`) VALUES
 CREATE TABLE `keranjang` (
   `id` int(11) NOT NULL,
   `username` varchar(256) NOT NULL,
-  `id_barang` int(11) NOT NULL,
+  `nama_barang` varchar(256) NOT NULL,
+  `harga` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `keranjang`
+--
+
+INSERT INTO `keranjang` (`id`, `username`, `nama_barang`, `harga`, `jumlah`) VALUES
+(18, 'bayufajariyanto', 'Tenda Double Layer Kap 3-4 org', 19000, 1),
+(19, 'bayufajariyanto', 'Tas Carrier 60 L', 10000, 3),
+(20, 'bayufajariyanto', 'Sandal Trekking', 5000, 2),
+(21, 'bayufajariyanto', 'Cover Bag', 2500, 2);
 
 -- --------------------------------------------------------
 
@@ -233,6 +265,12 @@ ALTER TABLE `barang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `coba`
+--
+ALTER TABLE `coba`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
@@ -279,6 +317,12 @@ ALTER TABLE `barang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT untuk tabel `coba`
+--
+ALTER TABLE `coba`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
@@ -288,7 +332,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`

@@ -884,8 +884,8 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
         $username = $data['transaksi']['username'];
-        $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
         $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
+        $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);

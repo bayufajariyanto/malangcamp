@@ -15,7 +15,8 @@ function rupiah($angka)
 
   <!-- Content Row -->
 
-<div class="row">
+  <form action="<?= base_url('member/pesanan') ?>" method="post">
+  <div class="row">
 
   <div class="col-lg-3 mb-5">
     <a href="<?= base_url('member/index') ?>" class="text-decoration-none text-reset"><h2 class="my-4">Malang Camp</h2></a>
@@ -26,21 +27,18 @@ function rupiah($angka)
     </div>
   </div>
   <!-- /.col-lg-3 -->
-
   <div class="col-lg-9 my-4">
 
-    <div class="card shadow mb-4">
+    <div class="card mb-4">
       <img class="card-img-top img-fluid" src="<?= base_url('assets/img/') ?><?= $rincian['nama'] ?>.png" alt="">
       <div class="card-body">
         <div class="my-4">
           <h3 class="card-title text-gray-800"><?= $rincian['nama'] ?></h3>
-          <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-          4.0
         </div>
         <div class="row my-4">
           <div class="col-sm-3">Harga</div>
           <div class="col-sm-9 text-primary font-weight-bolder">
-            <h4>Rp <?= rupiah($rincian['harga']) ?><span id="awal" class="d-none"><?= $rincian['harga'] ?></span></h4>
+            <h4 class="font-weight-bold">Rp <?= rupiah($rincian['harga']) ?><span id="awal" class="d-none"><?= $rincian['harga'] ?></span></h4>
           </div>
         </div>
         <div class="row my-4">
@@ -66,7 +64,7 @@ function rupiah($angka)
     </div>
     <!-- /.card -->
 
-    <div class="card shadow card-outline-secondary my-4">
+    <!-- <div class="card card-outline-secondary my-4">
       <div class="card-header">
         Product Reviews
       </div>
@@ -82,7 +80,7 @@ function rupiah($angka)
         <hr>
         <a href="#" class="btn btn-success">Leave a Review</a>
       </div>
-    </div>
+    </div> -->
     <!-- /.card -->
 
   </div>
@@ -95,11 +93,11 @@ function rupiah($angka)
 
 </div>
 <!-- End of Main Content -->
-<nav class="navbar fixed-bottom navbar-light bg-light overflow-auto" style="background-color: #e3f2fd;">
+<nav class="navbar fixed-bottom navbar-light bg-white overflow-auto" style="background-color: #e3f2fd;">
   <div class="container">
 
-    <a class="navbar-brand my-n1" href="#"><?= $rincian['nama'] ?></a>
-    <div class="row my-3">
+    <a class="navbar-brand my-n1 mb-n3" href="#"><?= $rincian['nama'] ?></a>
+    <div class="row my-2">
       <div class="col-auto mt-1 mr-2">
         <p class="my-0">Total</p>
         <h5 class="my-0 font-weight-bolder text-gray-900" id="total" name="total" value="<?= $rincian['harga'] ?>">Rp <?= rupiah($rincian['harga']) ?></h5>
@@ -107,18 +105,18 @@ function rupiah($angka)
         <input type='text' id="total" name="total" value="<?= $rincian['harga'] ?>" class="form-control-plaintext mx-3" disabled placeholder="Rp"/></h5> -->
       </div>
       <div class="col-auto mx-n1 my-2">
-        <button type="button" class="btn btn-outline-info mx-1"><i class="fas fa-cart-arrow-down"></i> Pesan</button>
-        <button type="submit" class="btn btn-info mx-1" id="tambahKeranjang"><i class="fas fa-cart-plus"></i> Tambah Ke Keranjang</button>
+        <a href="<?= base_url('member/keranjang') ?>" class="btn btn-outline-info mx-1"><i class="fas fa-cart-arrow-down"></i> Pesan</a>
+        <button type="submit" class="btn btn-info mx-1" formaction="<?= base_url('member/tambahkeranjang/') ?><?= $rincian['id'] ?>"><i class="fas fa-cart-plus"></i> Tambah Ke Keranjang</button>
       </div>
     </div>
 
   </div>
   <!-- Akhir Container -->
 </nav>
+</form>
 
 <script>
 let counter = 1;
-let kali = 1;
 let plus = document.getElementById("plus");
 let minus = document.getElementById("minus");
 let jumlah = document.getElementById("jumlah");
@@ -139,6 +137,7 @@ function increase() {
     plus.classList.add('btn-secondary');
   }
 }
+
 function decrease() {
   if(counter>1){
     counter -= 1;
@@ -152,6 +151,7 @@ function decrease() {
     minus.classList.add('btn-secondary');
   }
 }
+
 function rupiah(angka){
    var reverse = angka.toString().split('').reverse().join(''),
    ribuan = reverse.match(/\d{1,3}/g);
