@@ -17,4 +17,8 @@ class Member_barang extends CI_Model
         $query = "SELECT * FROM barang WHERE `kategori`= $kategori";
         return $this->db->query($query)->result_array();
     }
+
+    public function getBarangKeranjang(){
+        // $query = "SELECT * FROM barang WHERE"
+    }
 }

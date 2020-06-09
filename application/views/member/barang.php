@@ -66,11 +66,8 @@ function rupiah($angka)
                 <h4 class="card-title">
                   <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>" class="text-decoration-none"><?= $b['nama'] ?></a>
                 </h4>
-                <h5>Rp <?= rupiah($b['harga']) ?><small> / hari</small></h5>
+                <h5 class="font-weight-bold">Rp <?= rupiah($b['harga']) ?><small> / hari</small></h5>
                 <p class="card-text"><?= $b['kategori'] ?></p>
-              </div>
-              <div class="card-footer">
-                <small class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
               </div>
             </div>
           </div>

@@ -1,8 +1,15 @@
 <?php
-if ($this->session->userdata('role_id') == 2) {
-  $sesi = 'member';
-} else if ($this->session->userdata('role_id') == 1) {
-  $sesi = 'admin';
+function inirupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
+function jumlahKeranjang($angka, $buka = '', $tutup = ''){
+  if($angka<=0){
+    $output = '';
+  }else{
+    $output = $buka.$angka.$tutup;
+  }
+  return $output;
 }
 ?>
 
@@ -35,40 +42,38 @@ if ($this->session->userdata('role_id') == 2) {
           <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-shopping-cart"></i>
             <!-- Counter - Messages -->
-            <span class="badge badge-danger badge-counter">2</span>
+            <span class="badge badge-danger badge-counter"><?= jumlahKeranjang(count($topkeranjang)) ?></span>
           </a>
           <!-- Dropdown - Messages -->
           <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
             <h6 class="dropdown-header">
-              Keranjang (2)
+              Keranjang <?= jumlahKeranjang(count($topkeranjang),'(',')') ?>
             </h6>
-            <a class="dropdown-item d-flex align-items-center" href="#">
+            <?php
+            if(count($topkeranjang) <=0 ){
+              ?>
+              <p class="text-center my-3 text-gray-500">Keranjang anda kosong</p>
+            <?php } ?>
+            <?php
+            $tmp = 1;
+            // $panjang = 1;
+            // var_dump(count($topkeranjang));die;
+            foreach($topkeranjang as $t) : if($tmp++>3) break ?>
+            <a class="dropdown-item d-flex align-items-center" href="<?= base_url('member/keranjang') ?>">
               <div class="dropdown-list-image mr-3">
-                <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                <img class="rounded-circle" src="<?= base_url('assets/img/') ?><?= $t['nama_barang'] ?>.png" alt="">
                 <!-- <div class="status-indicator bg-success"></div> -->
               </div>
               <div>
-                <div class="text-truncate">Nama Barang</div>
-                <div class="small text-gray-500">1 Barang</div>
+                <div class="d-inline-block text-truncate" style="max-width: 150px;"><?= $t['nama_barang'] ?></div>
+                <div class="small text-gray-500"><?= $t['jumlah'] ?> Barang</div>
               </div>
               <div class="ml-auto">
-                <div class="text-info font-weight-bolder">Rp 50.000</div>
+                <div class="text-info font-weight-bolder text-nowrap">Rp <?= inirupiah($t['harga']) ?></div>
               </div>
             </a>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-              <div class="dropdown-list-image mr-3">
-                <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                <!-- <div class="status-indicator bg-success"></div> -->
-              </div>
-              <div>
-                <div class="text-truncate">Nama Barang</div>
-                <div class="small text-gray-500">1 Barang</div>
-              </div>
-              <div class="ml-auto">
-                <div class="text-info font-weight-bolder">Rp 50.000</div>
-              </div>
-            </a>
-            <a class="dropdown-item text-center small text-gray-500" href="#">Lihat Semua</a>
+            <?php endforeach; ?>
+            <a class="dropdown-item text-center small text-gray-500" href="<?= base_url('member/keranjang') ?>">Lihat Keranjang</a>
           </div>
         </li>
         <div class="topbar-divider d-none d-sm-block"></div>
@@ -81,7 +86,7 @@ if ($this->session->userdata('role_id') == 2) {
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="<?= base_url($sesi . '/profile') ?>">
+            <a class="dropdown-item" href="<?= base_url('member/profile') ?>">
               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
               Profile
             </a>
