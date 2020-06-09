@@ -8,21 +8,21 @@ function rupiah($angka)
 <div class="container">
 
   <!-- Page Heading -->
-  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4"> -->
     <!-- <h1 class="h3 mb-0 text-gray-800">Dashboard</h1> -->
     <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-  </div>
+  <!-- </div> -->
 
   <!-- Content Row -->
 
+  <form action="<?= base_url('member/percobaan') ?>" method="post">
   <div class="row">
 
-  
   <!-- /.col-lg-3 -->
-  <div class="col-lg-8 my-4">
+  <div class="col-lg-8 my-3">
     <!-- /.card -->
 
-    <div class="card card-outline-secondary my-4">
+    <div class="card card-outline-secondary my-3">
         <div class="card-body">
             <?php 
             $total = 0;
@@ -30,19 +30,19 @@ function rupiah($angka)
             $total = $total + ($k['harga']*$k['jumlah']); ?>
           <div class="row">
             <div class="col-md-4">
-                <img src="<?= base_url('assets/img/') ?><?= $k['nama_barang'] ?>.png" alt="barang" class="img-thumbnail">
+                <img src="<?= base_url('assets/img/') ?><?= $k['nama'] ?>.png" alt="barang" class="img-thumbnail">
             </div>
-            <div class="col-md-7">
-              <h4 class="text-grey-900 font-weight-bold"><?= $k['nama_barang'] ?></h4>
+            <div class="col-md-7 mt-2">
+              <h4 class="text-grey-900"><input type="text" name="id[]" class="d-none" value="<?= $k['id'] ?>" id="nama"><?= $k['nama'] ?></h4>
               <p class="card-text font-weight-bold text-info">Rp <?= rupiah($k['harga']) ?></p>
               <div class="row">
-              <div class="col-md-2">
-              <input type="text" class="form-control" size="2" id="barang<?= $k['id'] ?>" value="<?= $k['jumlah'] ?>">
+              <div class="col-2">
+              <input type="text" class="form-control" size="2" name="jumlah[]" id="barang<?= $k['id'] ?>" value="<?= $k['jumlah'] ?>">
               </div>
               </div>
               <!-- <small class="text-muted">Posted by Anonymous on 3/1/17</small> -->
             </div>
-            <div class="col-md-1">
+            <div class="col-1">
               <a  href="<?= base_url('member/hapus_keranjang/') ?><?= $k['id'] ?>" class="btn"><i class="fas fa-trash-alt"></i></a>
             </div>
           </div>
@@ -57,8 +57,8 @@ function rupiah($angka)
   </div>
   <!-- /.col-lg-9 -->
 
-  <div class="col-lg-4 my-4">
-    <div class="card my-4">
+  <div class="col-lg-4 my-3">
+    <div class="card my-3">
       <div class="card-header">
           Ringkasan Pesanan
       </div>
@@ -71,13 +71,14 @@ function rupiah($angka)
             <div class="ml-auto text-right text-primary font-weight-bold">Rp <?= rupiah($total) ?></div>
           </div>
         </div>
-        <button class="btn btn-primary btn-block my-3 text-center">Pesan <?= jumlahKeranjang(count($topkeranjang),'(',')')?></button>
+        <button type="submit" class="btn btn-primary btn-block my-3 text-center">Pesan <?= jumlahKeranjang(count($topkeranjang),'(',')')?></button>
         <hr>
         <small class="text-muted">** Masa berlaku pemesanan hanya 1 jam</small>
       </div>
     </div>
   </div>
-  </div>
+</div>
+  </form>
 
 </div>
 <!-- /.container-fluid -->

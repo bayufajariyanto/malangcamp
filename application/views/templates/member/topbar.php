@@ -32,6 +32,7 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
       <a class="navbar-brand d-flex align-items-center mr-auto text-decoration-none text-reset" href="<?= base_url('member') ?>">
           <div class="navbar-brand mx-3 text-primary">
               <i class="fas fa-mountain"></i>
+              <!-- <img src="<?= base_url('assets/img/logo.svg') ?>" class="img-fluid" alt="logo"> -->
           </div>
           <div class="sidebar-brand-text">Malang Camp</div>
       </a>
@@ -61,11 +62,11 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
             foreach($topkeranjang as $t) : if($tmp++>3) break ?>
             <a class="dropdown-item d-flex align-items-center" href="<?= base_url('member/keranjang') ?>">
               <div class="dropdown-list-image mr-3">
-                <img class="rounded-circle" src="<?= base_url('assets/img/') ?><?= $t['nama_barang'] ?>.png" alt="">
+                <img class="rounded-circle" src="<?= base_url('assets/img/') ?><?= $t['nama'] ?>.png" alt="barang">
                 <!-- <div class="status-indicator bg-success"></div> -->
               </div>
               <div>
-                <div class="d-inline-block text-truncate" style="max-width: 150px;"><?= $t['nama_barang'] ?></div>
+                <div class="d-inline-block text-truncate" style="max-width: 150px;"><?= $t['nama'] ?></div>
                 <div class="small text-gray-500"><?= $t['jumlah'] ?> Barang</div>
               </div>
               <div class="ml-auto">
