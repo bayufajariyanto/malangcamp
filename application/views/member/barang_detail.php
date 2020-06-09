@@ -47,7 +47,7 @@ function rupiah($angka)
         </div>
         <div class="row my-4">
           <div class="col-sm-3">Stok Tersedia</div>
-          <div class="col-sm-9"><?= $rincian['stok'] ?><span id="stok" class="d-none"><?= $rincian['stok'] ?></span></div>
+          <div class="col-sm-9"><?= $rincian['stok'] ?><span id="stok" class="d-none"><?= $rincian['stok'] ?></span> barang</div>
         </div>
         <!-- <form action=""> -->
         <div class="row my-4">
@@ -101,8 +101,6 @@ function rupiah($angka)
       <div class="col-auto mt-1 mr-2">
         <p class="my-0">Total</p>
         <h5 class="my-0 font-weight-bolder text-gray-900" id="total" name="total" value="<?= $rincian['harga'] ?>">Rp <?= rupiah($rincian['harga']) ?></h5>
-        <!-- <h5 class="row">
-        <input type='text' id="total" name="total" value="<?= $rincian['harga'] ?>" class="form-control-plaintext mx-3" disabled placeholder="Rp"/></h5> -->
       </div>
       <div class="col-auto mx-n1 my-2">
         <a href="<?= base_url('member/keranjang') ?>" class="btn btn-outline-info mx-1"><i class="fas fa-cart-arrow-down"></i> Pesan</a>
