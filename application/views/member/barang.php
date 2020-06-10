@@ -14,7 +14,7 @@ function rupiah($angka)
   </div>
 
   <!-- Content Row -->
-
+  <?= $this->session->flashdata('message'); ?>
   <div class="row">
 
       <div class="col-lg-3">
@@ -22,7 +22,7 @@ function rupiah($angka)
         <div class="list-group">
           <a href="<?= base_url('member/barang') ?>" class="list-group-item text-decoration-none list-group-item-action active">Semua Barang</a>
           <?php foreach($kategori as $k): ?>
-          <a href="#" class="list-group-item text-decoration-none list-group-item-action"><?= $k['nama'] ?></a>
+          <a href="<?= base_url('member/kategori/') ?><?= $k['nama'] ?>" class="list-group-item text-decoration-none list-group-item-action"><?= $k['nama'] ?></a>
           <?php endforeach; ?>
         </div>
 
