@@ -106,12 +106,6 @@ if($pesanan['tanggal_bayar']>1){
                 </div>
             </div>
             <div class="row">
-                <p class="col-sm-2">Tanggal Sewa</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['tanggal_sewa']) ?></p>
-                </div>
-            </div>
-            <div class="row">
                 <p class="col-sm-2">Batas Pengembalian</p>
                 <div class="col-sm-10">
                     <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['batas_kembali']) ?></p>
