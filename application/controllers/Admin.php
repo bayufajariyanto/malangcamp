@@ -687,7 +687,7 @@ class Admin extends CI_Controller
         $jumlah = $this->input->post('jumlah');
         $status = $this->input->post('status');
         $hari = $this->input->post('hari');
-        $tsewa = $this->input->post('sewa');
+        // $tsewa = $this->input->post('sewa');
         $barang = $this->db->get_where('barang', ['id' => $id_barang])->row_array();
         $tbayar = 0;
         $id_user = $this->db->get_where('user', ['username' => $username])->row_array();
@@ -709,10 +709,10 @@ class Admin extends CI_Controller
             $this->load->view('admin/pesanandua');
             $this->load->view('templates/footer');
         } else {
-            $harga = $barang['harga'] * $jumlah;
-            $sewa = explode(":",$tsewa);
-            $jam = (int) $sewa[0];
-            $menit = (int) $sewa[1];
+            $harga = $barang['harga'] * $jumlah * $hari;
+            // $sewa = explode(":",$tsewa);
+            // $jam = (int) $sewa[0];
+            // $menit = (int) $sewa[1];
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
             $tanggal = date('ymdHis');
@@ -721,10 +721,10 @@ class Admin extends CI_Controller
             }else{
                 $tbayar = 0;
             }
-            // var_dump($barang['stok']);die;
+
             $kode = $kategori.'-'.$tanggal.$id_user['id'];
             // Akhir kode transaksi
-            $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
+            // $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
             $jam_kembali = $jam_sewa+(60*60*24*$hari);
             $total = $barang['harga'];
             if($id_barang == null){
@@ -744,7 +744,7 @@ class Admin extends CI_Controller
                     'username' => $username,
                     'id_barang' => $id_barang,
                     'tanggal_order' => time(),
-                    'tanggal_sewa' => $jam_sewa,
+                    // 'tanggal_sewa' => $jam_sewa,
                     'batas_kembali' => $jam_kembali,
                     'tanggal_bayar' => $tbayar,
                     'jumlah_barang' => $jumlah,
@@ -777,6 +777,7 @@ class Admin extends CI_Controller
     public function pesanan_konfirmasi($id)
     {
         $data = [
+            'tanggal_sewa' => time(),
             'tanggal_bayar' => time(),
             'status' => 1,
             'konfirmasi' => 1
