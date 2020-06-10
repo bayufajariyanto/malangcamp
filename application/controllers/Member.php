@@ -86,17 +86,39 @@ class Member extends CI_Controller
 
     public function percobaan(){
         
-        // $id = $this->input->post('id');
-        // $jumlah = $this->input->post('jumlah');
+        $id = $this->input->post('id');
+        $jml = $this->input->post('jumlah');
         // $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
-        $haha = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-
+        $user = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $keranjang = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
+        $query = "SELECT b.*,k.username FROM barang b RIGHT JOIN keranjang k ON b.id = k.id_barang WHERE k.username = '".$this->session->userdata('username')."'";
+        $query = $this->db->query($query)->result_array();
         $index = 0;
-
-        // var_dump($id[0]);
-        foreach($this->input->post('jumlah') as $k) :
-            var_dump($k);
+        $id[] = null;
+        $jml[] = null;
+        
+        foreach($query as $k) :
+            $id[$index] = $k['id'];
+            $kategori[$index] = strtoupper(substr($k['kategori'], 0, 3));
+            $index++;
         endforeach;
+        // var_dump(count($keranjang));die;
+        foreach($jml as $k) :
+            $jml[$index] = $k; 
+            $index++;
+        endforeach;
+        for($i=0;$i<count($keranjang);$i++){
+
+        }
+        $tanggal = date('ymdHis');
+        $kode = $kategori.'-'.$tanggal.$user['id'];
+        $data = [[
+            'kode_transaksi' => 'satu'
+        ],[
+            'kode_transaksi' => 'dua'
+        ]];
+        var_dump($data);
+        
     }
     
     public function keranjang(){
