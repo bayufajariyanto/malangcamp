@@ -97,6 +97,7 @@ class Member extends CI_Controller
         $index = 0;
         $id[] = null;
         $jumlah[] = null;
+        $harga[] = null;
         $tanggal_order = time();
         $tanggal = date('ymdHis', $tanggal_order);
         foreach($query as $k) :
@@ -104,9 +105,9 @@ class Member extends CI_Controller
             $kategori[$index] = strtoupper(substr($k['kategori'], 0, 3));
             $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
             $jumlah[$index] = $jml[$index];
+            $harga = $k['harga'] * $jml[$index] * $hari;
             $index++;
         endforeach;
-        var_dump($query);die;
         
         $hari = 60*60*24*$hari;
         for($i=0;$i<count($query);$i++){
@@ -118,10 +119,13 @@ class Member extends CI_Controller
                 // 'tanggal_sewa' => 0,
                 'batas_kembali' => time()+$hari,
                 'jumlah_barang' => $jumlah[$i],
+                'total' => $harga,
                 'status' => 0
             ];
-            // $this->db->insert('pesanan', $data);
+            $this->db->insert('pesanan', $data);
         }
+        $this->db->delete('keranjang', ['username' => $this->session->userdata('username')]);
+        $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu berhasil pesan! Segera lakukan pembayaran dalam 1 jam!</div>');
         redirect('member/keranjang');
         
     }
