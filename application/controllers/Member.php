@@ -41,6 +41,7 @@ class Member extends CI_Controller
         $data['kategori'] = $this->db->get('kategori')->result_array();
         $this->load->model('Member_barang', 'barang');
         $data['barang'] = $this->barang->getBarangMember();
+        // var_dump($data['barang']);die;
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
@@ -61,6 +62,22 @@ class Member extends CI_Controller
         $this->load->view('member/barang_detail');
         $this->load->view('templates/footer');
     }
+
+    public function kategori($kategori){
+        $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
+        $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
+        $data['title'] = 'Barang Tersedia';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['kategori'] = $this->db->get('kategori')->result_array();
+        $this->load->model('Member_barang', 'barang');
+        $data['barang'] = $this->barang->getBarangKategori($kategori);
+        // var_dump($data['barang']);die;
+        $this->load->view('templates/header', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
+        $this->load->view('member/barang');
+        $this->load->view('templates/footer');
+    }
     
     public function tambahkeranjang($id){
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
@@ -73,7 +90,7 @@ class Member extends CI_Controller
             'jumlah' => $jumlah
         ];
         $this->db->insert('keranjang', $data);
-        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pilih barang yang mau disewa!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menambahkan '.$barang['nama'].' ke keranjang</div>');
         redirect('member/index');
     }
 
@@ -353,16 +370,5 @@ class Member extends CI_Controller
         $data['barang'] = $this->barang->getBarangByKeyword($keyword);
         $data['kategori'] = $this->barang->getKategoriByKeyword($keyword);
         $this->load->view('ajax/index',$data);
-    }
-
-    public function ajaxBarang($kategori){
-        $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
-        $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        // var_dump($keyword);die;
-        $data['kategori'] = $kategori;
-        $this->load->model('Member_barang', 'barang');
-        $data['barang'] = $this->barang->getBarangKategori($kategori);
-        $data['kategori'] = $this->barang->getKategorikategori($kategori);
-        $this->load->view('ajax/kategori',$data);
     }
 }
