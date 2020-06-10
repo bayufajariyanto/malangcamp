@@ -67,7 +67,7 @@ function rupiah($angka)
             Durasi sewa (hari)
           </div>
           <div class="col">
-            <input type="text" class="form-control text-center" size="2" name="" value="">
+            <input type="text" class="form-control text-center" size="2" name="hari" value="1">
           </div>
         </div>
         <hr>

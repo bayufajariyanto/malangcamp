@@ -77,11 +77,11 @@ endforeach;
               <input type="text" class="form-control" name="jumlah" id="jumlah" value="<?= set_value('jumlah'); ?>" placeholder="Jumlah barang">
               <?= form_error('jumlah', '<small class="text-danger pl-2">', '</small>') ?>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="sewa">Jam Sewa</label>
               <input type="time" class="form-control" min="<?= date("H:i") ?>" max="<?= date("H:i", time()+$sejam) ?>" name="sewa" id="sewa" value="<?= date("H:i") ?>">
               <?= form_error('sewa', '<small class="text-danger pl-2">', '</small>') ?>
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="hari">Lama <strong>(hari)</strong></label>
               <input type="text" class="form-control" name="hari" id="hari" value="<?= set_value('hari'); ?>" placeholder="Jumlah hari">

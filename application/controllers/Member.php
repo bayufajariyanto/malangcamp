@@ -88,36 +88,41 @@ class Member extends CI_Controller
         
         $id = $this->input->post('id');
         $jml = $this->input->post('jumlah');
-        // $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
+        $hari = $this->input->post('hari');
+
         $user = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $keranjang = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $query = "SELECT b.*,k.username FROM barang b RIGHT JOIN keranjang k ON b.id = k.id_barang WHERE k.username = '".$this->session->userdata('username')."'";
         $query = $this->db->query($query)->result_array();
         $index = 0;
         $id[] = null;
-        $jml[] = null;
-        
+        $jumlah[] = null;
+        $tanggal_order = time();
+        $tanggal = date('ymdHis', $tanggal_order);
         foreach($query as $k) :
             $id[$index] = $k['id'];
             $kategori[$index] = strtoupper(substr($k['kategori'], 0, 3));
+            $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
+            $jumlah[$index] = $jml[$index];
             $index++;
         endforeach;
-        // var_dump(count($keranjang));die;
-        foreach($jml as $k) :
-            $jml[$index] = $k; 
-            $index++;
-        endforeach;
-        for($i=0;$i<count($keranjang);$i++){
-
+        var_dump($query);die;
+        
+        $hari = 60*60*24*$hari;
+        for($i=0;$i<count($query);$i++){
+            $data = [
+                'kode_transaksi' => $kode[$i],
+                'username' => $this->session->userdata('username'),
+                'id_barang' => $id[$i],
+                'tanggal_order' => $tanggal_order,
+                // 'tanggal_sewa' => 0,
+                'batas_kembali' => time()+$hari,
+                'jumlah_barang' => $jumlah[$i],
+                'status' => 0
+            ];
+            // $this->db->insert('pesanan', $data);
         }
-        $tanggal = date('ymdHis');
-        $kode = $kategori.'-'.$tanggal.$user['id'];
-        $data = [[
-            'kode_transaksi' => 'satu'
-        ],[
-            'kode_transaksi' => 'dua'
-        ]];
-        var_dump($data);
+        redirect('member/keranjang');
         
     }
     
