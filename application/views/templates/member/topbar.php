@@ -99,8 +99,8 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
               Sedang Disewa
             </a>
-            <a class="dropdown-item" href="#">
-              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+            <a class="dropdown-item active" href="#">
+              <i class="fas fa-history fa-sm fa-fw mr-2 text-gray-400"></i>
               Riwayat Transaksi
             </a>
             <div class="dropdown-divider"></div>

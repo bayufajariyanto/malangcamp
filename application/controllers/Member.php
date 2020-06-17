@@ -44,6 +44,8 @@ class Member extends CI_Controller
             $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
         }
         $data['barang'] = $this->db->get('barang')->result_array();
+        $data['semua'] = 'active';
+        $data['dtkategori'] = '';
         
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
@@ -78,6 +80,8 @@ class Member extends CI_Controller
         }
         $this->db->where('kategori', $kategori);
         $data['barang'] = $this->db->get('barang')->result_array();
+        $data['semua'] = '';
+        // $data['dtkategori'] = $kategori;
         
         // $data['barang'] = $this->barang->getBarangKategori($kategori);
         // var_dump($data['barang']);die;
