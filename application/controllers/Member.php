@@ -40,8 +40,11 @@ class Member extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
         $this->load->model('Member_barang', 'barang');
-        $data['barang'] = $this->barang->getBarangMember();
-        // var_dump($data['barang']);die;
+        for($i=0;$i<count($data['topkeranjang']);$i++){
+            $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
+        }
+        $data['barang'] = $this->db->get('barang')->result_array();
+        
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
@@ -70,7 +73,13 @@ class Member extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
         $this->load->model('Member_barang', 'barang');
-        $data['barang'] = $this->barang->getBarangKategori($kategori);
+        for($i=0;$i<count($data['topkeranjang']);$i++){
+            $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
+        }
+        $this->db->where('kategori', $kategori);
+        $data['barang'] = $this->db->get('barang')->result_array();
+        
+        // $data['barang'] = $this->barang->getBarangKategori($kategori);
         // var_dump($data['barang']);die;
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
@@ -101,7 +110,20 @@ class Member extends CI_Controller
         redirect('member/keranjang');
     }
 
-    public function percobaan(){
+    public function pesanan(){
+        $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
+        $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
+        $data['title'] = 'Profile';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
+        $this->load->view('templates/header', $data);
+        // $this->load->view('templates/member/sidebar');
+        $this->load->view('templates/member/topbar', $data);
+        $this->load->view('member/history', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tambahpesanan(){
         
         $id = $this->input->post('id');
         $jml = $this->input->post('jumlah');
@@ -166,7 +188,7 @@ class Member extends CI_Controller
         $this->load->view('templates/footer');
     }
     
-    public function pesanan(){
+    public function pesanandua(){
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Pesanan';

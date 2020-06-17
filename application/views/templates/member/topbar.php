@@ -91,14 +91,18 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
               Profile
             </a>
-            <!-- <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a> -->
+            <a class="dropdown-item" href="<?= base_url('member/pesanan') ?>">
+              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              Pesanan
+            </a>
+            <a class="dropdown-item" href="#">
+              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+              Sedang Disewa
+            </a>
+            <a class="dropdown-item" href="#">
+              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+              Riwayat Transaksi
+            </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
               <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

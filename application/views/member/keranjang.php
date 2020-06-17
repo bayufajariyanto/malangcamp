@@ -16,7 +16,7 @@ function rupiah($angka)
   <!-- Content Row -->
   <?= $this->session->flashdata('message'); ?>
 
-  <form action="<?= base_url('member/percobaan') ?>" method="post">
+  <form action="<?= base_url('member/tambahpesanan') ?>" method="post">
   <div class="row">
 
   <!-- /.col-lg-3 -->
