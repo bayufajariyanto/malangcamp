@@ -59,7 +59,8 @@ if($this->session->userdata('role_id') == 1){
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('admin/peminjaman') ?>">
-            <i class="fas fa-fw fa-calendar"></i>
+            <!-- <i class="fas fa-fw fa-calendar"></i> -->
+            <i class="fas fa-fw fa-truck-loading"></i>
             <span>Sedang Disewa</span></a>
     </li>
 

@@ -62,6 +62,8 @@ class Member extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $this->load->model('Member_barang', 'barang');
         $data['rincian'] = $this->barang->getBarangId($id);
+        $data['kategori'] = $this->db->get('kategori')->result_array();
+        $data['select'] = $data['rincian']['kategori'];
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
@@ -342,7 +344,7 @@ class Member extends CI_Controller
         $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        $data['title'] = 'Peminjaman';
+        $data['title'] = 'Sedang Disewa';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
 
@@ -406,7 +408,6 @@ class Member extends CI_Controller
     public function ajax($keyword){
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        // var_dump($keyword);die;
         $data['keyword'] = $keyword;
         $this->load->model('Pesanan_model', 'barang');
         $data['barang'] = $this->barang->getBarangByKeyword($keyword);

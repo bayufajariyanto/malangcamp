@@ -21,9 +21,20 @@ function rupiah($angka)
   <div class="col-lg-3 mb-5">
     <a href="<?= base_url('member/index') ?>" class="text-decoration-none text-reset"><h2 class="my-4">Malang Camp</h2></a>
     <div class="list-group">
-      <a href="#" class="list-group-item text-decoration-none list-group-item-action">Category 1</a>
-      <a href="#" class="list-group-item text-decoration-none list-group-item-action">Category 2</a>
-      <a href="#" class="list-group-item text-decoration-none list-group-item-action">Category 3</a>
+      <a href="<?= base_url('member/barang') ?>" class="list-group-item text-decoration-none list-group-item-action">Semua Barang</a>
+      <?php foreach($kategori as $k): 
+      
+        switch($select){
+          case $k['nama']: 
+            $aktif = 'active';
+          break;
+          default:
+            $aktif = '';
+        }
+      
+      ?>
+      <a href="<?= base_url('member/kategori/') ?><?= $k['nama'] ?>" class="list-group-item text-decoration-none <?= $aktif ?> list-group-item-action"><?= $k['nama'] ?></a>
+      <?php endforeach; ?>
     </div>
   </div>
   <!-- /.col-lg-3 -->

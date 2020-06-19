@@ -98,10 +98,10 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
             case 'pesanan': 
               $pesanan = 'active';
             break;
-            case 'disewa': 
+            case 'peminjaman': 
               $disewa = 'active';
             break;
-            case 'riwayat': 
+            case 'transaksi': 
               $riwayat = 'active';
             break;
             default:
@@ -114,14 +114,14 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
               Profile
             </a>
             <a class="dropdown-item <?= $pesanan ?>" href="<?= base_url('member/pesanan') ?>">
-              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              <i class="fas fa-phone-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Pesanan
             </a>
-            <a class="dropdown-item <?= $disewa ?>" href="#">
-              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+            <a class="dropdown-item <?= $disewa ?>" href="<?= base_url('member/peminjaman') ?>">
+              <i class="fas fa-truck-loading fa-sm fa-fw mr-2 text-gray-400"></i>
               Sedang Disewa
             </a>
-            <a class="dropdown-item <?= $riwayat ?>" href="#">
+            <a class="dropdown-item <?= $riwayat ?>" href="<?= base_url('member/transaksi') ?>">
               <i class="fas fa-history fa-sm fa-fw mr-2 text-gray-400"></i>
               Riwayat Transaksi
             </a>
