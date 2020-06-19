@@ -15,7 +15,7 @@ function rupiah($angka)
 
   <!-- Content Row -->
 
-  <form action="<?= base_url('member/pesanan') ?>" method="post">
+  <form method="post">
   <div class="row">
 
   <div class="col-lg-3 mb-5">
@@ -75,25 +75,6 @@ function rupiah($angka)
     </div>
     <!-- /.card -->
 
-    <!-- <div class="card card-outline-secondary my-4">
-      <div class="card-header">
-        Product Reviews
-      </div>
-      <div class="card-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-        <hr>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-        <hr>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-        <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-        <hr>
-        <a href="#" class="btn btn-success">Leave a Review</a>
-      </div>
-    </div> -->
-    <!-- /.card -->
-
   </div>
   <!-- /.col-lg-9 -->
 
@@ -114,7 +95,7 @@ function rupiah($angka)
         <h5 class="my-0 font-weight-bolder text-gray-900" id="total" name="total" value="<?= $rincian['harga'] ?>">Rp <?= rupiah($rincian['harga']) ?></h5>
       </div>
       <div class="col-auto mx-n1 my-2">
-        <a href="<?= base_url('member/keranjang') ?>" class="btn btn-outline-info mx-1"><i class="fas fa-cart-arrow-down"></i> Pesan</a>
+        <button type="submit" class="btn btn-outline-info mx-1" formaction="<?= base_url('member/pesan/') ?><?= $rincian['id'] ?>"><i class="fas fa-cart-arrow-down"></i> Pesan</button>
         <button type="submit" class="btn btn-info mx-1" formaction="<?= base_url('member/tambahkeranjang/') ?><?= $rincian['id'] ?>"><i class="fas fa-cart-plus"></i> Tambah Ke Keranjang</button>
       </div>
     </div>

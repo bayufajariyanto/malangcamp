@@ -881,7 +881,7 @@ class Admin extends CI_Controller
     }
 
     public function transaksi_detail($id){
-        $data['title'] = 'Transaksi Detail';
+        $data['title'] = 'Detail Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
         $username = $data['transaksi']['username'];

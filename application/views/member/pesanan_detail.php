@@ -12,7 +12,7 @@ if($pesanan['tanggal_bayar']>1){
 ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -57,7 +57,7 @@ if($pesanan['tanggal_bayar']>1){
             <div class="row">
                 <p class="col-sm-2">Tanggal Sewa</p>
                 <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['tanggal_sewa']) ?></p>
+                    <p class="card-text">-</p>
                 </div>
             </div>
             <div class="row">
