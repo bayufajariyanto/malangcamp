@@ -3,21 +3,6 @@ function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
-$active = '';
-$url = urldecode($this->uri->segment(3))
-// switch ($url) {
-//   case $index:
-//     'active'
-//     break;
-//   case label2:
-//     code to be executed if n=label2;
-//     break;
-//   case label3:
-//     code to be executed if n=label3;
-//     break;
-//     ...
-//   default:'';
-// }
 ?>
 <!-- Begin Page Content -->
 <div class="container">
@@ -30,76 +15,94 @@ $url = urldecode($this->uri->segment(3))
 
   <!-- Content Row -->
   <?= $this->session->flashdata('message'); ?>
-    <?php echo urldecode($this->uri->segment(3)) ?>
   <div class="row">
-    <div class="col-lg-3">
-      <h1 class="my-4">Kategori</h1>
-      <div class="list-group">
-        <a href="<?= base_url('member/barang') ?>" class="list-group-item text-decoration-none list-group-item-action <?= $semua ?>">Semua Barang</a>
-        <?php foreach($kategori as $k): 
-          if($k['nama'] == 'Jacket'){
-            $active = 'active';
-          }else{
-            $active = '';
-          }
-          ?>
-        <a href="<?= base_url('member/kategori/') ?><?= $k['nama'] ?>" class="list-group-item text-decoration-none list-group-item-action <?= $active ?>"><?= $k['nama'] ?></a>
-        <?php endforeach; ?>
-      </div>
 
-    </div>
-    <!-- /.col-lg-3 -->
-
-    <div class="col-lg-9">
-      <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-          <div class="carousel-item active">
-            <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="First slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="Second slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="Third slide">
-          </div>
+      <div class="col-lg-3">
+        <h1 class="my-4">Kategori</h1>
+        <div class="list-group">
+          <a href="<?= base_url('member/barang') ?>" class="list-group-item text-decoration-none list-group-item-action active">Semua Barang</a>
+          <?php foreach($kategori as $k): ?>
+          <a href="<?= base_url('member/kategori/') ?><?= $k['nama'] ?>" class="list-group-item text-decoration-none list-group-item-action"><?= $k['nama'] ?></a>
+          <?php endforeach; ?>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
 
-      <div class="row">
-        <?php foreach ($barang as $b) : ?>
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100">
-            <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>"><img class="card-img-top" src="<?= base_url('assets/img/') ?><?= $b['nama'] ?>.png" alt=""></a>
-            <div class="card-body">
-              <h5 class="card-title">
-                <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>" class="text-decoration-none"><?= $b['nama'] ?></a>
-              </h5>
-              <h5 class="font-weight-bold">Rp <?= rupiah($b['harga']) ?><small> / hari</small></h5>
-              <p class="card-text"><?= $b['kategori'] ?></p>
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+              <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="First slide">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block img-fluid rounded" src="http://placehold.it/900x350" alt="Third slide">
             </div>
           </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
         </div>
-        <?php endforeach; ?>
+        
+        <div class="row">
+          <?php
+          $display = '';
+          $index=0;
+          $keranjang[] = null;
+          foreach ($topkeranjang as $t) {
+            $keranjang[$index] = (int)$t['id_barang'];
+            // var_dump($keranjang[$index]);
+            $index++;
+          }
+          $index = 0;
+          foreach ($barang as $b) :
+              foreach ($topkeranjang as $t) {
+                // $keranjang[$index] = (int)$t['id_barang'];
+                if((int)$b['id'] == $keranjang[$index]){
+                  // var_dump($keranjang[$index]);
+                  $display = 'd-none';
+                }else{
+                  $display = '';
+                }
+                $index++;
+              }
+            // var_dump($keranjang[1]);
+          ?>
+          <div class="col-lg-4 col-md-6 mb-4 <?= $display ?>">
+            <div class="card h-100">
+              <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>"><img class="card-img-top" src="<?= base_url('assets/img/') ?><?= $b['nama'] ?>.png" alt=""></a>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="<?= base_url('member/barangid/') ?><?= $b['id'] ?>" class="text-decoration-none"><?= $b['nama'] ?></a>
+                </h5>
+                <h5 class="font-weight-bold">Rp <?= rupiah($b['harga']) ?><small> / hari</small></h5>
+                <p class="card-text"><?= $b['kategori'] ?></p>
+              </div>
+            </div>
+          </div>
+          <?php 
+          $index = 0;
+          endforeach; ?>
+        </div>
+        <!-- /.row -->
+
       </div>
-      <!-- /.row -->
+      <!-- /.col-lg-9 -->
 
     </div>
-    <!-- /.col-lg-9 -->
-
-  </div>
     <!-- /.row -->
 </div>
 <!-- /.container-fluid -->

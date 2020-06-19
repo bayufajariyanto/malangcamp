@@ -22,6 +22,7 @@ class Member extends CI_Controller
     }
 
     public function profile(){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Profile';
@@ -34,6 +35,7 @@ class Member extends CI_Controller
     }
 
     public function barang(){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Barang Tersedia';
@@ -44,8 +46,6 @@ class Member extends CI_Controller
             $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
         }
         $data['barang'] = $this->db->get('barang')->result_array();
-        $data['semua'] = 'active';
-        $data['dtkategori'] = '';
         
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
@@ -55,6 +55,7 @@ class Member extends CI_Controller
     }
     
     public function barangId($id){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Rincian Barang';
@@ -69,26 +70,27 @@ class Member extends CI_Controller
     }
 
     public function kategori($kategori){
+        $data['selecttopbar'] = $this->uri->segment(2);
+        $kategori = rawurldecode($kategori);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Barang Tersedia';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
+        $data['select'] = $kategori;
+        // var_dump($kategori);die;
         $this->load->model('Member_barang', 'barang');
         for($i=0;$i<count($data['topkeranjang']);$i++){
             $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
         }
         $this->db->where('kategori', $kategori);
         $data['barang'] = $this->db->get('barang')->result_array();
-        $data['semua'] = '';
-        // $data['dtkategori'] = $kategori;
-        
         // $data['barang'] = $this->barang->getBarangKategori($kategori);
         // var_dump($data['barang']);die;
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/barang');
+        $this->load->view('member/barang_kategori');
         $this->load->view('templates/footer');
     }
     
@@ -115,6 +117,7 @@ class Member extends CI_Controller
     }
 
     public function pesanan(){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Profile';
@@ -174,6 +177,7 @@ class Member extends CI_Controller
     }
     
     public function keranjang(){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Keranjang';
@@ -193,6 +197,7 @@ class Member extends CI_Controller
     }
     
     public function pesanandua(){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Pesanan';
@@ -302,6 +307,7 @@ class Member extends CI_Controller
 
     public function pesanan_detail($id)
     {
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Detail Pesanan';
@@ -327,6 +333,7 @@ class Member extends CI_Controller
 
     public function peminjaman()
     {
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Peminjaman';
@@ -342,6 +349,7 @@ class Member extends CI_Controller
 
     public function peminjaman_detail($id)
     {
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Peminjaman';
@@ -359,6 +367,7 @@ class Member extends CI_Controller
 
     public function transaksi()
     {
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Riwayat Transaksi';
@@ -372,6 +381,7 @@ class Member extends CI_Controller
     }
 
     public function transaksi_detail($id){
+        $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Transaksi Detail';

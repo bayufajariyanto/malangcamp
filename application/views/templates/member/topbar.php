@@ -86,20 +86,42 @@ function jumlahKeranjang($angka, $buka = '', $tutup = ''){
             <img class="img-profile rounded-circle" src="<?= base_url('assets/img/') ?>default.png">
           </a>
           <!-- Dropdown - User Information -->
+          <?php
+          $profile = null;
+          $pesanan = null;
+          $disewa = null;
+          $riwayat = null;
+          switch($selecttopbar){
+            case 'profile': 
+              $profile = 'active';
+            break;
+            case 'pesanan': 
+              $pesanan = 'active';
+            break;
+            case 'disewa': 
+              $disewa = 'active';
+            break;
+            case 'riwayat': 
+              $riwayat = 'active';
+            break;
+            default:
+              $aktif = '';
+          }
+          ?>
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="<?= base_url('member/profile') ?>">
+            <a class="dropdown-item <?= $profile ?>" href="<?= base_url('member/profile') ?>">
               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
               Profile
             </a>
-            <a class="dropdown-item" href="<?= base_url('member/pesanan') ?>">
+            <a class="dropdown-item <?= $pesanan ?>" href="<?= base_url('member/pesanan') ?>">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
               Pesanan
             </a>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item <?= $disewa ?>" href="#">
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
               Sedang Disewa
             </a>
-            <a class="dropdown-item active" href="#">
+            <a class="dropdown-item <?= $riwayat ?>" href="#">
               <i class="fas fa-history fa-sm fa-fw mr-2 text-gray-400"></i>
               Riwayat Transaksi
             </a>
