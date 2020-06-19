@@ -1,3 +1,9 @@
+<?php
+function rupiah($angka)
+{
+  return number_format($angka, 0, '.', '.');
+}
+?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -99,7 +105,7 @@
                 <td><?= $b['nama']; ?></td>
                 <td><?= $b['kategori']; ?></td>
                 <td><?= $b['stok']; ?></td>
-                <td>Rp. <?= $b['harga']; ?></td>
+                <td>Rp <?= rupiah($b['harga']); ?></td>
                 <td>
                   <a href="<?= base_url() ?>admin/barang_edit/<?= $b['id'] ?>" class="badge badge-success badge-sm">Edit</a>
                   <a href="<?= base_url() ?>admin/barang_hapus/<?= $b['id'] ?>" class="badge badge-danger badge-sm tombol-hapus">Hapus</a>

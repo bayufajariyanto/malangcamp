@@ -152,11 +152,16 @@ class Member extends CI_Controller
             $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
             $jumlah[$index] = $jml[$index];
             $harga = $k['harga'] * $jml[$index] * $hari;
+            $stok[$index] = $k['stok'] - $jumlah[$index];
             $index++;
         endforeach;
         
         $hari = 60*60*24*$hari;
         for($i=0;$i<count($query);$i++){
+            // $stok = $jumlah[$i];
+            $datastok = [
+                'stok' => $stok[$i]
+            ];
             $data = [
                 'kode_transaksi' => $kode[$i],
                 'username' => $this->session->userdata('username'),
@@ -168,6 +173,7 @@ class Member extends CI_Controller
                 'total' => $harga,
                 'status' => 0
             ];
+            $this->db->update('barang', $datastok, ['id' => $id[$i]]);
             $this->db->insert('pesanan', $data);
         }
         $this->db->delete('keranjang', ['username' => $this->session->userdata('username')]);

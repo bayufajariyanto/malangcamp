@@ -725,7 +725,7 @@ class Admin extends CI_Controller
             $kode = $kategori.'-'.$tanggal.$id_user['id'];
             // Akhir kode transaksi
             // $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
-            $jam_kembali = $jam_sewa+(60*60*24*$hari);
+            $jam_kembali = time()+(60*60*24*$hari);
             $total = $barang['harga'];
             if($id_barang == null){
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pilih barang yang mau disewa!</div>');
