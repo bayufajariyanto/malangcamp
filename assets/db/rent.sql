@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Jun 2020 pada 06.32
+-- Waktu pembuatan: 20 Jun 2020 pada 02.51
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -48,11 +48,11 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (6, 'Tenda Dhaulagiri Kap 3-4 org Ultralight', 'Tenda', 30000, 3),
 (7, 'Tenda Great Outdoor Kap 5-6 org', 'Tenda', 35000, 3),
 (8, 'Tenda Great Outdoor Kap 8 org', 'Tenda', 35000, 3),
-(9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 1),
+(9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 3),
 (10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
 (12, 'Cover Bag', 'Other', 2500, 3),
-(13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
-(14, 'Sandal Trekking', 'Sandal', 5000, 3),
+(13, 'Sepatu Trekking', 'Sepatu', 15000, 1),
+(14, 'Sandal Trekking', 'Sandal', 5000, 1),
 (15, 'Hammock', 'Other', 5000, 3),
 (16, 'Jacket', 'Jacket', 10000, 3),
 (17, 'Flysheet', 'Other', 7500, 3),
@@ -68,29 +68,6 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (27, 'Jerigen Lipat 5L', 'Other', 3000, 3),
 (28, 'Kompas', 'Other', 2500, 3),
 (29, 'Pisau Lipat', 'Other', 2500, 3);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `coba`
---
-
-CREATE TABLE `coba` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(256) NOT NULL,
-  `jumlah` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `coba`
---
-
-INSERT INTO `coba` (`id`, `nama`, `jumlah`) VALUES
-(1, 'inidata', 0),
-(2, 'inidata', 0),
-(4, 'Dalam', 0),
-(5, 'Luar', 0),
-(6, 'nama', 0);
 
 -- --------------------------------------------------------
 
@@ -130,14 +107,6 @@ CREATE TABLE `keranjang` (
   `jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `keranjang`
---
-
-INSERT INTO `keranjang` (`id`, `username`, `id_barang`, `jumlah`) VALUES
-(17, 'ahmadzulfikar', 2, 2),
-(18, 'ahmadzulfikar', 3, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -159,7 +128,8 @@ CREATE TABLE `pengeluaran` (
 INSERT INTO `pengeluaran` (`id`, `nama`, `tanggal`, `kategori`, `nominal`) VALUES
 (1, 'Aditya Eka Pradana', 1589805061, 'Gaji', 500000),
 (2, 'Cuci Sepatu', 1589808535, 'Perawatan', 20000),
-(3, 'Listrik', 1590025099, 'Lainnya', 53000);
+(3, 'Listrik', 1590025099, 'Lainnya', 53000),
+(4, 'Listrik', 1592574922, 'Lainnya', 53000);
 
 -- --------------------------------------------------------
 
@@ -204,26 +174,8 @@ INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal
 (37, 'CAR-20200529150937', 'bayufajariyanto', 9, 1590739777, 1590739777, 1590912577, 1591275284, 1590739777, 2, 125000, 25000, 1, 1, 1),
 (39, 'COO-20200529214741', 'ahmadzulfikar', 20, 1590763661, 1590763661, 1590850061, 1591275289, 1590763706, 1, 25000, 5000, 1, 1, 1),
 (51, 'TEN-2006101714324', 'bayufajariyanto', 2, 1591784072, 1591784741, 1591956872, 1591812166, 1591784741, 2, 0, 76000, 1, 1, 1),
-(57, 'CAR-2006191131504', 'bayufajariyanto', 9, 1592541110, 0, 1592627510, 0, 0, 2, 0, 25000, 0, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `role`
---
-
-CREATE TABLE `role` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `role`
---
-
-INSERT INTO `role` (`id`, `nama`) VALUES
-(1, 'Admin'),
-(2, 'Member');
+(57, 'CAR-2006191131504', 'bayufajariyanto', 9, 1592541110, 1592541209, 1592627510, 1592541277, 1592541209, 2, 0, 25000, 1, 1, 1),
+(59, 'SEP-2006192003447', 'ahmadzulfikar', 13, 1592571824, 1592572193, 1592658224, 0, 1592572193, 2, 0, 30000, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -266,12 +218,6 @@ ALTER TABLE `barang`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `coba`
---
-ALTER TABLE `coba`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
@@ -296,12 +242,6 @@ ALTER TABLE `pesanan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
@@ -318,12 +258,6 @@ ALTER TABLE `barang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT untuk tabel `coba`
---
-ALTER TABLE `coba`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
@@ -333,25 +267,19 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
-
---
--- AUTO_INCREMENT untuk tabel `role`
---
-ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

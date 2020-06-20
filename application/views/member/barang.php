@@ -38,13 +38,13 @@ function rupiah($angka)
           </ol>
           <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo') ?>.png" alt="First slide">
+              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo 1') ?>.png" alt="First slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo') ?>.png" alt="Second slide">
+              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo 2') ?>.png" alt="Second slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo') ?>.png" alt="Third slide">
+              <img class="d-block img-fluid rounded" src="<?= base_url('assets/img/promo 3') ?>.png" alt="Third slide">
             </div>
           </div>
           <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
