@@ -17,7 +17,7 @@ if($transaksi['selesai'] == 1){
 ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
