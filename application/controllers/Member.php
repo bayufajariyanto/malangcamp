@@ -120,7 +120,7 @@ class Member extends CI_Controller
         $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        $data['title'] = 'Profile';
+        $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
         $this->load->view('templates/header', $data);
@@ -136,15 +136,36 @@ class Member extends CI_Controller
         $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        $data['title'] = 'Profile';
+        $data['title'] = 'Pesan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
+        $data['pesanan'] = $this->db->get_where('pesanan', ['selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
         $data['pesan'] = $this->db->get_where('barang', ['id' => $id])->row_array();
+        // var_dump(count($data['pesanan']));die;
+        // var_dump(count($data['pesanan']));die;
+        if(count($data['pesanan'])>0){
+            if($data['pesanan'][0]['status'] == 0){
+                $this->pesananditolak(1);
+                // redirect('pesananditolak/'.$data['pesanan'][0]['id']);
+            }else if($data['pesanan'][0]['selesai'] == 0){
+                $this->pesananditolak(2);
+            }
+        }
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
         $this->load->view('member/pesan', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function pesananditolak($status){
+        if($status == 1){
+            // var_dump('satu');die;
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Selesaikan pembayaran pesanan anda sebelumnya!</div>');
+        }else if($status == 2){
+            // var_dump('dua');die;
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal tambah pesanan! Silakan kembalikan barang terlebih dahulu!</div>');
+        }
+        redirect('member');
     }
 
 
@@ -157,8 +178,8 @@ class Member extends CI_Controller
         $tanggal_order = time();
         $tanggal = date('ymdHis', $tanggal_order);
         $harga = $barang['harga'] * $jml * $hari;
-        $kategori = strtoupper(substr($barang['kategori'], 0, 3));
-        $kode = $kategori.'-'.$tanggal.$user['id'];
+        $username = strtoupper(substr($this->session->userdata('username'), 0, 3));
+        $kode = $username.'-'.$tanggal.$user['id'];
         $stok = $barang['stok'] - $jml;
         $hari = 60*60*24*$hari;
         
@@ -183,6 +204,15 @@ class Member extends CI_Controller
     }
 
     public function tambahpesanan(){
+        $data['pesanan'] = $this->db->get_where('pesanan', ['selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
+        if(count($data['pesanan'])>0){
+            if($data['pesanan'][0]['status'] == 0){
+                $this->pesananditolak(1);
+                // redirect('pesananditolak/'.$data['pesanan'][0]['id']);
+            }else if($data['pesanan'][0]['selesai'] == 0){
+                $this->pesananditolak(2);
+            }
+        }
         $id = $this->input->post('id');
         $jml = $this->input->post('jumlah');
         $hari = $this->input->post('hari');
@@ -199,7 +229,7 @@ class Member extends CI_Controller
         $tanggal = date('ymdHis', $tanggal_order);
         foreach($query as $k) :
             $id[$index] = $k['id'];
-            $kategori[$index] = strtoupper(substr($k['kategori'], 0, 3));
+            $kategori[$index] = strtoupper(substr($this->session->userdata('username'), 0, 3));
             $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
             $jumlah[$index] = $jml[$index];
             $harga = $k['harga'] * $jml[$index] * $hari;
@@ -425,7 +455,7 @@ class Member extends CI_Controller
         $data['selecttopbar'] = $this->uri->segment(2);
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        $data['title'] = 'Riwayat Transaksi';
+        $data['title'] = 'Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'username' => $this->session->userdata('username')])->result_array();
         $this->load->view('templates/header', $data);

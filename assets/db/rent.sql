@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Jun 2020 pada 02.51
+-- Waktu pembuatan: 21 Jun 2020 pada 18.56
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -41,7 +41,7 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
-(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 3),
+(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 2),
 (3, 'Tenda Bestway Kap 4-5 org', 'Tenda', 22000, 3),
 (4, 'Tenda Consina Kap 3-4 org', 'Tenda', 25000, 3),
 (5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 3),
@@ -51,8 +51,8 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 3),
 (10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
 (12, 'Cover Bag', 'Other', 2500, 3),
-(13, 'Sepatu Trekking', 'Sepatu', 15000, 1),
-(14, 'Sandal Trekking', 'Sandal', 5000, 1),
+(13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
+(14, 'Sandal Trekking', 'Sandal', 5000, 3),
 (15, 'Hammock', 'Other', 5000, 3),
 (16, 'Jacket', 'Jacket', 10000, 3),
 (17, 'Flysheet', 'Other', 7500, 3),
@@ -106,6 +106,13 @@ CREATE TABLE `keranjang` (
   `id_barang` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `keranjang`
+--
+
+INSERT INTO `keranjang` (`id`, `username`, `id_barang`, `jumlah`) VALUES
+(7, 'bayufajariyanto', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -175,7 +182,28 @@ INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal
 (39, 'COO-20200529214741', 'ahmadzulfikar', 20, 1590763661, 1590763661, 1590850061, 1591275289, 1590763706, 1, 25000, 5000, 1, 1, 1),
 (51, 'TEN-2006101714324', 'bayufajariyanto', 2, 1591784072, 1591784741, 1591956872, 1591812166, 1591784741, 2, 0, 76000, 1, 1, 1),
 (57, 'CAR-2006191131504', 'bayufajariyanto', 9, 1592541110, 1592541209, 1592627510, 1592541277, 1592541209, 2, 0, 25000, 1, 1, 1),
-(59, 'SEP-2006192003447', 'ahmadzulfikar', 13, 1592571824, 1592572193, 1592658224, 0, 1592572193, 2, 0, 30000, 1, 1, 0);
+(59, 'SEP-2006192003447', 'ahmadzulfikar', 13, 1592571824, 1592572193, 1592658224, 1592752298, 1592572193, 2, 60000, 30000, 1, 1, 1),
+(62, 'BAY-2006212213184', 'bayufajariyanto', 2, 1592752398, 1592753270, 1592838798, 1592757523, 1592753270, 1, 0, 19000, 1, 1, 1),
+(67, 'BAY-2006212344494', 'bayufajariyanto', 2, 1592757889, 1592757924, 1592844289, 0, 1592757924, 1, 0, 19000, 1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `role`
+--
+
+INSERT INTO `role` (`id`, `nama`) VALUES
+(1, 'Admin'),
+(2, 'Member\r\n');
 
 -- --------------------------------------------------------
 
@@ -242,6 +270,12 @@ ALTER TABLE `pesanan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
@@ -267,7 +301,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
@@ -279,7 +313,13 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT untuk tabel `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

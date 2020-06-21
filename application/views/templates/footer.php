@@ -3,7 +3,7 @@
       <footer class="sticky-footer bg-white" style="margin-top: 30vh">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Sistem Informasi Manajemen Persewaan Malang Camp 2020</span>
+            <span>Copyright &copy; Sistem Informasi Manajemen Persewaan Malang Camp <?= date('Y') ?></span>
           </div>
         </div>
       </footer>

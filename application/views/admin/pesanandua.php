@@ -19,7 +19,7 @@ endforeach;
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-    <button type="button" class="mt-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#tambahPesanan"><i class="fas fa-download fa-sm text-white-50"></i> Tambah Pesanan</button>
+    <!-- <button type="button" class="mt-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#tambahPesanan"><i class="fas fa-download fa-sm text-white-50"></i> Tambah Pesanan</button> -->
   </div>
   <!-- Button trigger modal -->
 
@@ -83,7 +83,7 @@ endforeach;
               <?= form_error('sewa', '<small class="text-danger pl-2">', '</small>') ?>
             </div> -->
             <div class="form-group">
-              <label for="hari">Lama <strong>(hari)</strong></label>
+              <label for="hari">Durasi <strong>(hari)</strong></label>
               <input type="text" class="form-control" name="hari" id="hari" value="<?= set_value('hari'); ?>" placeholder="Jumlah hari">
               <?= form_error('hari', '<small class="text-danger pl-2">', '</small>') ?>
             </div>
