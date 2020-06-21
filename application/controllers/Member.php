@@ -122,11 +122,24 @@ class Member extends CI_Controller
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
+        // var_dump($data['pesanan']);die;
+        $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->row_array();
+        $total = 0;
+        foreach($data['pesanan'] as $p):
+            $total = $total+($p['harga']*$p['jumlah_barang']);
+        endforeach;
+        $data['total'] = $total;
+        
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/pesanan', $data);
+        if($data['pesanan'] == null){
+            $this->load->view('member/pesanan_kosong');
+        }else{
+            $this->load->view('member/pesanan', $data);
+        }
         $this->load->view('templates/footer');
     }
 

@@ -3,17 +3,17 @@ function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
-// if($transaksi['konfirmasi'] == 1){
-//     $konfirmasi = 'Sudah dibayar';
-// }else{
-//     $konfirmasi = 'Belum dibayar';
-// }
+if($baris['konfirmasi'] == 1){
+    $konfirmasi = 'Sudah dibayar';
+}else{
+    $konfirmasi = 'Belum dibayar';
+}
 
-// if($transaksi['selesai'] == 1){
-//     $selesai = 'Selesai';
-// }else{
-//     $selesai = 'Belum Selesai';
-// }
+if($baris['selesai'] == 1){
+    $selesai = 'Selesai';
+}else{
+    $selesai = 'Belum Selesai';
+}
 ?>
 
 <!-- Begin Page Content -->
@@ -26,7 +26,7 @@ function rupiah($angka)
   </div>
   <!-- Button trigger modal -->
   <div class="card">
-    <div class="card-body">
+    <div class="card-body container-fluid">
       <br>
       <div class="row">
         <div class="col-3">
@@ -34,7 +34,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <h5 class="card-title">XXX-XXXXXXXXXXXXX</h5>
+            <h5 class="card-title"><?= $baris['kode_transaksi'] ?></h5>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <p class="card-text">Nama User</p>
+            <p class="card-text"><?= $user['nama'] ?></p>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <p class="card-text">Ini data data data data data data</p>
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?></p>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <p class="card-text">Belum Bayar</p>
+            <p class="card-text"><?= $konfirmasi ?></p>
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <p class="card-text">Ini data data data data data data</p>
+            <p class="card-text"><?= $selesai ?></p>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <h5 class="card-title">Rp x.xxx</h5><!-- Jumlah semua sub total -->
+            <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ function rupiah($angka)
         </div>
       </div> -->
       <br>
-      <div class="row">
+      <div class="row mx-1">
         <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
@@ -134,24 +134,23 @@ function rupiah($angka)
             </tfoot>
             <tbody>
               <?php
-                // if ($transaksi['status'] == 1) {
-                //   $status = 'Lunas';
-                // } else {
-                //   $status = 'Belum Lunas';
-                // }
+                foreach($pesanan as $p) :
               ?>
               <tr>
-                <td>Ini data</td>
-                <td>Ini data</td>
-                <td>Rp x.xxx</td>
-                <td>Rp x.xxx</td><!-- qty*harga -->
+                <td><?= $p['nama'] ?></td>
+                <td><?= $p['jumlah_barang'] ?></td>
+                <td>Rp <?= rupiah($p['harga']) ?></td>
+                <td>Rp <?= rupiah($p['harga']*$p['jumlah_barang']) ?></td><!-- qty*harga -->
               </tr>
+              <?php
+              endforeach;
+              ?>
             </tbody>
           </table>
         </div>
       </div>
       <br>
-      <!-- <div class="text-center"> -->
+      <!-- <div class="text-left"> -->
         <a href="<?= base_url() ?>member/transaksi" class="btn btn-sm btn-secondary">Kembali</a>
       <!-- </div> -->
     </div>
