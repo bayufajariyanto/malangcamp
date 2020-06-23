@@ -11,6 +11,7 @@ class Member extends CI_Controller
     }
     public function index()
     {
+        $this->session->userdata('username');
         // $data['title'] = 'Dashboard';
         // $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         // $this->load->view('templates/header', $data);
@@ -245,7 +246,7 @@ class Member extends CI_Controller
             $kategori[$index] = strtoupper(substr($this->session->userdata('username'), 0, 3));
             $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
             $jumlah[$index] = $jml[$index];
-            $harga = $k['harga'] * $jml[$index] * $hari;
+            $harga[$index] = $k['harga'] * $jml[$index] * $hari;
             $stok[$index] = $k['stok'] - $jumlah[$index];
             $index++;
         endforeach;
@@ -263,7 +264,7 @@ class Member extends CI_Controller
                 // 'tanggal_sewa' => 0,
                 'batas_kembali' => time()+$hari,
                 'jumlah_barang' => $jumlah[$i],
-                'total' => $harga,
+                'total' => $harga[$i],
                 'status' => 0
             ];
             $this->db->update('barang', $datastok, ['id' => $id[$i]]);
@@ -441,7 +442,11 @@ class Member extends CI_Controller
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/peminjaman');
+        if($data['peminjaman'] == null){
+            $this->load->view('member/peminjaman_kosong');
+        }else{
+            $this->load->view('member/peminjaman');
+        }
         $this->load->view('templates/footer');
     }
 
@@ -474,7 +479,11 @@ class Member extends CI_Controller
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/transaksi');
+        if($data['transaksi'] == null){
+            $this->load->view('member/transaksi_kosong');
+        }else{
+            $this->load->view('member/transaksi');
+        }
         $this->load->view('templates/footer');
     }
 

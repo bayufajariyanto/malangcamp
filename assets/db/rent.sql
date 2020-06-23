@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Jun 2020 pada 18.56
+-- Waktu pembuatan: 23 Jun 2020 pada 02.16
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -41,8 +41,8 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
-(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 2),
-(3, 'Tenda Bestway Kap 4-5 org', 'Tenda', 22000, 3),
+(2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 1),
+(3, 'Tenda Bestway Kap 4-5 org', 'Tenda', 22000, 1),
 (4, 'Tenda Consina Kap 3-4 org', 'Tenda', 25000, 3),
 (5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 3),
 (6, 'Tenda Dhaulagiri Kap 3-4 org Ultralight', 'Tenda', 30000, 3),
@@ -50,21 +50,21 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (8, 'Tenda Great Outdoor Kap 8 org', 'Tenda', 35000, 3),
 (9, 'Tas Carrier 70-80 L', 'Carrier', 12500, 3),
 (10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
-(12, 'Cover Bag', 'Other', 2500, 3),
-(13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
-(14, 'Sandal Trekking', 'Sandal', 5000, 3),
+(12, 'Cover Bag', 'Other', 2500, 0),
+(13, 'Sepatu Trekking', 'Sepatu', 15000, 0),
+(14, 'Sandal Trekking', 'Sandal', 5000, 0),
 (15, 'Hammock', 'Other', 5000, 3),
-(16, 'Jacket', 'Jacket', 10000, 3),
-(17, 'Flysheet', 'Other', 7500, 3),
+(16, 'Jacket', 'Jacket', 10000, 1),
+(17, 'Flysheet', 'Other', 7500, 2),
 (18, 'Sarung Tangan Polar', 'Other', 4000, 3),
-(19, 'Kompor Lapang', 'Cooking Set', 5000, 3),
+(19, 'Kompor Lapang', 'Cooking Set', 5000, 2),
 (20, 'Nesting', 'Cooking Set', 5000, 3),
 (21, 'Sleeping Bag', 'Other', 5000, 3),
 (22, 'Trekking Pole', 'Other', 6000, 3),
 (23, 'Matras', 'Other', 2500, 3),
 (24, 'Gaiter', 'Other', 4000, 3),
-(25, 'Headlamp', 'Lighting', 4000, 3),
-(26, 'Lampu Tenda', 'Lighting', 4000, 3),
+(25, 'Headlamp', 'Lighting', 4000, 2),
+(26, 'Lampu Tenda', 'Lighting', 4000, 1),
 (27, 'Jerigen Lipat 5L', 'Other', 3000, 3),
 (28, 'Kompas', 'Other', 2500, 3),
 (29, 'Pisau Lipat', 'Other', 2500, 3);
@@ -106,13 +106,6 @@ CREATE TABLE `keranjang` (
   `id_barang` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `keranjang`
---
-
-INSERT INTO `keranjang` (`id`, `username`, `id_barang`, `jumlah`) VALUES
-(7, 'bayufajariyanto', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -167,24 +160,9 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal_order`, `tanggal_sewa`, `batas_kembali`, `tanggal_kembali`, `tanggal_bayar`, `jumlah_barang`, `denda`, `total`, `status`, `konfirmasi`, `selesai`) VALUES
-(25, 'COO-202005010001', 'bayufajariyanto', 19, 1588316911, 1588320511, 1588406911, 1588844781, 1588316927, 1, 30000, 5000, 1, 1, 1),
-(26, 'TEN-202005070001', 'bayufajariyanto', 6, 1588843800, 1588847340, 1589020140, 1588844012, 1588843808, 2, 0, 60000, 1, 1, 1),
-(27, 'TEN-202005070001', 'bayufajariyanto', 5, 1588844527, 1588848067, 1589020867, 1588944669, 1588844539, 1, 0, 25000, 1, 1, 1),
-(28, 'LIG-202005080001', 'bayufajariyanto', 26, 1588918354, 1588921954, 1589008354, 1589683626, 1588918407, 1, 32000, 4000, 1, 1, 1),
-(29, 'TEN-202005080001', 'anandanurj', 2, 1588918435, 1588918435, 1589004835, 1588944743, 1588918435, 1, 0, 19000, 1, 1, 1),
-(30, 'TEN-202005080001', 'bayufajariyanto', 4, 1588945701, 1588945701, 1589032101, 1589375716, 1588948946, 2, 200000, 50000, 1, 1, 1),
-(31, 'CAR-202005170001', 'ahmadzulfikar', 9, 1589683664, 1589683664, 1590115664, 1589683673, 1589683664, 3, 0, 37500, 1, 1, 1),
-(32, 'SAN-202005260001', 'dellyagus', 14, 1590441025, 1590441025, 1590613825, 1590736183, 1590441025, 2, 20000, 10000, 1, 1, 1),
-(33, 'COO-202005260001', 'dellyagus', 19, 1590441087, 1590441027, 1590527427, 1590736177, 1590441087, 1, 15000, 5000, 1, 1, 1),
-(35, 'OTH-202005290001', 'ahmadzulfikar', 22, 1590737399, 1590737399, 1590823799, 1590737555, 1590737546, 1, 0, 6000, 1, 1, 1),
-(36, 'CAR-20200529150546', 'ahmadzulfikar', 9, 1590739546, 1590739546, 1590825946, 1590739568, 1590739546, 2, 0, 25000, 1, 1, 1),
-(37, 'CAR-20200529150937', 'bayufajariyanto', 9, 1590739777, 1590739777, 1590912577, 1591275284, 1590739777, 2, 125000, 25000, 1, 1, 1),
-(39, 'COO-20200529214741', 'ahmadzulfikar', 20, 1590763661, 1590763661, 1590850061, 1591275289, 1590763706, 1, 25000, 5000, 1, 1, 1),
-(51, 'TEN-2006101714324', 'bayufajariyanto', 2, 1591784072, 1591784741, 1591956872, 1591812166, 1591784741, 2, 0, 76000, 1, 1, 1),
-(57, 'CAR-2006191131504', 'bayufajariyanto', 9, 1592541110, 1592541209, 1592627510, 1592541277, 1592541209, 2, 0, 25000, 1, 1, 1),
-(59, 'SEP-2006192003447', 'ahmadzulfikar', 13, 1592571824, 1592572193, 1592658224, 1592752298, 1592572193, 2, 60000, 30000, 1, 1, 1),
-(62, 'BAY-2006212213184', 'bayufajariyanto', 2, 1592752398, 1592753270, 1592838798, 1592757523, 1592753270, 1, 0, 19000, 1, 1, 1),
-(67, 'BAY-2006212344494', 'bayufajariyanto', 2, 1592757889, 1592757924, 1592844289, 0, 1592757924, 1, 0, 19000, 1, 1, 0);
+(17, 'BAY-2006230642134', 'bayufajariyanto', 2, 1592869333, 0, 1593042133, 0, 0, 1, 0, 38000, 0, 0, 0),
+(18, 'BAY-2006230642134', 'bayufajariyanto', 3, 1592869333, 0, 1593042133, 0, 0, 1, 0, 44000, 0, 0, 0),
+(19, 'AHM-2006230644487', 'ahmadzulfikar', 19, 1592869488, 0, 1592955888, 0, 0, 1, 0, 5000, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -301,7 +279,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
@@ -313,7 +291,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`

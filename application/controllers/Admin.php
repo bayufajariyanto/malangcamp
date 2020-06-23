@@ -674,9 +674,32 @@ class Admin extends CI_Controller
         $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['username'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
+        // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
+        // $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
+        $this->db->distinct();
+        $this->db->group_by('username');
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
+        // $total = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
-        $pesanan = $data['pesanan'];
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
+        $pesanan = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
+        $this->db->distinct();
+        $this->db->select('username');
+        $username = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
+        $total = 0;
+        $tmpusername = null;
+        foreach($pesanan as $p):
+            foreach($username as $u):
+                if($p['username'] == $u['username']){
+                    if($p['username'] != $tmpusername && $tmpusername != null){
+                        $total = 0;
+                    }
+                    $tmpusername = $p['username'];
+                    $total = $total+($p['total']);
+                    $data['total'][$tmpusername] = $total;
+                }
+            endforeach;
+        endforeach;
 
         // load model
         $this->load->model('Pesanan_model', 'barang');

@@ -148,12 +148,13 @@ endforeach;
             ?>
               <tr>
                 <td><?= $p['username'] ?></td>
-                <td><?= date('d F Y', $p['tanggal_order']) ?></td>
-                <td>Rp <?= rupiah($p['total']) ?></td>
+                <td><?= date('d F Y | H:i', $p['tanggal_order']) ?></td>
+                <td>Rp <?= rupiah($total[$p['username']]) ?></td>
                 <td><?= $status ?></td>
                 <td><a href="<?= base_url() ?>admin/pesanan_detail/<?= $p['id'] ?>" class="btn btn-primary">Detail</a></td>
               </tr>
-            <?php endforeach;
+            <?php
+            endforeach;
             ?>
           </tbody>
         </table>
