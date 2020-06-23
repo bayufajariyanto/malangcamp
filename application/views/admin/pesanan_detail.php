@@ -29,70 +29,70 @@ function rupiah($angka)
     <div class="card-body container-fluid">
       <br>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Kode Transaksi</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <h5 class="card-title"><?= $baris['kode_transaksi'] ?></h5>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Nama</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <p class="card-text"><?= $nama['nama'] ?></p>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Tanggal Order</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?></p>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Durasi Sewa</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <p class="card-text"><?= $durasi ?> hari</p>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Status Pembayaran</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <p class="card-text"><?= $status ?></p>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Status Transaksi</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <p class="card-text"><?= $selesai ?></p>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <p class="list-inline-item">Total</p>
         </div>
-        <div class="col-8">
+        <div class="col-7">
           <div class="list-inline-item">
             <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
           </div>

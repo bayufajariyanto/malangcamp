@@ -942,9 +942,9 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function peminjaman_selesai($id)
+    public function peminjaman_selesai($username)
     {
-        $peminjaman = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $peminjaman = $this->db->get_where('pesanan', ['username' => $username])->row_array();
         $barang = $this->db->get_where('barang', ['id' => $peminjaman['id_barang']])->row_array();
         $sehari = 60*60*24;
         if($peminjaman['batas_kembali']< time()){
@@ -969,7 +969,7 @@ class Admin extends CI_Controller
             'selesai' => 1
         ];
         $this->db->update('barang', $dataBarang, ['id' => $peminjaman['id_barang']]);
-        $this->db->update('pesanan', $data, ['id' => $id]);
+        $this->db->update('pesanan', $data, ['username' => $username]);
         redirect('admin/peminjaman');
     }
 

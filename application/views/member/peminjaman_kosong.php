@@ -19,7 +19,7 @@ function rupiah($angka)
         <div class="card-body container-fluid text-center">
           <img src="<?= base_url('assets/img/') ?>empty_data.svg" alt="empty data" width="300" class="img-fluid mx-auto d-block my-5">
           <h3 class="font-weight-bold">Data tidak ada</h3>
-          <p>Peralatan trekking masih banyak. Yuk, pesan!</p>
+          <p>Masih banyak lokasi wisata yang belum pernah kamu kunjungi lho<br>Kuy eksplorasi !</p>
           <a href="<?= base_url('member/') ?>" class="btn btn-success my-5">Cari Barangmu</a>
         </div>
       </div>

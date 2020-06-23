@@ -18,9 +18,9 @@ function rupiah($angka)
       <div class="card card-outline-secondary my-4 p-5">
         <div class="card-body container-fluid text-center">
           <img src="<?= base_url('assets/img/') ?>empty_data.svg" alt="empty data" width="300" class="img-fluid mx-auto d-block my-5">
-          <h3 class="font-weight-bold">Data tidak ada</h3>
-          <p>Peralatan trekking masih banyak. Yuk, pesan!</p>
-          <a href="<?= base_url('member/') ?>" class="btn btn-success my-5">Cari Barangmu</a>
+          <h3 class="font-weight-bold">Kamu belum pernah sewa nih</h3>
+          <p>Indonesia banyak wisata loh! Yakin gamau eksplor?<br>Ajak temanmu untuk berjelajah nusantara</p>
+          <a href="<?= base_url('member/') ?>" class="btn btn-success my-5">Cari Alat Outdoormu</a>
         </div>
       </div>
     </div>
