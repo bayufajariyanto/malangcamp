@@ -12,6 +12,7 @@ class Admin extends CI_Controller
 
     public function index()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
@@ -461,6 +462,7 @@ class Admin extends CI_Controller
 
     public function profile()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Profile';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $this->load->view('templates/header', $data);
@@ -472,6 +474,7 @@ class Admin extends CI_Controller
 
     public function member()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Member';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
@@ -509,6 +512,7 @@ class Admin extends CI_Controller
 
     public function member_detail($id)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Detail Member';
 
         $data['user'] = $this->db->get_where('user', ['id' => $id])->row_array();
@@ -521,6 +525,7 @@ class Admin extends CI_Controller
 
     public function member_edit($id)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Edit Member';
 
         $data['user'] = $this->db->get_where('user', ['id' => $id])->row_array();
@@ -594,6 +599,7 @@ class Admin extends CI_Controller
 
     public function member_hapus($id)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['user'] = $this->db->get_where('user', ['id' => $id])->row_array();
         $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Member ' . $data['user']['username'] . ' berhasil dihapus!</div>');
         $this->db->delete('user', array('id' => $id));
@@ -603,6 +609,7 @@ class Admin extends CI_Controller
     // Barang
     public function barang()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Barang';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['barang'] = $this->db->get('barang')->result_array();
@@ -634,6 +641,7 @@ class Admin extends CI_Controller
 
     public function barang_edit($id)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Edit Barang';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['barang'] = $this->db->get_where('barang', ['id' => $id])->row_array();
@@ -663,6 +671,7 @@ class Admin extends CI_Controller
 
     public function barang_hapus($id)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['barang'] = $this->db->get_where('barang', ['id' => $id])->row_array();
         $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Barang ' . $data['barang']['nama'] . ' berhasil dihapus!</div>');
         $this->db->delete('barang', ['id' => $id]);
@@ -671,6 +680,7 @@ class Admin extends CI_Controller
 
     public function pesanan()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['username'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
@@ -785,6 +795,7 @@ class Admin extends CI_Controller
 
     public function pesanan_batal($username)
     {
+        $data['select'] = $this->uri->segment(2);
         $pesanan = $this->db->get_where('pesanan', ['username' => $username])->result_array();
         $jumlah = $pesanan['jumlah_barang'];
         $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
@@ -799,6 +810,7 @@ class Admin extends CI_Controller
     
     public function pesanan_konfirmasi($username)
     {
+        $data['select'] = $this->uri->segment(2);
         $pesanan = $this->db->get_where('pesanan', ['username' => $username])->result_array();
         $sehari = 60*60*24;
         $hari = (int)date('d', $pesanan['batas_kembali'])-(int)date('d', $pesanan['tanggal_order']);
@@ -815,6 +827,7 @@ class Admin extends CI_Controller
 
     public function pesanan_detail($username)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Detail Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         // $data['username'] = $this->db->get_where('user', ['role_id' => 2])->row_array();
@@ -850,6 +863,7 @@ class Admin extends CI_Controller
 
     public function peminjaman()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Peminjaman';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         // $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
@@ -904,6 +918,7 @@ class Admin extends CI_Controller
 
     public function peminjaman_detail($username)
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Peminjaman';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
@@ -944,6 +959,7 @@ class Admin extends CI_Controller
 
     public function peminjaman_selesai($username)
     {
+        $data['select'] = $this->uri->segment(2);
         $peminjaman = $this->db->get_where('pesanan', ['username' => $username])->row_array();
         $barang = $this->db->get_where('barang', ['id' => $peminjaman['id_barang']])->row_array();
         $sehari = 60*60*24;
@@ -975,6 +991,7 @@ class Admin extends CI_Controller
 
     public function transaksi()
     {
+        $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1])->result_array();
