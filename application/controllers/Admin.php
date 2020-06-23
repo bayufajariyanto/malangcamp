@@ -716,13 +716,13 @@ class Admin extends CI_Controller
         $id_user = $this->db->get_where('user', ['username' => $username])->row_array();
         // hapus pesanan ketika sudah melewati 1 jam
         $sejam = 60*60;
-        foreach($pesanan as $p):
-            $order = $p['tanggal_order'] + $sejam;
-            if($order<time()){
-                $url = base_url('admin/pesanan_batal/'.$p['id']);
-                redirect($url);
-            }
-        endforeach;
+        // foreach($pesanan as $p):
+        //     $order = $p['tanggal_order'] + $sejam;
+        //     if($order<time()){
+        //         $url = base_url('admin/pesanan_batal/'.$p['id']);
+        //         redirect($url);
+        //     }
+        // endforeach;
         // var_dump($data['pesanan']);die;
 
         if ($this->form_validation->run('pesanan') == false) {
@@ -783,9 +783,9 @@ class Admin extends CI_Controller
         }
     }
 
-    public function pesanan_batal($id)
+    public function pesanan_batal($username)
     {
-        $pesanan = $this->db->get_where('pesanan', ['id' => $id])->row_array();
+        $pesanan = $this->db->get_where('pesanan', ['username' => $username])->result_array();
         $jumlah = $pesanan['jumlah_barang'];
         $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
         $jumlah = $barang['stok']+$jumlah;
@@ -793,11 +793,11 @@ class Admin extends CI_Controller
             'stok' => $jumlah
         ];
         $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
-        $this->db->delete('pesanan', ['id' => $id]);
+        $this->db->delete('pesanan', ['username' => $username]);
         redirect('admin/pesanan');
     }
     
-    public function pesanan_konfirmasi($id)
+    public function pesanan_konfirmasi($username)
     {
         $data = [
             'tanggal_sewa' => time(),
@@ -805,25 +805,37 @@ class Admin extends CI_Controller
             'status' => 1,
             'konfirmasi' => 1
         ];
-        $this->db->update('pesanan', $data, ['id' => $id]);
+        $this->db->update('pesanan', $data, ['username' => $username]);
         redirect('admin/pesanan');
     }
 
-    public function pesanan_detail($id)
+    public function pesanan_detail($username)
     {
         $data['title'] = 'Detail Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['username'] = $this->db->get_where('user', ['role_id' => 2])->row_array();
+        // $data['username'] = $this->db->get_where('user', ['role_id' => 2])->row_array();
         $this->load->model('Pesanan_model', 'barang');
-        $data['pesanan'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
-        $idBarang = $data['pesanan']['id_barang'];
-        $usernama = $data['pesanan']['username'];
-        $data['barang'] = $this->barang->getBarangById($idBarang);
-        $data['nama'] = $this->db->get_where('user', ['username' => $usernama])->row_array();
-        if ($data['pesanan']['status'] == 1) {
-            $data['lunas'] = 'Lunas';
+        $data['baris'] = $this->db->get_where('pesanan', ['username' => $username])->row_array();
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
+        $data['pesanan'] = $this->db->get_where('pesanan', ['username' => $username])->result_array();
+        $total = 0;
+        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_order']));
+
+        foreach($data['pesanan'] as $p){
+            
+            $total = $total+($p['harga']*$p['jumlah_barang']);
+        }
+        $data['total'] = $total*$data['durasi'];
+        // $idBarang = $data['pesanan']['id_barang'];
+        // $usernama = $data['pesanan']['username'];
+        // $data['barang'] = $this->barang->getBarangById($idBarang);
+        $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
+        if ($data['baris']['status'] == 1 && $data['baris']['selesai'] == 1) {
+            $data['status'] = 'Lunas';
+            $data['selesai'] = 'Selesai';
         } else {
-            $data['lunas'] = 'Belum Lunas';
+            $data['status'] = 'Belum Lunas';
+            $data['selesai'] = 'Belum Selesai';
         }
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');

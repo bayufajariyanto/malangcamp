@@ -1,139 +1,165 @@
-<?php 
+<?php
 function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
-if($pesanan['tanggal_bayar']>1){
-    $tbayar = date('d F Y | H:i:s', $pesanan['tanggal_bayar']);
-}else{
-    $tbayar = '-';
-}
+// if($baris['konfirmasi'] == 1){
+//     $konfirmasi = 'Sudah dibayar';
+// }else{
+//     $konfirmasi = 'Belum dibayar';
+// }
+
+// if($baris['selesai'] == 1){
+//     $selesai = 'Selesai';
+// }else{
+//     $selesai = 'Belum Selesai';
+// }
 ?>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container">
 
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
 
-    </div>
-    <!-- Button trigger modal -->
-    <!-- Modal -->
-    <div class="modal fade mt-5" id="konfirmasi" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <?php
-
-                ?>
-                <form method="post" action="<?= base_url('admin/pesanan_konfirmasi'); ?>">
-                    <div class="modal-body">
-                        <p>Apakah member sudah membayar lunas?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Konfirmasi</button>
-                    </div>
-                </form>
-            </div>
+  </div>
+  <!-- Button trigger modal -->
+  <div class="card">
+    <div class="card-body container-fluid">
+      <br>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Kode Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title"><?= $baris['kode_transaksi'] ?></h5>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Nama</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $nama['nama'] ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Tanggal Order</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?> <strong>(<?= $durasi ?> hari)</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Status Pembayaran</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $status ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Status Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $selesai ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Total</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <p class="col-sm-2">Tanggal Order</p>
+        <div class="col-sm-10">
+          <p class="card-text">Ini data</p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Tanggal Pembayaran</p>
+        <div class="col-sm-10">
+          <p class="card-text">Ini data</p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Status Pembayaran</p>
+        <div class="col-sm-10">
+          <p class="card-text">Ini data</p>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Status Transaksi</p>
+        <div class="col-sm-10">
+          <p class="card-text">Ini data</p>
+        </div>
+      </div> -->
+      <br>
+      <div class="row mx-1">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <?php
+                foreach($pesanan as $p) :
+              ?>
+              <tr>
+                <td><?= $p['nama'] ?></td>
+                <td><?= $p['jumlah_barang'] ?></td>
+                <td>Rp <?= rupiah($p['harga']) ?></td>
+                <td>Rp <?= rupiah($p['harga']*$p['jumlah_barang']) ?></td><!-- qty*harga -->
+              </tr>
+              <?php
+              endforeach;
+              ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+        <div class="text-center">
+            <a href="<?= base_url() ?>admin/pesanan" class="btn btn-sm btn-secondary">Kembali</a>
+            <a href="<?= base_url('admin/pesanan_konfirmasi/'.$baris['username']) ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Konfirmasi</a>
+            <a href="<?= base_url() ?>admin/pesanan_batal/<?= $baris['username'] ?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm tombol-batal">Batalkan</a>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade mt-5" id="batal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+  </div>
 
-                <?php
-
-                ?>
-                <form method="post" action="<?= base_url('admin/batal_pesanan'); ?>">
-                    <div class="modal-body">
-                        <p>Apakah anda yakin membatalkan pesanan?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-danger">Batalkan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <br>
-            <div class="row">
-                <p class="col-sm-2">Kode Transaksi</p>
-                <div class="col-sm-10">
-                    <h5 class="card-title"><?= $pesanan['kode_transaksi'] ?></h5>
-                </div>
-            </div>
-            <div class="row">
-                <p class="col-sm-2">Nama Member</p>
-                <div class="col-sm-10">
-                    <h5 class="card-title"><?= $nama['nama'] ?></h5>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <p class="col-sm-2">Nama Barang</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= $barang['nama'] ?></p>
-                </div>
-            </div>
-            <div class="row">
-                <p class="col-sm-2">Jumlah Barang</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= $pesanan['jumlah_barang'] ?></p>
-                </div>
-            </div>
-            <div class="row">
-                <p class="col-sm-2">Tanggal Order</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['tanggal_order']) ?></p>
-                </div>
-            </div>
-            <div class="row">
-                <p class="col-sm-2">Batas Pengembalian</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= date('d F Y | H:i:s', $pesanan['batas_kembali']) ?></p>
-                </div>
-            </div>
-            <div class="row">
-                <p class="col-sm-2">Tanggal Bayar</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><?= $tbayar; ?></p>
-                </div>
-            </div>
-
-            <br>
-            <div class="row">
-                <p class="col-sm-2">Total</p>
-                <div class="col-sm-10">
-                    <p class="card-text"><small class="text-muted">Rp <?= rupiah($pesanan['total']) ?> <strong>(<?= $lunas ?>)</strong></small></p>
-                </div>
-            </div>
-            <br>
-            <div class="text-center">
-                <a href="<?= base_url() ?>admin/pesanan" class="btn btn-sm btn-secondary">Kembali</a>
-                <a href="<?= base_url('admin/pesanan_konfirmasi/'.$pesanan['id']) ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Konfirmasi</a>
-                <a href="<?= base_url() ?>admin/pesanan_batal/<?= $pesanan['id'] ?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm tombol-batal">Batalkan</a>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- /.container-fluid -->
+
 </div>
 <!-- End of Main Content -->
