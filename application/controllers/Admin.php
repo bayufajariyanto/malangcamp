@@ -580,7 +580,10 @@ class Admin extends CI_Controller
             $this->load->view('admin/member_edit');
             $this->load->view('templates/footer');
         } else {
-
+            $user = $this->db->get_where('user', ['id' => $id])->row_array();
+            $datapesanan = [
+                'username' => $username
+            ];
             $data = [
                 'username' => $username,
                 // 'password' => password_hash($password, PASSWORD_DEFAULT),
@@ -590,6 +593,7 @@ class Admin extends CI_Controller
                 'alamat' => $alamat,
                 'telp' => $telp
             ];
+            $this->db->update('pesanan', $datapesanan, ['username' => $user['username']]);
             $this->db->update('user', $data, ['id' => $id]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Member
             ' . $data['user']['username'] . ' berhasil diubah!</div>');

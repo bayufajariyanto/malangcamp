@@ -25,7 +25,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" class="form-control" name="username" id="username" value="<?= set_value('username'); ?>" placeholder="Username anda...">
+              <input type="text" class="form-control" name="username" id="username" value="<?= set_value('username'); ?>" placeholder="Username member ...">
               <?= form_error('username', '<small class="text-danger pl-2">', '</small>') ?>
             </div>
             <div class="form-group">

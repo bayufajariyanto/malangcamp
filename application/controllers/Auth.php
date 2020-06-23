@@ -13,7 +13,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username harus diisi!'
         ]);
-        $this->form_validation->set_rules('password', 'Password', 'trim|required', [
+        $this->form_validation->set_rules('password', 'Password', 'required', [
             'required' => 'Password harus diisi!'
         ]);
         if ($this->form_validation->run() == false) {

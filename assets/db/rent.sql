@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Jun 2020 pada 08.33
+-- Waktu pembuatan: 23 Jun 2020 pada 13.04
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.3
 
@@ -42,7 +42,7 @@ CREATE TABLE `barang` (
 
 INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (2, 'Tenda Double Layer Kap 3-4 org', 'Tenda', 19000, 3),
-(3, 'Tenda Bestway Kap 4-5 org', 'Tenda', 22000, 4),
+(3, 'Tenda Bestway Kap 4-5 org', 'Tenda', 22000, 5),
 (4, 'Tenda Consina Kap 3-4 org', 'Tenda', 25000, 3),
 (5, 'Tenda Great Outdoor Kap 4-5 org', 'Tenda', 25000, 3),
 (6, 'Tenda Dhaulagiri Kap 3-4 org Ultralight', 'Tenda', 30000, 3),
@@ -52,9 +52,9 @@ INSERT INTO `barang` (`id`, `nama`, `kategori`, `harga`, `stok`) VALUES
 (10, 'Tas Carrier 60 L', 'Carrier', 10000, 3),
 (12, 'Cover Bag', 'Other', 2500, 3),
 (13, 'Sepatu Trekking', 'Sepatu', 15000, 3),
-(14, 'Sandal Trekking', 'Sandal', 5000, 3),
+(14, 'Sandal Trekking', 'Sandal', 5000, 1),
 (15, 'Hammock', 'Other', 5000, 3),
-(16, 'Jacket', 'Jacket', 10000, 3),
+(16, 'Jacket', 'Jacket', 10000, 2),
 (17, 'Flysheet', 'Other', 7500, 3),
 (18, 'Sarung Tangan Polar', 'Other', 4000, 3),
 (19, 'Kompor Lapang', 'Cooking Set', 5000, 3),
@@ -160,10 +160,12 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `kode_transaksi`, `username`, `id_barang`, `tanggal_order`, `tanggal_sewa`, `batas_kembali`, `tanggal_kembali`, `tanggal_bayar`, `jumlah_barang`, `denda`, `total`, `status`, `konfirmasi`, `selesai`) VALUES
-(22, 'BAY-2006230940094', 'bayufajariyanto', 3, 1592880009, 1592882048, 1593052809, 1592889886, 1592882048, 1, 0, 44000, 1, 1, 1),
-(23, 'AHM-2006231037467', 'ahmadzulfikar', 12, 1592883466, 1592883667, 1593056266, 0, 1592883667, 2, 0, 10000, 1, 1, 0),
-(24, 'AHM-2006231037467', 'ahmadzulfikar', 6, 1592883466, 1592883667, 1593056266, 0, 1592883667, 1, 0, 60000, 1, 1, 0),
-(25, 'AHM-2006231037467', 'ahmadzulfikar', 26, 1592883466, 1592883667, 1593056266, 0, 1592883667, 1, 0, 8000, 1, 1, 0);
+(22, 'BAY-2006230940094', 'bayufajariyanto', 3, 1592880009, 1592894188, 1593052809, 1592894258, 1592894188, 1, 0, 44000, 1, 1, 1),
+(23, 'AHM-2006231037467', 'ahmadzulfikarrizaldi', 12, 1592883466, 1592883667, 1593056266, 0, 1592883667, 2, 0, 10000, 1, 1, 0),
+(24, 'AHM-2006231037467', 'ahmadzulfikarrizaldi', 6, 1592883466, 1592883667, 1593056266, 0, 1592883667, 1, 0, 60000, 1, 1, 0),
+(25, 'AHM-2006231037467', 'ahmadzulfikarrizaldi', 26, 1592883466, 1592883667, 1593056266, 0, 1592883667, 1, 0, 8000, 1, 1, 0),
+(26, 'BAY-2006231335494', 'bayufajariyanto', 14, 1592894149, 1592894188, 1593066949, 1592894258, 1592894188, 2, 0, 20000, 1, 1, 1),
+(27, 'BAY-2006231335494', 'bayufajariyanto', 16, 1592894149, 1592894188, 1593066949, 1592894258, 1592894188, 1, 0, 20000, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -210,9 +212,9 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `username`, `password`, `nama`, `no_kitas`, `jenis_kitas`, `alamat`, `telp`, `date_created`, `role_id`) VALUES
 (1, 'admin', '1234', 'Admin', '', '', '', '', 1585144105, 1),
 (4, 'bayufajariyanto', '$2y$10$UrJvWuSHG.ZhRWNvOLw4jOh/Y08Wt5/mEl.OEwvpFi2ZByWjpLC0G', 'Bayu Fajariyanto', '1731710033', 'KTM', 'Pasuruan Jawa Timur', '083851350939', 1585816190, 2),
-(5, 'anandanurj', '$2y$10$NJC78efYLrEq5Y.tTASfFO3gMZq1o38lIiHis6qhsBw6d8uSkqh2m', 'Ananda Nur Juliansyah', '1731710100', 'KTM', 'Surabaya Jawa Timur', '085257256782', 1585830779, 2),
+(5, 'anandanurjuliansyah', '$2y$10$NJC78efYLrEq5Y.tTASfFO3gMZq1o38lIiHis6qhsBw6d8uSkqh2m', 'Ananda Nur Juliansyah', '1731710100', 'KTM', 'Surabaya Jawa Timur', '085257256782', 1585830779, 2),
 (6, 'dellyagus', '$2y$10$Wc0wJYhiGm9fJ0gPa5qbpeP7XEnjMKMmjdl2oSYzBU1IKnY/q9gWa', 'Delly Agus Prasetyo', '1731710174', 'KTP', 'Pujon, Jawa Timur', '085964112370', 1586486110, 2),
-(7, 'ahmadzulfikar', '$2y$10$qMkD2rOo3zMGhCpJdTgm1uDnMFQc8prXJC5EtKH29chRloT3UupOu', 'Ahmad Zulfikar Rizaldi', '1731710171', 'KTM', 'Bojonegoro', '085790651005', 1589100996, 2);
+(7, 'ahmadzulfikarrizaldi', '$2y$10$qMkD2rOo3zMGhCpJdTgm1uDnMFQc8prXJC5EtKH29chRloT3UupOu', 'Ahmad Zulfikar Rizaldi', '1731710171', 'KTM', 'Bojonegoro', '085790651005', 1589100996, 2);
 
 --
 -- Indexes for dumped tables
@@ -280,7 +282,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
@@ -292,7 +294,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`

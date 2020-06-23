@@ -98,7 +98,7 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
         </div>
         <div class="col-7">
           <div class="list-inline-item">
-            <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
+            <h5 class="card-title"><small>Rp</small> <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
           </div>
         </div>
       </div>
