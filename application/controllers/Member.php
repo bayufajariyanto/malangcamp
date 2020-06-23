@@ -127,11 +127,13 @@ class Member extends CI_Controller
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
         // var_dump($data['pesanan']);die;
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->row_array();
+        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_order']));
         $total = 0;
-        foreach($data['pesanan'] as $p):
+        foreach($data['pesanan'] as $p){
+            
             $total = $total+($p['harga']*$p['jumlah_barang']);
-        endforeach;
-        $data['total'] = $total;
+        }
+        $data['total'] = $total*$data['durasi'];
         
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
@@ -437,8 +439,33 @@ class Member extends CI_Controller
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Sedang Disewa';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
-
+        $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->row_array();
+        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
+        $total = 0;
+        // var_dump($data['baris']['tanggal_order']);die;
+        if($data['peminjaman']!=null){
+            if($data['baris']['batas_kembali']< time()){
+                $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+                $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+                $data['denda'] = ($peminjaman['total']*$hariTerlambat);
+                // $total = $denda+$peminjaman['total'];
+                // var_dump();die;
+            }else{
+                $data['batas'] = '(Belum Terlambat)';
+                $data['denda'] = 0;
+            }
+            if($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0){
+                $data['konfirmasi'] = 'Lunas';
+            }else{
+                $data['konfirmasi'] = 'Belum dibayar';
+            }
+        }
+        foreach($data['peminjaman'] as $p):
+            $total = $total+($p['harga']*$p['jumlah_barang']);
+        endforeach;
+        $data['total'] = $total*$data['durasi'];
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);

@@ -60,6 +60,16 @@ if($baris['selesai'] == 1){
       </div>
       <div class="row">
         <div class="col-3">
+          <p class="list-inline-item">Durasi Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $durasi ?> hari</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
           <p class="list-inline-item">Status Pembayaran</p>
         </div>
         <div class="col-8">

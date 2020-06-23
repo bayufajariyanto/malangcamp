@@ -3,70 +3,148 @@ function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
+if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
+  $status = 'Berjalan';
+}else if($baris['selesai'] == 1) {
+  $status = 'Selesai';
+}
 ?>
+
 <!-- Begin Page Content -->
 <div class="container">
 
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+      <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
+
   </div>
-
-  <!-- Content Row -->
-
-
-  <!-- DataTales Example -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Data Peminjaman</h6>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th>Kode Transaksi</th>
-              <th>Username</th>
-              <th>Tanggal Order</th>
-              <th>Batas Kembali</th>
-              <th>Total Pembayaran</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th>Kode Transaksi</th>
-              <th>Username</th>
-              <th>Tanggal Order</th>
-              <th>Batas Kembali</th>
-              <th>Total Pembayaran</th>
-              <th>Aksi</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <?php foreach ($peminjaman as $p) :
-              if ($p['status'] == 1) {
-                $status = 'Lunas';
-              } else {
-                $status = 'Belum Lunas';
-              }
-            ?>
-              <tr>
-                <td><?= $p['kode_transaksi'] ?></td>
-                <td><?= $p['username'] ?></td>
-                <td><?= date('d F Y', $p['tanggal_order']) ?></td>
-                <td><?= date('d F Y', $p['batas_kembali']) ?></td>
-                <td>Rp <?= rupiah($p['total']) ?></td>
-                <td><a href="<?= base_url('member/peminjaman_detail/'.$p['id']) ?>" class="btn btn-primary">Detail</a></td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+  <!-- Button trigger modal -->
+  <div class="card">
+    <div class="card-body container-fluid">
+      <br>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Kode Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title"><?= $baris['kode_transaksi'] ?></h5>
+          </div>
+        </div>
       </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Nama</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $user['nama'] ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Tanggal Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item text-wrap" style="max-width: 60px;">Batas Pengembalian</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['batas_kembali']) ?> <?= $batas ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Durasi Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $durasi ?> hari</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Status Pembayaran</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $konfirmasi ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Status Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $status ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Total</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row mx-1">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <?php
+                foreach($peminjaman as $p) :
+              ?>
+              <tr>
+                <td><?= $p['nama'] ?></td>
+                <td><?= $p['jumlah_barang'] ?></td>
+                <td>Rp <?= rupiah($p['harga']) ?></td>
+                <td>Rp <?= rupiah($p['jumlah_barang']*$p['harga']) ?></td><!-- qty*harga -->
+              </tr>
+              <?php
+              endforeach;
+              ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <!-- <div class="text-left"> -->
+        <a href="<?= base_url() ?>member/peminjaman" class="btn btn-sm btn-secondary">Kembali</a>
+      <!-- </div> -->
     </div>
   </div>
-  <!-- Content Row -->
 
 </div>
 <!-- /.container-fluid -->

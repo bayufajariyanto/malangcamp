@@ -5,11 +5,11 @@ function rupiah($angka)
 }
 
 foreach($pesanan as $p):
-  if($p['tanggal_order']+$sejam<time() && $p['status'] != 1){
-    redirect(base_url('admin/pesanan_batal/'.$p['id']));
+  if($p['tanggal_order']+$sejam<time() && $p['status'] != 1 && $p['konfirmasi'] == 0){
+    redirect(base_url('admin/pesanan_batal/'.$p['username']));
   }
-  if($p['tanggal_sewa'] <= time() && $p['status'] == 1){
-    redirect(base_url('admin/pesanan_konfirmasi/'.$p ['id']));
+  if($p['tanggal_sewa'] <= time() && $p['status'] == 1 && $p['konfirmasi'] == 0){
+    redirect(base_url('admin/pesanan_konfirmasi/'.$p ['username']));
   }
 endforeach;
 ?>

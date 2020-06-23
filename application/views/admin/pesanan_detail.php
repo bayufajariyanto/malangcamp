@@ -54,7 +54,17 @@ function rupiah($angka)
         </div>
         <div class="col-8">
           <div class="list-inline-item">
-            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?> <strong>(<?= $durasi ?> hari)</strong></p>
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="list-inline-item">Durasi Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $durasi ?> hari</p>
           </div>
         </div>
       </div>

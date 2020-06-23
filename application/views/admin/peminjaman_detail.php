@@ -3,110 +3,146 @@ function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
-if ($peminjaman['selesai'] == 0) {
+if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
   $status = 'Berjalan';
-} else if ($peminjaman['selesai'] == 1) {
+}else if($baris['selesai'] == 1) {
   $status = 'Selesai';
 }
-$sehari = 60*60*24;
-$batas = '';
-// var_dump
-if($peminjaman['batas_kembali']< time()){
-  $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
-  $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
-  $denda = ($peminjaman['total']*$hariTerlambat);
-  // $total = $denda+$peminjaman['total'];
-  // var_dump();die;
-}else{
-  $batas = '(Belum Terlambat)';
-  $denda = 0;
-}
 ?>
+
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container">
 
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Detail <?= $title ?></h1>
+      <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
+
   </div>
   <!-- Button trigger modal -->
-  <?= $this->session->flashdata('message'); ?>
-
-  <div class="card w-100">
-    <div class="card-body">
+  <div class="card">
+    <div class="card-body container-fluid">
       <br>
       <div class="row">
-        <p class="col-sm-2">Kode Transaksi</p>
-        <div class="col-sm">
-          <h5 class="card-title"><?= $peminjaman['kode_transaksi'] ?></h5>
+        <div class="col-3">
+          <p class="list-inline-item">Kode Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title"><?= $baris['kode_transaksi'] ?></h5>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Nama Member</p>
-        <div class="col-sm">
-          <h5 class="card-title"><?= $nama['nama'] ?></h5>
+        <div class="col-3">
+          <p class="list-inline-item">Nama</p>
         </div>
-      </div>
-      <hr>
-      <div class="row">
-        <p class="col-sm-2">Nama Barang</p>
-        <div class="col-sm">
-          <p class="card-text"><?= $barang['nama'] ?> (<?= $barang['kategori'] ?>)</p>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $member['nama'] ?></p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Jumlah Barang</p>
-        <div class="col-sm">
-          <p class="card-text"><?= $peminjaman['jumlah_barang'] ?></p>
+        <div class="col-3">
+          <p class="list-inline-item">Tanggal Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_order']) ?></p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Tanggal Order</p>
-        <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_order']) ?></p>
+        <div class="col-3">
+          <p class="list-inline-item text-wrap" style="max-width: 60px;">Batas Pengembalian</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= date('d M Y | H:i:s', $baris['batas_kembali']) ?> <?= $batas ?></p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Tanggal Sewa</p>
-        <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_sewa']) ?></p>
+        <div class="col-3">
+          <p class="list-inline-item">Durasi Sewa</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $durasi ?> hari</p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Total Pembayaran</p>
-        <div class="col-sm">
-          <p class="card-text">Rp <?= rupiah($peminjaman['total']) ?></p>
+        <div class="col-3">
+          <p class="list-inline-item">Status Pembayaran</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $konfirmasi ?></p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Tanggal Pembayaran</p>
-        <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['tanggal_bayar']) ?></p>
+        <div class="col-3">
+          <p class="list-inline-item">Status Transaksi</p>
+        </div>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <p class="card-text"><?= $status ?></p>
+          </div>
         </div>
       </div>
       <div class="row">
-        <p class="col-sm-2">Batas Pengembalian</p>
-        <div class="col-sm">
-          <p class="card-text"><?= date('d F Y | H:i:s', $peminjaman['batas_kembali']) ?> <?= $batas ?></p>
+        <div class="col-3">
+          <p class="list-inline-item">Total</p>
         </div>
-      </div>
-      <div class="row">
-        <p class="col-sm-2">Denda</p>
-        <div class="col-sm">
-          <p class="card-text">Rp <?= rupiah($denda) ?></p>
-        </div>
-      </div>
-      <div class="row">
-        <p class="col-sm-2">Status Transaksi</p>
-        <div class="col-sm">
-          <p class="card-text"><?= $status ?></p>
+        <div class="col-8">
+          <div class="list-inline-item">
+            <h5 class="card-title">Rp <?= rupiah($total) ?></h5><!-- Jumlah semua sub total -->
+          </div>
         </div>
       </div>
       <br>
-      <div class="text-center">
-        <a href="<?= base_url('admin/peminjaman') ?>" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Kembali</a>
-        <a href="<?= base_url() ?>admin/peminjaman_selesai/<?= $peminjaman['id'] ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selesai</a>
+      <div class="row mx-1">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <?php
+                foreach($peminjaman as $p) :
+              ?>
+              <tr>
+                <td><?= $p['nama'] ?></td>
+                <td><?= $p['jumlah_barang'] ?></td>
+                <td>Rp <?= rupiah($p['harga']) ?></td>
+                <td>Rp <?= rupiah($p['jumlah_barang']*$p['harga']) ?></td><!-- qty*harga -->
+              </tr>
+              <?php
+              endforeach;
+              ?>
+            </tbody>
+          </table>
+        </div>
       </div>
+      <br>
+      <!-- <div class="text-left"> -->
+        <a href="<?= base_url() ?>admin/peminjaman" class="btn btn-sm btn-secondary">Kembali</a>
+      <!-- </div> -->
     </div>
   </div>
 
