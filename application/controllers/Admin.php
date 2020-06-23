@@ -512,7 +512,7 @@ class Admin extends CI_Controller
 
     public function member_detail($id)
     {
-        $data['select'] = $this->uri->segment(2);
+        $data['select'] = 'member';
         $data['title'] = 'Detail Member';
 
         $data['user'] = $this->db->get_where('user', ['id' => $id])->row_array();
@@ -688,12 +688,9 @@ class Admin extends CI_Controller
         $data['title'] = 'Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['username'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
-        // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
-        // $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
         $this->db->distinct();
         $this->db->group_by('username');
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
-        // $total = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $pesanan = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
@@ -728,16 +725,6 @@ class Admin extends CI_Controller
         $barang = $this->db->get_where('barang', ['id' => $id_barang])->row_array();
         $tbayar = 0;
         $id_user = $this->db->get_where('user', ['username' => $username])->row_array();
-        // hapus pesanan ketika sudah melewati 1 jam
-        $sejam = 60*60;
-        // foreach($pesanan as $p):
-        //     $order = $p['tanggal_order'] + $sejam;
-        //     if($order<time()){
-        //         $url = base_url('admin/pesanan_batal/'.$p['id']);
-        //         redirect($url);
-        //     }
-        // endforeach;
-        // var_dump($data['pesanan']);die;
 
         if ($this->form_validation->run('pesanan') == false) {
             $this->load->view('templates/header', $data);
@@ -797,10 +784,10 @@ class Admin extends CI_Controller
         }
     }
 
-    public function pesanan_batal($username)
+    public function pesanan_batal($kode_transaksi)
     {
         $data['select'] = $this->uri->segment(2);
-        $pesanan = $this->db->get_where('pesanan', ['username' => $username])->result_array();
+        $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $jumlah = $pesanan['jumlah_barang'];
         $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
         $jumlah = $barang['stok']+$jumlah;
@@ -808,14 +795,14 @@ class Admin extends CI_Controller
             'stok' => $jumlah
         ];
         $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
-        $this->db->delete('pesanan', ['username' => $username]);
+        $this->db->delete('pesanan', ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/pesanan');
     }
     
-    public function pesanan_konfirmasi($username)
+    public function pesanan_konfirmasi($kode_transaksi)
     {
         $data['select'] = $this->uri->segment(2);
-        $pesanan = $this->db->get_where('pesanan', ['username' => $username])->result_array();
+        $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $sehari = 60*60*24;
         $hari = (int)date('d', $pesanan['batas_kembali'])-(int)date('d', $pesanan['tanggal_order']);
         $durasi = (int)date('d', $pesanan['tanggal_sewa'])+($hari*$sehari);
@@ -825,22 +812,23 @@ class Admin extends CI_Controller
             'status' => 1,
             'konfirmasi' => 1
         ];
-        $this->db->update('pesanan', $data, ['username' => $username]);
+        $this->db->update('pesanan', $data, ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/pesanan');
     }
 
-    public function pesanan_detail($username)
+    public function pesanan_detail($kode_transaksi)
     {
-        $data['select'] = $this->uri->segment(2);
+        $data['select'] = 'pesanan';
         $data['title'] = 'Detail Pesanan';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         // $data['username'] = $this->db->get_where('user', ['role_id' => 2])->row_array();
         $this->load->model('Pesanan_model', 'barang');
-        $data['baris'] = $this->db->get_where('pesanan', ['username' => $username])->row_array();
+        $data['baris'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
+        $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
-        $data['pesanan'] = $this->db->get_where('pesanan', ['username' => $username])->result_array();
+        $data['pesanan'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $total = 0;
-        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_order']));
+        $data['durasi'] = ((int)date('d', $data['baris']['batas_kembali']) - (int)date('d', $data['baris']['tanggal_order']));
 
         foreach($data['pesanan'] as $p){
             
@@ -850,7 +838,7 @@ class Admin extends CI_Controller
         // $idBarang = $data['pesanan']['id_barang'];
         // $usernama = $data['pesanan']['username'];
         // $data['barang'] = $this->barang->getBarangById($idBarang);
-        $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
+        // $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
         if ($data['baris']['status'] == 1 && $data['baris']['selesai'] == 1) {
             $data['status'] = 'Lunas';
             $data['selesai'] = 'Selesai';
@@ -920,16 +908,16 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function peminjaman_detail($username)
+    public function peminjaman_detail($kode_transaksi)
     {
-        $data['select'] = $this->uri->segment(2);
+        $data['select'] = 'peminjaman';
         $data['title'] = 'Peminjaman';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
-        $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $username])->result_array();
+        $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'kode_transaksi' => $kode_transaksi])->result_array();
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
-        $data['member'] = $this->db->get_where('user', ['username' => $username])->row_array();
-        $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $username])->row_array();
+        $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'kode_transaksi' => $kode_transaksi])->row_array();
+        $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
         $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
         $total = 0;
         // var_dump($data['baris']['tanggal_order']);die;
@@ -961,10 +949,10 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function peminjaman_selesai($username)
+    public function peminjaman_selesai($kode_transaksi)
     {
         $data['select'] = $this->uri->segment(2);
-        $peminjaman = $this->db->get_where('pesanan', ['username' => $username])->row_array();
+        $peminjaman = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
         $barang = $this->db->get_where('barang', ['id' => $peminjaman['id_barang']])->row_array();
         $sehari = 60*60*24;
         if($peminjaman['batas_kembali']< time()){
@@ -989,7 +977,7 @@ class Admin extends CI_Controller
             'selesai' => 1
         ];
         $this->db->update('barang', $dataBarang, ['id' => $peminjaman['id_barang']]);
-        $this->db->update('pesanan', $data, ['username' => $username]);
+        $this->db->update('pesanan', $data, ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/peminjaman');
     }
 
@@ -998,6 +986,8 @@ class Admin extends CI_Controller
         $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $this->db->distinct();
+        $this->db->group_by('kode_transaksi');
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1])->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
@@ -1006,13 +996,42 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function transaksi_detail($id){
+    public function transaksi_detail($kode_transaksi){
+        $data['select'] = 'transaksi';
         $data['title'] = 'Detail Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['transaksi'] = $this->db->get_where('pesanan', ['id' => $id])->row_array();
-        $username = $data['transaksi']['username'];
-        $data['nama'] = $this->db->get_where('user', ['username' => $username])->row_array();
-        $data['barang'] = $this->db->get_where('barang', ['id' => $data['transaksi']['id_barang']])->row_array();
+        $data['baris'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
+        
+        // $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
+        $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
+        $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->result_array();
+        // var_dump($data['transaksi']);die;
+        // $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->row_array();
+        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
+        $total = 0;
+        // var_dump($data['baris']['tanggal_order']);die;
+        if($data['transaksi']!=null){
+            if($data['baris']['batas_kembali']< time()){
+                $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+                $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+                $data['denda'] = ($peminjaman['total']*$hariTerlambat);
+                // $total = $denda+$peminjaman['total'];
+                // var_dump();die;
+            }else{
+                $data['batas'] = '';
+                $data['denda'] = 0;
+            }
+            if($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0){
+                $data['konfirmasi'] = 'Lunas';
+            }else{
+                $data['konfirmasi'] = 'Belum dibayar';
+            }
+        }
+        foreach($data['transaksi'] as $p):
+            $total = $total+($p['harga']*$p['jumlah_barang']);
+        endforeach;
+        $data['total'] = $total*$data['durasi'];
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);

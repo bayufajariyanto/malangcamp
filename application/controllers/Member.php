@@ -523,8 +523,8 @@ class Member extends CI_Controller
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
         $data['title'] = 'Detail Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        
         $data['baris'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
-
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->result_array();
         // var_dump($data['transaksi']);die;

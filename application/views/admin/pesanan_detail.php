@@ -44,7 +44,7 @@ function rupiah($angka)
         </div>
         <div class="col-7">
           <div class="list-inline-item">
-            <p class="card-text"><?= $nama['nama'] ?></p>
+            <p class="card-text"><?= $member['nama'] ?></p>
           </div>
         </div>
       </div>
@@ -162,8 +162,8 @@ function rupiah($angka)
       <br>
         <div class="text-center">
             <a href="<?= base_url() ?>admin/pesanan" class="btn btn-sm btn-secondary">Kembali</a>
-            <a href="<?= base_url('admin/pesanan_konfirmasi/'.$baris['username']) ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Konfirmasi</a>
-            <a href="<?= base_url() ?>admin/pesanan_batal/<?= $baris['username'] ?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm tombol-batal">Batalkan</a>
+            <a href="<?= base_url('admin/pesanan_konfirmasi/'.$baris['kode_transaksi']) ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Konfirmasi</a>
+            <a href="<?= base_url() ?>admin/pesanan_batal/<?= $baris['kode_transaksi'] ?>" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm tombol-batal">Batalkan</a>
         </div>
     </div>
   </div>

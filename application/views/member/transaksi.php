@@ -30,7 +30,6 @@ function rupiah($angka)
               <th>Username</th>
               <th>Tanggal Order</th>
               <th>Tanggal Kembali</th>
-              <th>Total</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -40,7 +39,6 @@ function rupiah($angka)
               <th>Username</th>
               <th>Tanggal Order</th>
               <th>Tanggal Kembali</th>
-              <th>Total</th>
               <th>Aksi</th>
             </tr>
           </tfoot>
@@ -57,7 +55,6 @@ function rupiah($angka)
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
                 <td><?= date('d F Y', $p['tanggal_kembali']) ?></td>
-                <td>Rp <?= rupiah($p['total']+$p['denda']) ?></td>
                 <td><a href="<?= base_url('member/transaksi_detail/'.$p['kode_transaksi']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>

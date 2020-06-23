@@ -142,7 +142,7 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
       <br>
       <div class="text-center">
         <a href="<?= base_url() ?>admin/peminjaman" class="btn btn-sm btn-secondary">Kembali</a>
-        <a href="<?= base_url() ?>admin/peminjaman_selesai/<?= $baris['username'] ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selesai</a>
+        <a href="<?= base_url() ?>admin/peminjaman_selesai/<?= $baris['kode_transaksi'] ?>" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selesai</a>
       </div>
     </div>
   </div>

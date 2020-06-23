@@ -7,9 +7,6 @@ foreach($peminjaman as $p):
   if($p['tanggal_order']+(60*60)<time() && $p['status'] != 1 && $p['konfirmasi'] == 0){
     redirect(base_url('admin/pesanan_batal/'.$p['username']));
   }
-  if($p['tanggal_sewa'] <= time() && $p['status'] == 1 && $p['konfirmasi'] == 0){
-    redirect(base_url('admin/pesanan_konfirmasi/'.$p ['username']));
-  }
 endforeach;
 ?>
 <!-- Begin Page Content -->
@@ -18,7 +15,6 @@ endforeach;
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-    <!-- <button type="button" class="mt-2 d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#tambahPesanan"><i class="fas fa-download fa-sm text-white-50"></i> Tambah Pesanan</button> -->
   </div>
   <!-- Button trigger modal -->
 
@@ -61,7 +57,7 @@ endforeach;
                 <td><?= date('d F Y | H:i', $p['tanggal_sewa']) ?></td>
                 <td>Rp <?= rupiah($total[$p['username']]) ?></td>
                 <td><?= $batas ?></td>
-                <td><a href="<?= base_url() ?>admin/peminjaman_detail/<?= $p['username'] ?>" class="btn btn-primary">Detail</a></td>
+                <td><a href="<?= base_url() ?>admin/peminjaman_detail/<?= $p['kode_transaksi'] ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php
             endforeach;
