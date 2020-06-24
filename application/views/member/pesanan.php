@@ -161,7 +161,7 @@ if($baris['selesai'] == 1){
       </div>
       <br>
       <!-- <div class="text-left"> -->
-        <a href="<?= base_url() ?>member/transaksi" class="btn btn-sm btn-secondary">Kembali</a>
+        <a href="<?= base_url() ?>member" class="btn btn-sm btn-secondary">Kembali</a>
       <!-- </div> -->
     </div>
   </div>

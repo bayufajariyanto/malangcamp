@@ -46,12 +46,17 @@ class Member extends CI_Controller
         for($i=0;$i<count($data['topkeranjang']);$i++){
             $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
         }
+        $this->db->where('stok >', 0);
         $data['barang'] = $this->db->get('barang')->result_array();
         
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/barang');
+        if($data['barang'] == null){
+            $this->load->view('member/barang_kosong');
+        }else{
+            $this->load->view('member/barang');
+        }
         $this->load->view('templates/footer');
     }
     
@@ -87,13 +92,18 @@ class Member extends CI_Controller
         for($i=0;$i<count($data['topkeranjang']);$i++){
             $this->db->where('id !=', $data['topkeranjang'][$i]['id_barang']);
         }
+        $this->db->where('stok >', 0);
         $this->db->where('kategori', $kategori);
         $data['barang'] = $this->db->get('barang')->result_array();
 
         $this->load->view('templates/header', $data);
         // $this->load->view('templates/member/sidebar');
         $this->load->view('templates/member/topbar', $data);
-        $this->load->view('member/barang_kategori');
+        if($data['barang'] == null){
+            $this->load->view('member/barang_kosong');
+        }else{
+            $this->load->view('member/barang_kategori');
+        }
         $this->load->view('templates/footer');
     }
     

@@ -3,11 +3,6 @@ function rupiah($angka)
 {
   return number_format($angka, 0, '.', '.');
 }
-foreach($peminjaman as $p):
-  if($p['tanggal_order']+(60*60)<time() && $p['status'] != 1 && $p['konfirmasi'] == 0){
-    redirect(base_url('admin/pesanan_batal/'.$p['username']));
-  }
-endforeach;
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">

@@ -141,7 +141,7 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
       </div>
       <br>
       <!-- <div class="text-left"> -->
-        <a href="<?= base_url() ?>member/peminjaman" class="btn btn-sm btn-secondary">Kembali</a>
+        <a href="<?= base_url() ?>member" class="btn btn-sm btn-secondary">Kembali</a>
       <!-- </div> -->
     </div>
   </div>
