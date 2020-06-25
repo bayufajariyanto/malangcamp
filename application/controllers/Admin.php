@@ -1013,26 +1013,29 @@ class Admin extends CI_Controller
         $data['select'] = 'transaksi';
         $data['title'] = 'Detail Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
-        $data['baris'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
-        
-        // $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
-        $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->result_array();
-        // var_dump($data['transaksi']);die;
-        // $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->row_array();
+        $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
+        // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
+        $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
+        $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
         $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
         $total = 0;
+        $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
         if($data['transaksi']!=null){
             if($data['baris']['batas_kembali']< time()){
-                $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+                $hariTerlambat = (int)ceil((time()-$data['baris']['batas_kembali'])/(60*60*24));
                 $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
-                $data['denda'] = ($peminjaman['total']*$hariTerlambat);
-                // $total = $denda+$peminjaman['total'];
+                // $data['denda'] = ($data['baris']['total']*$hariTerlambat);
+                // $total = $denda+$data['baris']['total'];
                 // var_dump();die;
+                foreach($data['transaksi'] as $t):
+                    $totalDenda = $totalDenda+($t['harga']*$t['jumlah_barang']);
+                endforeach;
+                $data['denda'] = $totalDenda*$hariTerlambat;
             }else{
-                $data['batas'] = '';
+                $data['batas'] = '(Belum Terlambat)';
                 $data['denda'] = 0;
             }
             if($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0){
@@ -1041,10 +1044,10 @@ class Admin extends CI_Controller
                 $data['konfirmasi'] = 'Belum dibayar';
             }
         }
-        foreach($data['transaksi'] as $p):
-            $total = $total+($p['harga']*$p['jumlah_barang']);
+        foreach($data['transaksi'] as $t):
+            $total = $total+($t['harga']*$t['jumlah_barang']);
         endforeach;
-        $data['total'] = $total*$data['durasi'];
+        $data['total'] = $total*$data['durasi']+$data['denda'];
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
