@@ -33,6 +33,7 @@ foreach($disewa as $d ){
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hari ini</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($hari_ini) ?></div>
+              <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 234.000</div> -->
             </div>
             <div class="col-auto">
               <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -50,6 +51,7 @@ foreach($disewa as $d ){
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($bulan_ini) ?></div>
+              <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 2.950.000</div> -->
             </div>
             <div class="col-auto">
               <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -68,6 +70,7 @@ foreach($disewa as $d ){
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Barang Disewa (saat ini)</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
+                  <!-- <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">12</div> -->
                   <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $jumlah_barang ?></div>
                 </div>
                 <!-- <div class="col">
@@ -94,6 +97,7 @@ foreach($disewa as $d ){
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Member Terdaftar</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $jumlah ?></div>
+              <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">24</div> -->
             </div>
             <div class="col-auto">
               <i class="fas fa-users fa-2x text-gray-300"></i>

@@ -35,11 +35,14 @@ function rupiah($angka)
           </div>
           <div class="col-md-7 mt-2">
             <h4 class="text-grey-900"><input type="text" name="id[]" class="d-none" value="<?= $k['id'] ?>" id="nama"><?= $k['nama'] ?></h4>
+            <p class="card-text stok"><?= $k['stok'] ?> barang</p>
             <p class="card-text font-weight-bold text-info">Rp <?= rupiah($k['harga']) ?></p>
             <div class="row">
-            <div class="col-2">
-            <input type="text" class="form-control text-center" size="2" name="jumlah[]" id="barang<?= $k['id'] ?>" value="<?= $k['jumlah'] ?>">
+            <button type="button" onclick="decrease()" class="btn minus">-</button>
+            <div class="col-sm-2">
+            <input type="text" class="form-control text-center jumlah" size="2" name="jumlah[]" value="<?= $k['jumlah'] ?>">
             </div>
+            <button type="button" onclick="increase()" class="btn plus">+</button>
             </div>
             <!-- <small class="text-muted">Posted by Anonymous on 3/1/17</small> -->
           </div>
@@ -93,3 +96,51 @@ function rupiah($angka)
 <!-- /.container-fluid -->
 
 </div>
+<script>
+let counter = 1;
+let plus = document.getElementsByClassName("plus");
+let jumlah = document.getElementsByClassName("jumlah");
+let minus = document.getElementsByClassName("minus");
+let stok = document.getElementsByClassName("stok");
+console.log(jumlah);
+for(var i = 0; i < jumlah.length ; i++){
+  // if(jumlah[i].value==1){
+  //   plus[i].classList.remove('btn-info');
+  //   plus[i].classList.add('btn-secondary');
+  //   minus[i].classList.remove('btn-info');
+  //   minus[i].classList.add('btn-secondary');
+  // }else if(jumlah[i].value>1){
+  //   minus[i].classList.add('btn-info');
+  //   minus[i].classList.remove('btn-secondary');
+  //   plus[i].classList.add('btn-info');
+  //   plus[i].classList.remove('btn-secondary');
+  // }
+  // function increase() {
+  //   if (counter<stok[i]) {
+  //     counter += 1;
+  //     jumlah[i].value = counter;
+  //     // total.innerHTML = 'Rp '+rupiah(jumlah[i].value*awal.innerHTML);
+  //     minus[i].classList.remove('btn-secondary');
+  //     minus[i].classList.add('btn-info');
+  //   }
+  //   if(counter==stok[i]){
+  //     console.log(berhasil);
+  //     plus[i].classList.remove('btn-info');
+  //     plus[i].classList.add('btn-secondary');
+  //   }
+  // }
+  // function decrease() {
+  //   if(counter>1){
+  //     counter -= 1;
+  //     jumlah[i].value = counter;
+  //     // total.innerHTML = 'Rp '+rupiah(jumlah[i].value*awal.innerHTML);
+  //     plus[i].classList.remove('btn-secondary');
+  //     plus[i].classList.add('btn-info');
+  //   }
+  //   if(counter==1){
+  //     minus[i].classList.remove('btn-info');
+  //     minus[i].classList.add('btn-secondary');
+  //   }
+  // }
+}
+</script>

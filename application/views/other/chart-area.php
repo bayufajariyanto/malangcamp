@@ -48,6 +48,7 @@ var myLineChart = new Chart(ctx, {
       pointHitRadius: 10,
       pointBorderWidth: 2,
       data: [<?= $januari ?>, <?= $februari ?>, <?= $maret ?>, <?= $april ?>, <?= $mei ?>, <?= $juni ?>, <?= $juli ?>, <?= $agustus ?>, <?= $september ?>, <?= $oktober ?>, <?= $november ?>, <?= $desember ?>],
+      // data: [4575000, 5214000, 2750000, 3700000, 4250000, 2950000, null, null, null, null, null, null],
     }],
   },
   options: {

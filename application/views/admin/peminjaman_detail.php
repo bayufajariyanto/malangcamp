@@ -94,6 +94,16 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
       </div>
       <div class="row">
         <div class="col-4">
+          <p class="list-inline-item">Denda</p>
+        </div>
+        <div class="col-7">
+          <div class="list-inline-item">
+            <p class="card-title"><small>Rp</small> <?= rupiah($denda) ?></p><!-- Jumlah semua sub total -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
           <p class="list-inline-item">Total</p>
         </div>
         <div class="col-7">
