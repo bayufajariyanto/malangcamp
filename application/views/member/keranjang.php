@@ -38,11 +38,11 @@ function rupiah($angka)
             <p class="card-text stok"><?= $k['stok'] ?> barang</p>
             <p class="card-text font-weight-bold text-info">Rp <?= rupiah($k['harga']) ?></p>
             <div class="row">
-            <button type="button" onclick="decrease()" class="btn minus">-</button>
+            <!-- <button type="button" onclick="decrease()" class="btn minus">-</button> -->
             <div class="col-sm-2">
             <input type="text" class="form-control text-center jumlah" size="2" name="jumlah[]" value="<?= $k['jumlah'] ?>">
             </div>
-            <button type="button" onclick="increase()" class="btn plus">+</button>
+            <!-- <button type="button" onclick="increase()" class="btn plus">+</button> -->
             </div>
             <!-- <small class="text-muted">Posted by Anonymous on 3/1/17</small> -->
           </div>

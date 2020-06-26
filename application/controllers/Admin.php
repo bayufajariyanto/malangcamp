@@ -1039,7 +1039,7 @@ class Admin extends CI_Controller
                 $data['batas'] = '(Belum Terlambat)';
                 $data['denda'] = 0;
             }
-            if($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0){
+            if($data['baris']['selesai'] == 1){
                 $data['konfirmasi'] = 'Lunas';
             }else{
                 $data['konfirmasi'] = 'Belum dibayar';
