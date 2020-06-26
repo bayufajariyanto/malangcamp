@@ -43,6 +43,7 @@ class Admin extends CI_Controller
         $data['gaji'] = $this->_gaji();
         $data['perawatan'] = $this->_perawatan();
         $data['lainnya'] = $this->_lainnya();
+        // var_dump($data['perawatan']);die;
         $this->load->model('Index_model', 'index');
         $this->db->order_by('tanggal', 'DESC');
         $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
@@ -62,7 +63,7 @@ class Admin extends CI_Controller
         $data['pengeluaran_desember'] = $this->_pengeluaranBulanIni(12);
         // var_dump($data['pengeluaran_mei']);die;
         $data['karyawan'] = $this->_pengeluaranByKategori('Gaji');
-        $data['perawatan'] = $this->_pengeluaranByKategori('Perawatan');
+        // $data['perawatan'] = $this->_pengeluaranByKategori('Perawatan');
         $data['kategori_pengeluaran'] = [
             [
                 'nama' => 'Gaji'
@@ -72,9 +73,9 @@ class Admin extends CI_Controller
             ],
             [
                 'nama' => 'Lainnya'
-                ]
+            ]
                 
-            ];
+        ];
             
         $nama = ucwords($this->input->post('nama'));
         $kategori = $this->input->post('kategori');
@@ -209,8 +210,8 @@ class Admin extends CI_Controller
 
     private function _gaji(){
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $awalTahun = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
         $gaji = $this->index->getPengeluaranByKategoriThisMonth('Gaji', $awalTahun, $akhirTahun);
         $total = 0;
         foreach($gaji as $g) :
@@ -218,11 +219,11 @@ class Admin extends CI_Controller
         endforeach;
         return $total;
     }
-
+    
     private function _perawatan(){
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $awalTahun = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
+        $akhirTahun = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
         $perawatan = $this->index->getPengeluaranByKategoriThisMonth('Perawatan', $awalTahun, $akhirTahun);
         $total = 0;
         foreach($perawatan as $g) :
@@ -879,15 +880,15 @@ class Admin extends CI_Controller
                 if($p['batas_kembali']< time()){
                     $hariTerlambat = (int)ceil((time()-$p['batas_kembali'])/(60*60*24));
                     // $data['denda'] = $p['total']*$hariTerlambat;
-                    $data['batas'] = '<strong class="text-danger">Terlambat '.$hariTerlambat.' hari</strong>';
+                    $data['batas'][$p['kode_transaksi']] = '<strong class="text-danger">Terlambat '.$hariTerlambat.' hari</strong>';
                     // $total = $denda+$p['total'];
                     foreach($peminjaman as $p):
                         $totalDenda = $totalDenda+($p['harga']*$p['jumlah_barang']);
                     endforeach;
-                    $data['denda'] = $totalDenda*$hariTerlambat;
+                    $data['denda'][$p['kode_transaksi']] = $totalDenda*$hariTerlambat;
                     // var_dump();die;
                 }else{
-                    $data['batas'] = 'Belum Terlambat';
+                    $data['batas'][$p['kode_transaksi']] = 'Belum Terlambat';
                     $data['denda'] = 0;
                 }
                 if($p['konfirmasi'] == 1 && $data['denda'] == 0){

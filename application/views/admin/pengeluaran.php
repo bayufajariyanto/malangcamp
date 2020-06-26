@@ -70,7 +70,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_mei) ?></div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($pengeluaran_bulan_ini) ?></div>
             </div>
             <div class="col-auto">
               <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -89,7 +89,7 @@
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Gaji Karyawan (Bulan Ini)</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp <?= rupiah($karyawan) ?></div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Rp <?= rupiah($gaji) ?></div>
                 </div>
                 <!-- <div class="col">
                           <div class="progress progress-sm mr-2">

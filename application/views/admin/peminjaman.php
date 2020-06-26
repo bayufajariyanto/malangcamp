@@ -29,7 +29,7 @@ function rupiah($angka)
             <tr>
               <th>Username</th>
               <th>Tanggal Sewa</th>
-              <th>Tanggal Pengembalian</th>
+              <th>Batas Pengembalian</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
@@ -38,7 +38,7 @@ function rupiah($angka)
             <tr>
               <th>Username</th>
               <th>Tanggal Sewa</th>
-              <th>Tanggal Pengembalian</th>
+              <th>Batas Pengembalian</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
@@ -52,7 +52,7 @@ function rupiah($angka)
                 <td><?= date('d F Y | H:i', $p['tanggal_sewa']) ?></td>
                 <td><?= date('d F Y | H:i', $p['batas_kembali']) ?></td>
                 <!-- <td>Rp <?= rupiah($total[$p['kode_transaksi']]) ?></td> -->
-                <td><?= $batas ?></td>
+                <td><?= $batas[$p['kode_transaksi']] ?></td>
                 <td><a href="<?= base_url() ?>admin/peminjaman_detail/<?= $p['kode_transaksi'] ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php

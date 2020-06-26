@@ -9,6 +9,12 @@ if($baris['konfirmasi'] == 1){
     $konfirmasi = 'Belum dibayar';
 }
 
+foreach($pesanan as $p) :
+  if($p['tanggal_order']+(60*60)<time()){
+    redirect(base_url('admin/pesanan_batal'.$p['kode_transaksi']));
+  }
+endforeach;
+
 if($baris['selesai'] == 1){
     $selesai = 'Selesai';
 }else{
