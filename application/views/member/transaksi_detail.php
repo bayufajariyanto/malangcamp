@@ -58,7 +58,17 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
             </div>
             <div class="col-7">
             <div class="list-inline-item">
-                <p class="card-text"><?= date('d M Y | H:i:s', $baris['batas_kembali']) ?> <?= $batas ?></p>
+                <p class="card-text"><?= date('d M Y | H:i:s', $baris['batas_kembali']) ?></p>
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+            <p class="list-inline-item">Tanggal Pengembalian</p>
+            </div>
+            <div class="col-7">
+            <div class="list-inline-item">
+                <p class="card-text"><?= date('d M Y | H:i:s', $baris['tanggal_kembali']) ?> <?= $batas ?></p>
             </div>
             </div>
         </div>

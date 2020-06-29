@@ -1026,7 +1026,7 @@ class Admin extends CI_Controller
         // var_dump($data['baris']['tanggal_order']);die;
         if($data['transaksi']!=null){
             if($data['baris']['batas_kembali']< $data['baris']['tanggal_kembali']){
-                $hariTerlambat = (int)ceil((time()-$data['baris']['batas_kembali'])/(60*60*24));
+                $hariTerlambat = (int)ceil(($data['baris']['tanggal_kembali']-$data['baris']['batas_kembali'])/(60*60*24));
                 $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
                 // $data['denda'] = ($data['baris']['total']*$hariTerlambat);
                 // $total = $denda+$data['baris']['total'];
