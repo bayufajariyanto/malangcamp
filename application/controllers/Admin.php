@@ -829,8 +829,8 @@ class Admin extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['pesanan'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $total = 0;
-        $data['durasi'] = ((int)date('d', $data['baris']['batas_kembali']) - (int)date('d', $data['baris']['tanggal_order']));
-
+        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        // var_dump(($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));die;
         foreach($data['pesanan'] as $p){
             
             $total = $total+($p['harga']*$p['jumlah_barang']);
@@ -927,7 +927,7 @@ class Admin extends CI_Controller
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
+        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
@@ -1020,12 +1020,12 @@ class Admin extends CI_Controller
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_sewa']));
+        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
         if($data['transaksi']!=null){
-            if($data['baris']['batas_kembali']< time()){
+            if($data['baris']['batas_kembali']< $data['baris']['tanggal_kembali']){
                 $hariTerlambat = (int)ceil((time()-$data['baris']['batas_kembali'])/(60*60*24));
                 $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
                 // $data['denda'] = ($data['baris']['total']*$hariTerlambat);
