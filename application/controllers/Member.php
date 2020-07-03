@@ -306,6 +306,13 @@ class Member extends CI_Controller
         }
         $this->load->view('templates/footer');
     }
+
+    public function getKeranjang(){
+        $this->db->select('keranjang.*,barang.nama,barang.kategori,barang.harga,barang.stok');
+        $this->db->join('barang', 'keranjang.id_barang = barang.id', 'LEFT');
+        $keranjang = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
+        echo json_encode($keranjang);
+    }
     
     public function pesanandua(){
         $data['selecttopbar'] = $this->uri->segment(2);
