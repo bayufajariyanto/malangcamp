@@ -51,7 +51,7 @@ function rupiah($angka)
           <div class="col-md-7 mt-2">
             <h4 class="text-grey-900"><input type="text" name="id[]" class="d-none" value="{{ keranjang[$index]['id'] }}" id="nama">{{ keranjang[$index]['nama'] }}</h4>
             <p class="card-text stok">{{ keranjang[$index]['stok'] }} barang</p>
-            <p class="card-text font-weight-bold text-info">Rp {{ keranjang[$index]['harga'] }}</p>
+            <p class="card-text font-weight-bold text-info">{{ keranjang[$index]['harga'] | noFractionCurrency}}</p>
             <div class="row">
             <button type="button" ng-click="kurangi($index,$event)" class="btn minus">-</button>
             <div class="col-md-4 col-sm-4">
@@ -93,22 +93,23 @@ function rupiah($angka)
         <hr>
         <div class="row" ng-repeat="n in [] | range:keranjang.length track by $index">
           <div class="col">
-            <div class="text-truncate" style="max-width:200px">{{ keranjang[$index]['nama'] }}</div>
+            <div class="text-truncate" style="max-width:170px">{{ keranjang[$index]['nama'] }}</div>
+            <p>x {{ keranjang[$index]['jumlah'] }}</p>
           </div>
-          <div class="col">
+          <div class="col my-2">
             <!-- <div ng-repeat="n in [] | range:keranjang.length track by $index"> -->
-            <div class="ml-auto text-right text-primary font-weight-bold">Rp {{ keranjang[$index]['harga']*keranjang[$index]['jumlah'] }}</div>
+            <div class="ml-auto text-right text-primary font-weight-bold">{{ keranjang[$index]['harga']*keranjang[$index]['jumlah'] | noFractionCurrency}}</div>
             <!-- </div> -->
           </div>
         </div>
-        <hr>
-        <div class="row mt-4">
+        <hr class="mt-0">
+        <div class="row mt-3">
           <div class="col">
             <div class="text-truncate" style="max-width:200px">Total Harga</div>
           </div>
           <div class="col">
             <!-- <div ng-repeat="n in [] | range:keranjang.length track by $index"> -->
-            <div class="ml-auto text-right text-primary font-weight-bold">Rp {{ total() }}</div>
+            <div class="ml-auto text-right text-primary font-weight-bold">{{ total() | noFractionCurrency}}</div>
             <!-- </div> -->
           </div>
         </div>
@@ -126,6 +127,7 @@ function rupiah($angka)
 
 </div>
 <script src="<?= base_url('assets/js/') ?>angular.js"></script>
+<script src="<?= base_url('assets/js/') ?>formatrupiah.js"></script>
 <script>
 // angular
 var app = angular.module('myApp', []);
@@ -139,7 +141,7 @@ app.controller('myCtrl', function($scope, $http) {
 
     $scope.total = function(){
       var total = 0;
-      for (var i = 0; i < 2; i++) {
+      for (var i = 0; i < $scope.keranjang.length; i++) {
         total = total+($scope.keranjang[i]['harga']*$scope.keranjang[i]['jumlah']*$scope.durasi);
       }
       return total;
@@ -189,6 +191,28 @@ app.filter('range', function() {
     }
 
     return input;
+  };
+});
+
+app.filter('noFractionCurrency',
+  [ '$filter', '$locale',
+  function(filter, locale) {
+    var currencyFilter = filter('currency');
+    var formats = locale.NUMBER_FORMATS;
+    console.log(formats);
+    return function(amount) {
+      var value = currencyFilter(amount);
+      var sep = value.indexOf(formats.DECIMAL_SEP);
+      if(amount >= 0) { 
+        return value.substring(0, sep);
+      }
+      return value.substring(0, sep) + ')';
+    };
+  }
+]);
+app.filter('commaToDecimal', function(){
+  return function(value) {
+      return value ? parseFloat(value).toFixed(2).toString().replace('.', ',') : null;
   };
 });
 </script>
