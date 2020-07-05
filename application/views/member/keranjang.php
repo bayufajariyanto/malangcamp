@@ -53,11 +53,11 @@ function rupiah($angka)
             <p class="card-text stok">{{ keranjang[$index]['stok'] }} barang</p>
             <p class="card-text font-weight-bold text-info">{{ keranjang[$index]['harga'] | noFractionCurrency}}</p>
             <div class="row">
-            <button type="button" ng-click="kurangi($index,$event)" class="btn minus">-</button>
+            <button type="button" ng-click="kurangi($index,$event)" class="btn btn-info minus">-</button>
             <div class="col-md-4 col-sm-4">
             <input type="number" class="form-control text-center jumlah" size="2" name="jumlah[]" value="{{ keranjang[$index]['jumlah'] }}" readonly>
             </div>
-            <button type="button" ng-click="tambah($index,$event)" class="btn plus">+</button>
+            <button type="button" ng-click="tambah($index,$event)" class="btn btn-info plus">+</button>
             </div>
             <!-- <small class="text-muted">Posted by Anonymous on 3/1/17</small> -->
           </div>
@@ -163,10 +163,10 @@ app.controller('myCtrl', function($scope, $http) {
       var plus = angular.element(event.target);
       if($scope.keranjang[index]['stok']>$scope.keranjang[index]['jumlah']){
         $scope.keranjang[index]['jumlah']++;
-        plus.removeClass('btn-secondary').addClass('btn-info');
+        // plus.removeClass('btn-secondary').addClass('btn-info');
       }
       if($scope.keranjang[index]['stok']==$scope.keranjang[index]['jumlah']){
-        plus.removeClass('btn-info').addClass('btn-secondary');
+        // plus.removeClass('btn-info').addClass('btn-secondary');
       }
     }
     
@@ -174,10 +174,10 @@ app.controller('myCtrl', function($scope, $http) {
       var minus = angular.element(event.target);
     	if($scope.keranjang[index]['jumlah']>1){
         $scope.keranjang[index]['jumlah']--;
-        minus.removeClass('btn-secondary').addClass('btn-info');
+        // minus.removeClass('btn-secondary').addClass('btn-info');
       }
       if($scope.keranjang[index]['jumlah']==1){
-        minus.removeClass('btn-info').addClass('btn-secondary');
+        // minus.removeClass('btn-info').addClass('btn-secondary');
       }
     }
 });
@@ -199,7 +199,6 @@ app.filter('noFractionCurrency',
   function(filter, locale) {
     var currencyFilter = filter('currency');
     var formats = locale.NUMBER_FORMATS;
-    console.log(formats);
     return function(amount) {
       var value = currencyFilter(amount);
       var sep = value.indexOf(formats.DECIMAL_SEP);
