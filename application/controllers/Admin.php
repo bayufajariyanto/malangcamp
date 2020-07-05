@@ -789,13 +789,15 @@ class Admin extends CI_Controller
     {
         $data['select'] = $this->uri->segment(2);
         $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
-        $jumlah = $pesanan['jumlah_barang'];
-        $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
-        $jumlah = $barang['stok']+$jumlah;
-        $data = [
-            'stok' => $jumlah
-        ];
-        $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
+        for($i = 0; $i<count($pesanan) ; $i++){
+            $id = $pesanan[$i]['id_barang'];
+            $barang = $this->db->get_where('barang', ['id' => $pesanan[$i]['id_barang']])->row_array();
+            $jumlah = (int)$barang['stok']+(int)$pesanan[$i]['jumlah_barang'];
+            $data = [
+                'stok' => $jumlah
+            ];
+            $this->db->update('barang', $data, ['id' => $pesanan[$i]['id_barang']]);
+        }
         $this->db->delete('pesanan', ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/pesanan');
     }
@@ -829,7 +831,7 @@ class Admin extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['pesanan'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $total = 0;
-        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         // var_dump(($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));die;
         foreach($data['pesanan'] as $p){
             
@@ -927,7 +929,7 @@ class Admin extends CI_Controller
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
@@ -1020,7 +1022,7 @@ class Admin extends CI_Controller
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;

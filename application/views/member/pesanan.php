@@ -11,7 +11,7 @@ if($baris['konfirmasi'] == 1){
 
 foreach($pesanan as $p) :
   if($p['tanggal_order']+(60*60)<time()){
-    redirect(base_url('admin/pesanan_batal'.$p['kode_transaksi']));
+    redirect(base_url('member/pesanan_batal/'.$p['kode_transaksi']));
   }
 endforeach;
 

@@ -137,7 +137,7 @@ class Member extends CI_Controller
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->result_array();
         // var_dump($data['pesanan']);die;
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 0, 'username' => $this->session->userdata('username')])->row_array();
-        $data['durasi'] = (date('d', $data['baris']['batas_kembali']) - date('d', $data['baris']['tanggal_order']));
+        $data['durasi'] = ((int)date('d', $data['baris']['batas_kembali']) - (int)date('d', $data['baris']['tanggal_order']));
         $total = 0;
         foreach($data['pesanan'] as $p){
             
@@ -223,9 +223,10 @@ class Member extends CI_Controller
             'total' => $harga,
             'status' => 0
         ];
+        $batas = $tanggal_order + (60*60);
         $this->db->update('barang', $datastok, ['id' => $id]);
         $this->db->insert('pesanan', $data);
-        $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu berhasil pesan! Segera lakukan pembayaran dalam 1 jam!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu berhasil pesan! Segera lakukan pembayaran sebelum jam '. date("H:i", $batas) .'!</div>');
         redirect('member');
     }
 
@@ -259,7 +260,7 @@ class Member extends CI_Controller
             $kode[$index] = $kategori[$index].'-'.$tanggal.$user['id'];
             $jumlah[$index] = $jml[$index];
             $harga[$index] = $k['harga'] * $jml[$index] * $hari;
-            $stok[$index] = $k['stok'] - $jumlah[$index];
+            $stok[$index] = (int)$k['stok'] - (int)$jumlah[$index];
             $index++;
         endforeach;
         
@@ -282,8 +283,9 @@ class Member extends CI_Controller
             $this->db->update('barang', $datastok, ['id' => $id[$i]]);
             $this->db->insert('pesanan', $data);
         }
+        $batas = time() + (60*60);
         $this->db->delete('keranjang', ['username' => $this->session->userdata('username')]);
-        $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu berhasil pesan! Segera lakukan pembayaran dalam 1 jam!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-info" role="alert">Kamu berhasil pesan! Segera lakukan pembayaran sebelum jam '. date("H:i", $batas) .'!</div>');
         redirect('member/keranjang');
     }
     
@@ -407,20 +409,22 @@ class Member extends CI_Controller
         }
     }
 
-    public function pesanan_batal($id)
+    public function pesanan_batal($kode_transaksi)
     {
         $this->db->join('barang', 'keranjang.id_barang = barang.id', 'INNER');
         $data['topkeranjang'] = $this->db->get_where('keranjang', ['username' => $this->session->userdata('username')])->result_array();
-        $pesanan = $this->db->get_where('pesanan', ['id' => $id])->row_array();
-        $jumlah = $pesanan['jumlah_barang'];
-        $barang = $this->db->get_where('barang', ['id' => $pesanan['id_barang']])->row_array();
-        $jumlah = $barang['stok']+$jumlah;
-        $data = [
-            'stok' => $jumlah
-        ];
-        $this->db->update('barang', $data, ['id' => $pesanan['id_barang']]);
-        $this->db->delete('pesanan', ['id' => $id]);
-        redirect('member');
+        $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
+        for($i = 0; $i<count($pesanan) ; $i++){
+            $id = $pesanan[$i]['id_barang'];
+            $barang = $this->db->get_where('barang', ['id' => $pesanan[$i]['id_barang']])->row_array();
+            $jumlah = (int)$barang['stok']+(int)$pesanan[$i]['jumlah_barang'];
+            $data = [
+                'stok' => $jumlah
+            ];
+            $this->db->update('barang', $data, ['id' => $pesanan[$i]['id_barang']]);
+        }
+        $this->db->delete('pesanan', ['kode_transaksi' => $kode_transaksi]);
+        redirect('member/pesanan');
     }
 
     public function pesanan_detail($id)
@@ -459,7 +463,7 @@ class Member extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['peminjaman'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->result_array();
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'username' => $this->session->userdata('username')])->row_array();
-        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         // var_dump($data['baris']['tanggal_order']);die;
         if($data['peminjaman']!=null){
@@ -546,7 +550,7 @@ class Member extends CI_Controller
         // var_dump($data['transaksi']);die;
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
