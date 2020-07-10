@@ -813,7 +813,8 @@ class Admin extends CI_Controller
             'tanggal_sewa' => time(),
             'tanggal_bayar' => time(),
             'status' => 1,
-            'konfirmasi' => 1
+            'konfirmasi' => 1,
+            'kondisi_barang' => 1
         ];
         $this->db->update('pesanan', $data, ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/pesanan');
@@ -967,33 +968,55 @@ class Admin extends CI_Controller
 
     public function peminjaman_selesai($kode_transaksi)
     {
+        $kondisi = $this->input->post('kondisi');
+        $dendaTambahan = $this->input->post('denda');
+
         $data['select'] = $this->uri->segment(2);
-        $peminjaman = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->row_array();
-        $barang = $this->db->get_where('barang', ['id' => $peminjaman['id_barang']])->row_array();
+        $peminjaman = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
+        $i = 0;
+        foreach($peminjaman as $p):
+            $barang[$i] = $this->db->get_where('barang', ['id' => $p['id_barang']])->row_array();
+            $i++;
+        endforeach;
         $sehari = 60*60*24;
         if($peminjaman['batas_kembali']< time()){
-            $hariTerlambat = (int)ceil((time()-$peminjaman['batas_kembali'])/$sehari);
+            $hariTerlambat = (int)ceil((time()-$peminjaman[0]['batas_kembali'])/$sehari);
             $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
-            $denda = ($peminjaman['total']*$hariTerlambat);
-            // $total = $denda+$peminjaman['total'];
-            // var_dump();die;
-          }else{
+            $i = 0;
+            foreach($peminjaman as $p):
+                $denda[$i] = ($barang[$i]['harga']*$hariTerlambat);
+                $i++;
+            endforeach;
+            // var_dump($denda[0]);die;
+        }else{
             $batas = '(Belum Terlambat)';
             $denda = 0;
-          }
-        // var_dump($denda);die;
-        $stok = $barang['stok']+$peminjaman['jumlah_barang'];
-        $dataBarang = [
-            'stok' => $stok
-        ];
-
-        $data = [
-            'denda' => $denda,
-            'tanggal_kembali' => time(),
-            'selesai' => 1
-        ];
-        $this->db->update('barang', $dataBarang, ['id' => $peminjaman['id_barang']]);
-        $this->db->update('pesanan', $data, ['kode_transaksi' => $kode_transaksi]);
+        }
+        $i = 0;
+        foreach($peminjaman as $p):
+            $stok = $barang[$i]['stok']+$p['jumlah_barang'];
+            $dataBarang = [
+                'stok' => $stok,
+                'kondisi' => $kondisi[$i]
+            ];
+            $data = [
+                'denda' => $denda[$i]+$dendaTambahan[$i],
+                'kondisi_barang' => $kondisi[$i]
+            ];
+            $this->db->update('barang', $dataBarang, ['id' => $p['id_barang']]);
+            $this->db->update('pesanan', $data, ['id' => $p['id']]);
+            $i++;
+        endforeach;
+        
+        $i = 0;
+        foreach($peminjaman as $p):
+            $data = [
+                'tanggal_kembali' => time(),
+                'selesai' => 1
+            ];
+            $this->db->update('pesanan', $data, ['kode_transaksi' => $kode_transaksi]);
+            $i++;
+        endforeach;
         redirect('admin/peminjaman');
     }
 
@@ -1019,27 +1042,26 @@ class Admin extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->result_array();
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
-        // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
         $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
         $total = 0;
         $totalDenda = 0;
-        // var_dump($data['baris']['tanggal_order']);die;
+        // die;
+        foreach($data['transaksi'] as $t):
+            $totalDenda = $totalDenda + $t['denda'];
+        endforeach;
         if($data['transaksi']!=null){
             if($data['baris']['batas_kembali']< $data['baris']['tanggal_kembali']){
                 $hariTerlambat = (int)ceil(($data['baris']['tanggal_kembali']-$data['baris']['batas_kembali'])/(60*60*24));
                 $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
-                // $data['denda'] = ($data['baris']['total']*$hariTerlambat);
-                // $total = $denda+$data['baris']['total'];
-                // var_dump();die;
-                foreach($data['transaksi'] as $t):
-                    $totalDenda = $totalDenda+($t['harga']*$t['jumlah_barang']);
-                endforeach;
+                // foreach($data['transaksi'] as $t):
+                //     $totalDenda = $totalDenda+($t['harga']*$t['jumlah_barang']);
+                // endforeach;
                 $data['denda'] = $totalDenda*$hariTerlambat;
             }else{
                 $data['batas'] = '(Belum Terlambat)';
-                $data['denda'] = 0;
+                $data['denda'] = 0+$totalDenda;
             }
             if($data['baris']['selesai'] == 1){
                 $data['konfirmasi'] = 'Lunas';
