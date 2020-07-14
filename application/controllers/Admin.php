@@ -987,7 +987,6 @@ class Admin extends CI_Controller
                 $denda[$i] = ($barang[$i]['harga']*$hariTerlambat);
                 $i++;
             endforeach;
-            // var_dump($denda[0]);die;
         }else{
             $batas = '(Belum Terlambat)';
             $denda = 0;
