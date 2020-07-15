@@ -49,8 +49,8 @@ foreach($disewa as $d ){
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bulan ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($bulan_ini) ?></div>
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Denda (Hari ini)</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">Rp <?= rupiah($todaydenda) ?></div>
               <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 2.950.000</div> -->
             </div>
             <div class="col-auto">

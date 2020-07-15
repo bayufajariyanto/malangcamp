@@ -71,7 +71,7 @@ endforeach;
                 <?php endforeach; ?>
                 </select>
               </div>
-            </div>e
+            </div>
             <div class="form-group">
               <label for="jumlah">Jumlah Barang</label>
               <input type="text" class="form-control" name="jumlah" id="jumlah" value="<?= set_value('jumlah'); ?>" placeholder="Jumlah barang">

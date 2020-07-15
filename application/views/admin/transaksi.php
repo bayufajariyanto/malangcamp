@@ -14,7 +14,19 @@ function rupiah($angka)
   </div>
 
   <!-- Content Row -->
-
+  <div class="row ml-1 my-3">
+    <p class="my-auto">Show by</p>
+    <div class="col-auto my-1">
+      <label class="mr-sm-2 sr-only" for="customselect">Cari berdasarkan</label>
+      <select class="custom-select mr-sm-2" id="customselect">
+        <option selected value="1">Hari ini</option>
+        <option value="2">3 hari terakhir</option>
+        <option value="3">7 hari terakhir</option>
+        <option value="4">1 bulan terakhir</option>
+        <option value="5">Semua Transaksi</option>
+      </select>
+    </div>
+  </div>
 
   <!-- DataTales Example -->
   <div class="card shadow-sm mb-4">
@@ -42,8 +54,9 @@ function rupiah($angka)
               <th>Aksi</th>
             </tr>
           </tfoot>
-          <tbody>
-            <?php foreach ($transaksi as $p) :
+          <tbody id="konten">
+            <?php
+            foreach ($transaksi as $p) :
               if ($p['status'] == 1) {
                 $status = 'Lunas';
               } else {
@@ -55,7 +68,7 @@ function rupiah($angka)
                 <td><?= $p['username'] ?></td>
                 <td><?= date('d F Y', $p['tanggal_order']) ?></td>
                 <td><?= date('d F Y', $p['tanggal_kembali']) ?></td>
-                <td><a href="<?= base_url('admin/transaksi_detail/'.$p['kode_transaksi']) ?>" class="btn btn-primary">Detail</a></td>
+                <td><a href="<?= base_url('admin/transaksi_detail/' . $p['kode_transaksi']) ?>" class="btn btn-primary">Detail</a></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -70,3 +83,26 @@ function rupiah($angka)
 
 </div>
 <!-- End of Main Content -->
+<script>
+  var select = document.getElementById('customselect');
+  var konten = document.getElementById('konten');
+  select.addEventListener('change', function() {
+    var int = select.value;
+    // buat objek ajax
+    var xhr = new XMLHttpRequest();
+
+    // cek kesiapan ajax
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        konten.innerHTML = xhr.responseText;
+    console.log(xhr.responseText);
+      } else if (xhr.status == 500) {
+        konten.innerHTML = '<?php foreach ($transaksi as $p) : if ($p['status'] == 1) {$status = 'Lunas';} else {$status = 'Belum Lunas';} ?><tr><td><?= $p['kode_transaksi'] ?></td><td><?= $p['username'] ?></td><td><?= date('d F Y', $p['tanggal_order']) ?></td><td><?= date('d F Y', $p['tanggal_kembali']) ?></td><td><a href="<?= base_url('admin/transaksi_detail/' . $p['kode_transaksi']) ?>"class="btn btn-primary">Detail</a></td></tr><?php endforeach; ?>';
+      }
+    }
+
+    xhr.open('GET', 'search/' + int, true);
+    // eksekusi ajax
+    xhr.send();
+  });
+</script>

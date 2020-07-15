@@ -19,7 +19,7 @@ class Admin extends CI_Controller
         $data['disewa'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0])->result_array();
         $this->db->order_by('tanggal_bayar', 'DESC');
         $data['pesanan'] = $this->db->get_where('pesanan', ['konfirmasi' => 1])->result_array();
-        
+
         $data['hari_ini'] = $this->_hariIni();
         $data['bulan_ini'] = $this->_bulanIni(date('m'));
         $data['januari'] = $this->_bulanIni(1);
@@ -34,11 +34,12 @@ class Admin extends CI_Controller
         $data['oktober'] = $this->_bulanIni(10);
         $data['november'] = $this->_bulanIni(11);
         $data['desember'] = $this->_bulanIni(12);
-        
+
         $data['sewa'] = $this->_sewa();
         $data['denda'] = $this->_denda();
+        $data['todaydenda'] = $this->_todayDenda();
 
-        
+
         // Pengeluaran
         $data['gaji'] = $this->_gaji();
         $data['perawatan'] = $this->_perawatan();
@@ -74,14 +75,14 @@ class Admin extends CI_Controller
             [
                 'nama' => 'Lainnya'
             ]
-                
+
         ];
-            
+
         $nama = ucwords($this->input->post('nama'));
         $kategori = $this->input->post('kategori');
         $nominal = $this->input->post('nominal');
-        
-        
+
+
         if ($this->form_validation->run('pengeluaran') == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar');
@@ -108,12 +109,13 @@ class Admin extends CI_Controller
         }
     }
 
-    public function pengeluaran(){
+    public function pengeluaran()
+    {
         $this->load->model('Index_model', 'index');
         $data['pengeluaran'] = $this->db->get('pengeluaran')->result_array();
         // $data['pengeluaran_hari_ini'] = $this->_pengeluaranHariIni();
         // $data['pengeluaran_bulan_ini'] = $this->_pengeluaranBulanIni(date('m'));
-        
+
         $data['kategori_pengeluaran'] = [
             [
                 'nama' => 'Gaji'
@@ -124,7 +126,7 @@ class Admin extends CI_Controller
             [
                 'nama' => 'Lainnya'
             ]
-        
+
         ];
 
         $nama = ucwords($this->input->post('nama'));
@@ -144,10 +146,10 @@ class Admin extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pengeluaran baru berhasil ditambahkan!</div>');
             redirect('admin');
         }
-        
     }
-    
-    private function _pengeluaranByKategori($kategori){
+
+    private function _pengeluaranByKategori($kategori)
+    {
         $this->load->model('Index_model', 'index');
         $kategori = $this->index->getPengeluaranByKategori($kategori);
         $total = 0;
@@ -156,100 +158,121 @@ class Admin extends CI_Controller
         }
         return $total;
     }
-    
-    private function _pengeluaranHariIni(){
+
+    private function _pengeluaranHariIni()
+    {
         $this->load->model('Index_model', 'index');
-        $awalHari = mktime(0,0,0,(int)date('m'),(int)date('d'),(int)date('Y'));
-        $akhirHari = mktime(23,59,59,(int)date('m'),(int)date('d'),(int)date('Y'));
-        $hariIni = $this->index->getPengeluaranToday($awalHari,$akhirHari);
+        $awalHari = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $hariIni = $this->index->getPengeluaranToday($awalHari, $akhirHari);
         $total = 0;
         foreach ($hariIni as $hi) {
             $total = $total + $hi['nominal'];
         }
         return $total;
     }
-    
-    private function _pengeluaranBulanIni($bulan){
+
+    private function _pengeluaranBulanIni($bulan)
+    {
         $this->load->model('Index_model', 'index');
-        $awalBulan = mktime(0,0,0,(int)$bulan,1,(int)date('Y'));
-        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)$this->_lastOfMonth((int)date('Y'),(int)$bulan),(int)date('Y'));
-        $bulanIni = $this->index->getPengeluaranThisMonth($awalBulan,$akhirBulan);
+        $awalBulan = mktime(0, 0, 0, (int) $bulan, 1, (int) date('Y'));
+        $akhirBulan = mktime(23, 59, 59, (int) $bulan, (int) $this->_lastOfMonth((int) date('Y'), (int) $bulan), (int) date('Y'));
+        $bulanIni = $this->index->getPengeluaranThisMonth($awalBulan, $akhirBulan);
         $total = 0;
         foreach ($bulanIni as $bi) {
             $total = $total + $bi['nominal'];
         }
-        if($bulan>(int)date('m')){
+        if ($bulan > (int) date('m')) {
             $total = null;
         }
         return $total;
     }
-    
-    private function _sewa(){
+
+    private function _sewa()
+    {
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $awalTahun = mktime(0, 0, 0, 1, 1, (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, 12, 31, (int) date('Y'));
         $sewa = $this->index->getThisMonth($awalTahun, $akhirTahun);
         $total = 0;
-        foreach($sewa as $s) :
-            $total = $total+$s['total'];
+        foreach ($sewa as $s) :
+            $total = $total + $s['total'];
         endforeach;
         return $total;
     }
 
-    private function _denda(){
+    private function _todayDenda()
+    {
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
-        $denda = $this->index->getThisMonthDenda($awalTahun, $akhirTahun);
+        $awalTahun = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $denda = $this->index->getTodayDenda($awalTahun, $akhirTahun);
         $total = 0;
-        foreach($denda as $d) :
-            $total = $total+$d['denda'];
+        foreach ($denda as $d) :
+            $total = $total + $d['denda'];
         endforeach;
         return $total;
     }
 
-    private function _gaji(){
+    private function _denda()
+    {
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
+        $awalTahun = mktime(0, 0, 0, 1, 1, (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, 12, 31, (int) date('Y'));
+        $denda = $this->index->getThisMonth($awalTahun, $akhirTahun);
+        $total = 0;
+        foreach ($denda as $d) :
+            $total = $total + $d['denda'];
+        endforeach;
+        return $total;
+    }
+
+    private function _gaji()
+    {
+        $this->load->model('Index_model', 'index');
+        $awalTahun = mktime(0, 0, 0, (int) date('m'), 1, (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, (int) date('m'), (int) date('t'), (int) date('Y'));
         $gaji = $this->index->getPengeluaranByKategoriThisMonth('Gaji', $awalTahun, $akhirTahun);
         $total = 0;
-        foreach($gaji as $g) :
-            $total = $total+$g['nominal'];
+        foreach ($gaji as $g) :
+            $total = $total + $g['nominal'];
         endforeach;
         return $total;
     }
-    
-    private function _perawatan(){
+
+    private function _perawatan()
+    {
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,(int)date('m'),1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,(int)date('m'),(int)date('t'),(int)date('Y'));
+        $awalTahun = mktime(0, 0, 0, (int) date('m'), 1, (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, (int) date('m'), (int) date('t'), (int) date('Y'));
         $perawatan = $this->index->getPengeluaranByKategoriThisMonth('Perawatan', $awalTahun, $akhirTahun);
         $total = 0;
-        foreach($perawatan as $g) :
-            $total = $total+$g['nominal'];
+        foreach ($perawatan as $g) :
+            $total = $total + $g['nominal'];
         endforeach;
         return $total;
     }
 
-    private function _lainnya(){
+    private function _lainnya()
+    {
         $this->load->model('Index_model', 'index');
-        $awalTahun = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirTahun = mktime(23,59,59,12,31,(int)date('Y'));
+        $awalTahun = mktime(0, 0, 0, 1, 1, (int) date('Y'));
+        $akhirTahun = mktime(23, 59, 59, 12, 31, (int) date('Y'));
         $lainnya = $this->index->getPengeluaranByKategoriThisMonth('Lainnya', $awalTahun, $akhirTahun);
         $total = 0;
-        foreach($lainnya as $g) :
-            $total = $total+$g['nominal'];
+        foreach ($lainnya as $g) :
+            $total = $total + $g['nominal'];
         endforeach;
         return $total;
     }
 
-    private function _hariIni(){
+    private function _hariIni()
+    {
         $this->load->model('Index_model', 'index');
-        $awalHari = mktime(0,0,0,(int)date('m'),(int)date('d'),(int)date('Y'));
-        $akhirHari = mktime(23,59,59,(int)date('m'),(int)date('d'),(int)date('Y'));
-        $hariIni = $this->index->getToday($awalHari,$akhirHari);
-        $dendaHariIni = $this->index->getTodayDenda($awalHari,$akhirHari);
+        $awalHari = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $hariIni = $this->index->getToday($awalHari, $akhirHari);
+        $dendaHariIni = $this->index->getTodayDenda($awalHari, $akhirHari);
         $total = 0;
         $totaldhi = 0;
         foreach ($hariIni as $hi) {
@@ -258,20 +281,22 @@ class Admin extends CI_Controller
         foreach ($dendaHariIni as $dhi) {
             $totaldhi = $totaldhi + $dhi['total'];
         }
-        $total = $total+$totaldhi;
+        $total = $total + $totaldhi;
         return $total;
     }
 
-    private function _lastOfMonth($year, $month) {
-        return date("d", strtotime('-1 second', strtotime('+1 month',strtotime($month . '/01/' . $year. ' 00:00:00'))));
+    private function _lastOfMonth($year, $month)
+    {
+        return date("d", strtotime('-1 second', strtotime('+1 month', strtotime($month . '/01/' . $year . ' 00:00:00'))));
     }
 
-    private function _bulanIni($bulan){
+    private function _bulanIni($bulan)
+    {
         $this->load->model('Index_model', 'index');
-        $awalBulan = mktime(0,0,0,(int)$bulan,1,(int)date('Y'));
-        $akhirBulan = mktime(23,59,59,(int)$bulan,(int)$this->_lastOfMonth((int)date('Y'),(int)$bulan),(int)date('Y'));
-        $bulanIni = $this->index->getThisMonth($awalBulan,$akhirBulan);
-        $dendaBulanIni = $this->index->getThisMonthDenda($awalBulan,$akhirBulan);
+        $awalBulan = mktime(0, 0, 0, (int) $bulan, 1, (int) date('Y'));
+        $akhirBulan = mktime(23, 59, 59, (int) $bulan, (int) $this->_lastOfMonth((int) date('Y'), (int) $bulan), (int) date('Y'));
+        $bulanIni = $this->index->getThisMonth($awalBulan, $akhirBulan);
+        $dendaBulanIni = $this->index->getThisMonthDenda($awalBulan, $akhirBulan);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanIni as $bi) {
@@ -281,19 +306,20 @@ class Admin extends CI_Controller
             $totaldbi = $totaldbi + $dbi['denda'];
         }
 
-        $total = $total+$totaldbi;
-        if($bulan>(int)date('m')){
+        $total = $total + $totaldbi;
+        if ($bulan > (int) date('m')) {
             $total = null;
         }
         return $total;
     }
 
-    private function _annual(){
+    private function _annual()
+    {
         $this->load->model('Index_model', 'index');
-        $awalJanuari = mktime(0,0,0,1,1,(int)date('Y'));
-        $akhirJanuari = mktime(23,59,59,1,(int)date('t'),(int)date('Y'));
-        $bulanJanuari = $this->index->getThisMonth($awalJanuari,$akhirJanuari);
-        $dendaBulanJanuari = $this->index->getThisMonthDenda($awalJanuari,$akhirJanuari);
+        $awalJanuari = mktime(0, 0, 0, 1, 1, (int) date('Y'));
+        $akhirJanuari = mktime(23, 59, 59, 1, (int) date('t'), (int) date('Y'));
+        $bulanJanuari = $this->index->getThisMonth($awalJanuari, $akhirJanuari);
+        $dendaBulanJanuari = $this->index->getThisMonthDenda($awalJanuari, $akhirJanuari);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanJanuari as $bi) {
@@ -302,12 +328,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanJanuari as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $januari = $total+$totaldbi;
-        
-        $awalFebruari = mktime(0,0,0,2,1,(int)date('Y'));
-        $akhirFebruari = mktime(23,59,59,2,(int)date('t'),(int)date('Y'));
-        $bulanFebruari = $this->index->getThisMonth($awalFebruari,$akhirFebruari);
-        $dendaBulanFebruari = $this->index->getThisMonthDenda($awalFebruari,$akhirFebruari);
+        $januari = $total + $totaldbi;
+
+        $awalFebruari = mktime(0, 0, 0, 2, 1, (int) date('Y'));
+        $akhirFebruari = mktime(23, 59, 59, 2, (int) date('t'), (int) date('Y'));
+        $bulanFebruari = $this->index->getThisMonth($awalFebruari, $akhirFebruari);
+        $dendaBulanFebruari = $this->index->getThisMonthDenda($awalFebruari, $akhirFebruari);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanFebruari as $bi) {
@@ -316,12 +342,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanFebruari as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $februari = $total+$totaldbi;
-        
-        $awalMaret = mktime(0,0,0,3,1,(int)date('Y'));
-        $akhirMaret = mktime(23,59,59,3,(int)date('t'),(int)date('Y'));
-        $bulanMaret = $this->index->getThisMonth($awalMaret,$akhirMaret);
-        $dendaBulanMaret = $this->index->getThisMonthDenda($awalMaret,$akhirMaret);
+        $februari = $total + $totaldbi;
+
+        $awalMaret = mktime(0, 0, 0, 3, 1, (int) date('Y'));
+        $akhirMaret = mktime(23, 59, 59, 3, (int) date('t'), (int) date('Y'));
+        $bulanMaret = $this->index->getThisMonth($awalMaret, $akhirMaret);
+        $dendaBulanMaret = $this->index->getThisMonthDenda($awalMaret, $akhirMaret);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanMaret as $bi) {
@@ -330,12 +356,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanMaret as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $maret = $total+$totaldbi;
-        
-        $awalApril = mktime(0,0,0,4,1,(int)date('Y'));
-        $akhirApril = mktime(23,59,59,4,(int)date('t'),(int)date('Y'));
-        $bulanApril = $this->index->getThisMonth($awalApril,$akhirApril);
-        $dendaBulanApril = $this->index->getThisMonthDenda($awalApril,$akhirApril);
+        $maret = $total + $totaldbi;
+
+        $awalApril = mktime(0, 0, 0, 4, 1, (int) date('Y'));
+        $akhirApril = mktime(23, 59, 59, 4, (int) date('t'), (int) date('Y'));
+        $bulanApril = $this->index->getThisMonth($awalApril, $akhirApril);
+        $dendaBulanApril = $this->index->getThisMonthDenda($awalApril, $akhirApril);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanApril as $bi) {
@@ -344,12 +370,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanApril as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $april = $total+$totaldbi;
-        
-        $awalMei = mktime(0,0,0,5,1,(int)date('Y'));
-        $akhirMei = mktime(23,59,59,5,(int)date('t'),(int)date('Y'));
-        $bulanMei = $this->index->getThisMonth($awalMei,$akhirMei);
-        $dendaBulanMei = $this->index->getThisMonthDenda($awalMei,$akhirMei);
+        $april = $total + $totaldbi;
+
+        $awalMei = mktime(0, 0, 0, 5, 1, (int) date('Y'));
+        $akhirMei = mktime(23, 59, 59, 5, (int) date('t'), (int) date('Y'));
+        $bulanMei = $this->index->getThisMonth($awalMei, $akhirMei);
+        $dendaBulanMei = $this->index->getThisMonthDenda($awalMei, $akhirMei);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanMei as $bi) {
@@ -358,12 +384,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanMei as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $mei = $total+$totaldbi;
-        
-        $awalJuni = mktime(0,0,0,6,1,(int)date('Y'));
-        $akhirJuni = mktime(23,59,59,6,(int)date('t'),(int)date('Y'));
-        $bulanJuni = $this->index->getThisMonth($awalJuni,$akhirJuni);
-        $dendaBulanJuni = $this->index->getThisMonthDenda($awalJuni,$akhirJuni);
+        $mei = $total + $totaldbi;
+
+        $awalJuni = mktime(0, 0, 0, 6, 1, (int) date('Y'));
+        $akhirJuni = mktime(23, 59, 59, 6, (int) date('t'), (int) date('Y'));
+        $bulanJuni = $this->index->getThisMonth($awalJuni, $akhirJuni);
+        $dendaBulanJuni = $this->index->getThisMonthDenda($awalJuni, $akhirJuni);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanJuni as $bi) {
@@ -372,12 +398,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanJuni as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $juni = $total+$totaldbi;
+        $juni = $total + $totaldbi;
 
-        $awalJuli = mktime(0,0,0,6,1,(int)date('Y'));
-        $akhirJuli = mktime(23,59,59,6,(int)date('t'),(int)date('Y'));
-        $bulanJuli = $this->index->getThisMonth($awalJuli,$akhirJuli);
-        $dendaBulanJuli = $this->index->getThisMonthDenda($awalJuli,$akhirJuli);
+        $awalJuli = mktime(0, 0, 0, 6, 1, (int) date('Y'));
+        $akhirJuli = mktime(23, 59, 59, 6, (int) date('t'), (int) date('Y'));
+        $bulanJuli = $this->index->getThisMonth($awalJuli, $akhirJuli);
+        $dendaBulanJuli = $this->index->getThisMonthDenda($awalJuli, $akhirJuli);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanJuli as $bi) {
@@ -386,12 +412,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanJuli as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $juli = $total+$totaldbi;
-        
-        $awalAgustus = mktime(0,0,0,8,1,(int)date('Y'));
-        $akhirAgustus = mktime(23,59,59,8,(int)date('t'),(int)date('Y'));
-        $bulanAgustus = $this->index->getThisMonth($awalAgustus,$akhirAgustus);
-        $dendaBulanAgustus = $this->index->getThisMonthDenda($awalAgustus,$akhirAgustus);
+        $juli = $total + $totaldbi;
+
+        $awalAgustus = mktime(0, 0, 0, 8, 1, (int) date('Y'));
+        $akhirAgustus = mktime(23, 59, 59, 8, (int) date('t'), (int) date('Y'));
+        $bulanAgustus = $this->index->getThisMonth($awalAgustus, $akhirAgustus);
+        $dendaBulanAgustus = $this->index->getThisMonthDenda($awalAgustus, $akhirAgustus);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanAgustus as $bi) {
@@ -400,12 +426,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanAgustus as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $agustus = $total+$totaldbi;
-        
-        $awalSeptember = mktime(0,0,0,9,1,(int)date('Y'));
-        $akhirSeptember = mktime(23,59,59,9,(int)date('t'),(int)date('Y'));
-        $bulanSeptember = $this->index->getThisMonth($awalSeptember,$akhirSeptember);
-        $dendaBulanSeptember = $this->index->getThisMonthDenda($awalSeptember,$akhirSeptember);
+        $agustus = $total + $totaldbi;
+
+        $awalSeptember = mktime(0, 0, 0, 9, 1, (int) date('Y'));
+        $akhirSeptember = mktime(23, 59, 59, 9, (int) date('t'), (int) date('Y'));
+        $bulanSeptember = $this->index->getThisMonth($awalSeptember, $akhirSeptember);
+        $dendaBulanSeptember = $this->index->getThisMonthDenda($awalSeptember, $akhirSeptember);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanSeptember as $bi) {
@@ -414,12 +440,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanSeptember as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $september = $total+$totaldbi;
-        
-        $awalOktober = mktime(0,0,0,10,1,(int)date('Y'));
-        $akhirOktober = mktime(23,59,59,10,(int)date('t'),(int)date('Y'));
-        $bulanOktober = $this->index->getThisMonth($awalOktober,$akhirOktober);
-        $dendaBulanOktober = $this->index->getThisMonthDenda($awalOktober,$akhirOktober);
+        $september = $total + $totaldbi;
+
+        $awalOktober = mktime(0, 0, 0, 10, 1, (int) date('Y'));
+        $akhirOktober = mktime(23, 59, 59, 10, (int) date('t'), (int) date('Y'));
+        $bulanOktober = $this->index->getThisMonth($awalOktober, $akhirOktober);
+        $dendaBulanOktober = $this->index->getThisMonthDenda($awalOktober, $akhirOktober);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanOktober as $bi) {
@@ -428,12 +454,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanOktober as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $oktober = $total+$totaldbi;
-        
-        $awalNovember = mktime(0,0,0,11,1,(int)date('Y'));
-        $akhirNovember = mktime(23,59,59,11,(int)date('t'),(int)date('Y'));
-        $bulanNovember = $this->index->getThisMonth($awalNovember,$akhirNovember);
-        $dendaBulanNovember = $this->index->getThisMonthDenda($awalNovember,$akhirNovember);
+        $oktober = $total + $totaldbi;
+
+        $awalNovember = mktime(0, 0, 0, 11, 1, (int) date('Y'));
+        $akhirNovember = mktime(23, 59, 59, 11, (int) date('t'), (int) date('Y'));
+        $bulanNovember = $this->index->getThisMonth($awalNovember, $akhirNovember);
+        $dendaBulanNovember = $this->index->getThisMonthDenda($awalNovember, $akhirNovember);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanNovember as $bi) {
@@ -442,12 +468,12 @@ class Admin extends CI_Controller
         foreach ($dendaBulanNovember as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $november = $total+$totaldbi;
-        
-        $awalDesember = mktime(0,0,0,12,1,(int)date('Y'));
-        $akhirDesember = mktime(23,59,59,12,(int)date('t'),(int)date('Y'));
-        $bulanDesember = $this->index->getThisMonth($awalDesember,$akhirDesember);
-        $dendaBulanDesember = $this->index->getThisMonthDenda($awalDesember,$akhirDesember);
+        $november = $total + $totaldbi;
+
+        $awalDesember = mktime(0, 0, 0, 12, 1, (int) date('Y'));
+        $akhirDesember = mktime(23, 59, 59, 12, (int) date('t'), (int) date('Y'));
+        $bulanDesember = $this->index->getThisMonth($awalDesember, $akhirDesember);
+        $dendaBulanDesember = $this->index->getThisMonthDenda($awalDesember, $akhirDesember);
         $total = 0;
         $totaldbi = 0;
         foreach ($bulanDesember as $bi) {
@@ -456,9 +482,9 @@ class Admin extends CI_Controller
         foreach ($dendaBulanDesember as $dbi) {
             $totaldbi = $totaldbi + $dbi['denda'];
         }
-        $desember = $total+$totaldbi;
-        
-        return $total=$januari+$februari+$maret+$april+$mei+$juni+$juli+$agustus+$september+$oktober+$november+$desember;
+        $desember = $total + $totaldbi;
+
+        return $total = $januari + $februari + $maret + $april + $mei + $juni + $juli + $agustus + $september + $oktober + $november + $desember;
     }
 
     public function profile()
@@ -619,7 +645,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['barang'] = $this->db->get('barang')->result_array();
         $data['kategori'] = $this->db->get('kategori')->result_array();
-        
+
         $nama = ucwords($this->input->post('nama'));
         $kategori = $this->input->post('kategori');
         $stok = $this->input->post('stok');
@@ -700,14 +726,14 @@ class Admin extends CI_Controller
         $username = $this->db->get_where('pesanan', ['konfirmasi' => 0])->result_array();
         $total = 0;
         $tmpusername = null;
-        foreach($pesanan as $p):
-            foreach($username as $u):
-                if($p['username'] == $u['username']){
-                    if($p['username'] != $tmpusername && $tmpusername != null){
+        foreach ($pesanan as $p) :
+            foreach ($username as $u) :
+                if ($p['username'] == $u['username']) {
+                    if ($p['username'] != $tmpusername && $tmpusername != null) {
                         $total = 0;
                     }
                     $tmpusername = $p['username'];
-                    $total = $total+($p['total']);
+                    $total = $total + ($p['total']);
                     $data['total'][$tmpusername] = $total;
                 }
             endforeach;
@@ -716,7 +742,7 @@ class Admin extends CI_Controller
         // load model
         $this->load->model('Pesanan_model', 'barang');
         $data['barang'] = $this->barang->getBarangStok();
-        $data['sejam'] = 60*60;
+        $data['sejam'] = 60 * 60;
         $username = $this->input->post('username');
         $id_barang = $this->input->post('barang');
         $jumlah = $this->input->post('jumlah');
@@ -741,21 +767,21 @@ class Admin extends CI_Controller
             // Pembuatan Kode Transaksi
             $kategori = strtoupper(substr($barang['kategori'], 0, 3));
             $tanggal = date('ymdHis');
-            if($status == 1){
+            if ($status == 1) {
                 $tbayar = time();
-            }else{
+            } else {
                 $tbayar = 0;
             }
 
-            $kode = $kategori.'-'.$tanggal.$id_user['id'];
+            $kode = $kategori . '-' . $tanggal . $id_user['id'];
             // Akhir kode transaksi
             // $jam_sewa = mktime($jam,$menit,(int)date('s'),(int)date('m'),(int)date('d'),(int)date('Y'));
-            $jam_kembali = time()+(60*60*24*$hari);
+            $jam_kembali = time() + (60 * 60 * 24 * $hari);
             $total = $barang['harga'];
-            if($id_barang == null){
+            if ($id_barang == null) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pilih barang yang mau disewa!</div>');
                 redirect('admin/pesanan');
-            }else
+            } else
             if ($barang['stok'] < $jumlah) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Jumlah melebihi batas, stok hanya ' . $barang['stok'] . ' </div>');
                 redirect('admin/pesanan');
@@ -789,10 +815,10 @@ class Admin extends CI_Controller
     {
         $data['select'] = $this->uri->segment(2);
         $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
-        for($i = 0; $i<count($pesanan) ; $i++){
+        for ($i = 0; $i < count($pesanan); $i++) {
             $id = $pesanan[$i]['id_barang'];
             $barang = $this->db->get_where('barang', ['id' => $pesanan[$i]['id_barang']])->row_array();
-            $jumlah = (int)$barang['stok']+(int)$pesanan[$i]['jumlah_barang'];
+            $jumlah = (int) $barang['stok'] + (int) $pesanan[$i]['jumlah_barang'];
             $data = [
                 'stok' => $jumlah
             ];
@@ -801,14 +827,14 @@ class Admin extends CI_Controller
         $this->db->delete('pesanan', ['kode_transaksi' => $kode_transaksi]);
         redirect('admin/pesanan');
     }
-    
+
     public function pesanan_konfirmasi($kode_transaksi)
     {
         $data['select'] = $this->uri->segment(2);
         $pesanan = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
-        $sehari = 60*60*24;
-        $hari = (int)date('d', $pesanan['batas_kembali'])-(int)date('d', $pesanan['tanggal_order']);
-        $durasi = (int)date('d', $pesanan['tanggal_sewa'])+($hari*$sehari);
+        $sehari = 60 * 60 * 24;
+        $hari = (int) date('d', $pesanan['batas_kembali']) - (int) date('d', $pesanan['tanggal_order']);
+        $durasi = (int) date('d', $pesanan['tanggal_sewa']) + ($hari * $sehari);
         $data = [
             'tanggal_sewa' => time(),
             'tanggal_bayar' => time(),
@@ -832,13 +858,13 @@ class Admin extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['pesanan'] = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $total = 0;
-        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int) $data['baris']['batas_kembali'] - (int) $data['baris']['tanggal_order']) / (60 * 60 * 24));
         // var_dump(($data['baris']['batas_kembali']-$data['baris']['tanggal_order'])/(60*60*24));die;
-        foreach($data['pesanan'] as $p){
-            
-            $total = $total+($p['harga']*$p['jumlah_barang']);
+        foreach ($data['pesanan'] as $p) {
+
+            $total = $total + ($p['harga'] * $p['jumlah_barang']);
         }
-        $data['total'] = $total*$data['durasi'];
+        $data['total'] = $total * $data['durasi'];
         // $idBarang = $data['pesanan']['id_barang'];
         // $usernama = $data['pesanan']['username'];
         // $data['barang'] = $this->barang->getBarangById($idBarang);
@@ -877,41 +903,41 @@ class Admin extends CI_Controller
         $totalDenda = 0;
         $tmp = null;
         // var_dump($peminjaman);die;
-        
-        if($peminjaman!=null){
-            foreach($peminjaman as $p):
-                if($p['batas_kembali']< time()){
-                    $hariTerlambat = (int)ceil((time()-$p['batas_kembali'])/(60*60*24));
+
+        if ($peminjaman != null) {
+            foreach ($peminjaman as $p) :
+                if ($p['batas_kembali'] < time()) {
+                    $hariTerlambat = (int) ceil((time() - $p['batas_kembali']) / (60 * 60 * 24));
                     // $data['denda'] = $p['total']*$hariTerlambat;
-                    $data['batas'][$p['kode_transaksi']] = '<strong class="text-danger">Terlambat '.$hariTerlambat.' hari</strong>';
+                    $data['batas'][$p['kode_transaksi']] = '<strong class="text-danger">Terlambat ' . $hariTerlambat . ' hari</strong>';
                     // $total = $denda+$p['total'];
-                    foreach($peminjaman as $p):
-                        $totalDenda = $totalDenda+($p['harga']*$p['jumlah_barang']);
+                    foreach ($peminjaman as $p) :
+                        $totalDenda = $totalDenda + ($p['harga'] * $p['jumlah_barang']);
                     endforeach;
-                    $data['denda'][$p['kode_transaksi']] = $totalDenda*$hariTerlambat;
+                    $data['denda'][$p['kode_transaksi']] = $totalDenda * $hariTerlambat;
                     // var_dump();die;
-                }else{
+                } else {
                     $data['batas'][$p['kode_transaksi']] = 'Belum Terlambat';
                     $data['denda'] = 0;
                 }
-                if($p['konfirmasi'] == 1 && $data['denda'] == 0){
+                if ($p['konfirmasi'] == 1 && $data['denda'] == 0) {
                     $data['konfirmasi'] = 'Lunas';
-                }else{
+                } else {
                     $data['konfirmasi'] = 'Belum dibayar';
                 }
-                foreach($kode_transaksi as $k):
-                    if($p['kode_transaksi'] == $k['kode_transaksi']){
-                        if($p['kode_transaksi'] != $tmp && $tmp != null){
+                foreach ($kode_transaksi as $k) :
+                    if ($p['kode_transaksi'] == $k['kode_transaksi']) {
+                        if ($p['kode_transaksi'] != $tmp && $tmp != null) {
                             $total = 0;
                         }
                         $tmp = $p['kode_transaksi'];
-                        $total = $total+($p['total']);
+                        $total = $total + ($p['total']);
                         $data['total'][$tmp] = $total;
                     }
                 endforeach;
             endforeach;
         }
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -930,35 +956,35 @@ class Admin extends CI_Controller
         // $this->db->join('user', 'pesanan.username = user.username', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 0, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int) $data['baris']['batas_kembali'] - (int) $data['baris']['tanggal_order']) / (60 * 60 * 24));
         $total = 0;
         $totalDenda = 0;
         // var_dump($data['baris']['tanggal_order']);die;
-        if($data['peminjaman']!=null){
-            if($data['baris']['batas_kembali']< time()){
-                $hariTerlambat = (int)ceil((time()-$data['baris']['batas_kembali'])/(60*60*24));
-                $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+        if ($data['peminjaman'] != null) {
+            if ($data['baris']['batas_kembali'] < time()) {
+                $hariTerlambat = (int) ceil((time() - $data['baris']['batas_kembali']) / (60 * 60 * 24));
+                $data['batas'] = '<strong class="text-danger">(Terlambat ' . $hariTerlambat . ' hari)</strong>';
                 // $data['denda'] = ($data['baris']['total']*$hariTerlambat);
                 // $total = $denda+$data['baris']['total'];
                 // var_dump();die;
-                foreach($data['peminjaman'] as $p):
-                    $totalDenda = $totalDenda+($p['harga']*$p['jumlah_barang']);
+                foreach ($data['peminjaman'] as $p) :
+                    $totalDenda = $totalDenda + ($p['harga'] * $p['jumlah_barang']);
                 endforeach;
-                $data['denda'] = $totalDenda*$hariTerlambat;
-            }else{
+                $data['denda'] = $totalDenda * $hariTerlambat;
+            } else {
                 $data['batas'] = '(Belum Terlambat)';
                 $data['denda'] = 0;
             }
-            if($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0){
+            if ($data['baris']['konfirmasi'] == 1 && $data['denda'] == 0) {
                 $data['konfirmasi'] = 'Lunas';
-            }else{
+            } else {
                 $data['konfirmasi'] = 'Belum dibayar';
             }
         }
-        foreach($data['peminjaman'] as $p):
-            $total = $total+($p['harga']*$p['jumlah_barang']);
+        foreach ($data['peminjaman'] as $p) :
+            $total = $total + ($p['harga'] * $p['jumlah_barang']);
         endforeach;
-        $data['total'] = $total*$data['durasi']+$data['denda'];
+        $data['total'] = $total * $data['durasi'] + $data['denda'];
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -974,41 +1000,41 @@ class Admin extends CI_Controller
         $data['select'] = $this->uri->segment(2);
         $peminjaman = $this->db->get_where('pesanan', ['kode_transaksi' => $kode_transaksi])->result_array();
         $i = 0;
-        foreach($peminjaman as $p):
+        foreach ($peminjaman as $p) :
             $barang[$i] = $this->db->get_where('barang', ['id' => $p['id_barang']])->row_array();
             $i++;
         endforeach;
-        $sehari = 60*60*24;
-        if($peminjaman['batas_kembali']< time()){
-            $hariTerlambat = (int)ceil((time()-$peminjaman[0]['batas_kembali'])/$sehari);
-            $batas = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+        $sehari = 60 * 60 * 24;
+        if ($peminjaman['batas_kembali'] < time()) {
+            $hariTerlambat = (int) ceil((time() - $peminjaman[0]['batas_kembali']) / $sehari);
+            $batas = '<strong class="text-danger">(Terlambat ' . $hariTerlambat . ' hari)</strong>';
             $i = 0;
-            foreach($peminjaman as $p):
-                $denda[$i] = ($barang[$i]['harga']*$hariTerlambat);
+            foreach ($peminjaman as $p) :
+                $denda[$i] = ($barang[$i]['harga'] * $hariTerlambat);
                 $i++;
             endforeach;
-        }else{
+        } else {
             $batas = '(Belum Terlambat)';
             $denda = 0;
         }
         $i = 0;
-        foreach($peminjaman as $p):
-            $stok = $barang[$i]['stok']+$p['jumlah_barang'];
+        foreach ($peminjaman as $p) :
+            $stok = $barang[$i]['stok'] + $p['jumlah_barang'];
             $dataBarang = [
                 'stok' => $stok,
                 'kondisi' => $kondisi[$i]
             ];
             $data = [
-                'denda' => $denda[$i]+$dendaTambahan[$i],
+                'denda' => $denda[$i] + $dendaTambahan[$i],
                 'kondisi_barang' => $kondisi[$i]
             ];
             $this->db->update('barang', $dataBarang, ['id' => $p['id_barang']]);
             $this->db->update('pesanan', $data, ['id' => $p['id']]);
             $i++;
         endforeach;
-        
+
         $i = 0;
-        foreach($peminjaman as $p):
+        foreach ($peminjaman as $p) :
             $data = [
                 'tanggal_kembali' => time(),
                 'selesai' => 1
@@ -1024,9 +1050,11 @@ class Admin extends CI_Controller
         $data['select'] = $this->uri->segment(2);
         $data['title'] = 'Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $awalHari = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+        $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
         $this->db->distinct();
         $this->db->group_by('kode_transaksi');
-        $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1])->result_array();
+        $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'tanggal_kembali>' => $awalHari, 'tanggal_kembali<' => $akhirHari])->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -1034,7 +1062,55 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function transaksi_detail($kode_transaksi){
+    public function search($int)
+    {   
+        $sehari = 60*60*24;
+        switch ($int) {
+            case 1: // hari ini
+                $awalHari = mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'));
+                $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+                $this->db->distinct();
+                $this->db->group_by('kode_transaksi');
+                $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'tanggal_kembali>' => $awalHari, 'tanggal_kembali<' => $akhirHari])->result_array();
+                $this->load->view('ajax/transaksi', $data);
+                break;
+            case 2: // 3 hari terakhir
+                $awalHari = time() - ($sehari * 3);
+                $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+                $this->db->distinct();
+                $this->db->group_by('kode_transaksi');
+                $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'tanggal_kembali>' => $awalHari, 'tanggal_kembali<' => $akhirHari])->result_array();
+                $this->load->view('ajax/transaksi', $data);
+            break;
+            case 3: // 7 hari terakhir
+                $awalHari = time() - ($sehari * 7);
+                $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+                $this->db->distinct();
+                $this->db->group_by('kode_transaksi');
+                $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'tanggal_kembali>' => $awalHari, 'tanggal_kembali<' => $akhirHari])->result_array();
+                $this->load->view('ajax/transaksi', $data);
+            break;
+            case 4: // 1 bulan terakhir
+                $awalHari = time() - ($sehari * 30);
+                $akhirHari = mktime(23, 59, 59, (int) date('m'), (int) date('d'), (int) date('Y'));
+                $this->db->distinct();
+                $this->db->group_by('kode_transaksi');
+                $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'tanggal_kembali>' => $awalHari, 'tanggal_kembali<' => $akhirHari])->result_array();
+                $this->load->view('ajax/transaksi', $data);
+            break;
+            case 5: // Semua transaksi
+                $this->db->distinct();
+                $this->db->group_by('kode_transaksi');
+                $data['transaksi'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1])->result_array();
+                $this->load->view('ajax/transaksi', $data);
+            break;
+            default:
+                break;
+        }
+    }
+
+    public function transaksi_detail($kode_transaksi)
+    {
         $data['select'] = 'transaksi';
         $data['title'] = 'Detail Transaksi';
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
@@ -1043,35 +1119,35 @@ class Admin extends CI_Controller
         $this->db->join('barang', 'pesanan.id_barang = barang.id', 'INNER');
         $data['baris'] = $this->db->get_where('pesanan', ['konfirmasi' => 1, 'selesai' => 1, 'kode_transaksi' => $kode_transaksi])->row_array();
         $data['member'] = $this->db->get_where('user', ['username' => $data['baris']['username']])->row_array();
-        $data['durasi'] = (((int)$data['baris']['batas_kembali']-(int)$data['baris']['tanggal_order'])/(60*60*24));
+        $data['durasi'] = (((int) $data['baris']['batas_kembali'] - (int) $data['baris']['tanggal_order']) / (60 * 60 * 24));
         $total = 0;
         $totalDenda = 0;
         // die;
-        foreach($data['transaksi'] as $t):
+        foreach ($data['transaksi'] as $t) :
             $totalDenda = $totalDenda + $t['denda'];
         endforeach;
-        if($data['transaksi']!=null){
-            if($data['baris']['batas_kembali']< $data['baris']['tanggal_kembali']){
-                $hariTerlambat = (int)ceil(($data['baris']['tanggal_kembali']-$data['baris']['batas_kembali'])/(60*60*24));
-                $data['batas'] = '<strong class="text-danger">(Terlambat '.$hariTerlambat.' hari)</strong>';
+        if ($data['transaksi'] != null) {
+            if ($data['baris']['batas_kembali'] < $data['baris']['tanggal_kembali']) {
+                $hariTerlambat = (int) ceil(($data['baris']['tanggal_kembali'] - $data['baris']['batas_kembali']) / (60 * 60 * 24));
+                $data['batas'] = '<strong class="text-danger">(Terlambat ' . $hariTerlambat . ' hari)</strong>';
                 // foreach($data['transaksi'] as $t):
                 //     $totalDenda = $totalDenda+($t['harga']*$t['jumlah_barang']);
                 // endforeach;
-                $data['denda'] = $totalDenda*$hariTerlambat;
-            }else{
+                $data['denda'] = $totalDenda * $hariTerlambat;
+            } else {
                 $data['batas'] = '(Belum Terlambat)';
-                $data['denda'] = 0+$totalDenda;
+                $data['denda'] = 0 + $totalDenda;
             }
-            if($data['baris']['selesai'] == 1){
+            if ($data['baris']['selesai'] == 1) {
                 $data['konfirmasi'] = 'Lunas';
-            }else{
+            } else {
                 $data['konfirmasi'] = 'Belum dibayar';
             }
         }
-        foreach($data['transaksi'] as $t):
-            $total = $total+($t['harga']*$t['jumlah_barang']);
+        foreach ($data['transaksi'] as $t) :
+            $total = $total + ($t['harga'] * $t['jumlah_barang']);
         endforeach;
-        $data['total'] = $total*$data['durasi']+$data['denda'];
+        $data['total'] = $total * $data['durasi'] + $data['denda'];
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar', $data);
@@ -1079,12 +1155,13 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function ajax($keyword){
+    public function ajax($keyword)
+    {
         // var_dump($keyword);die;
         $data['keyword'] = $keyword;
         $this->load->model('Pesanan_model', 'barang');
         $data['barang'] = $this->barang->getBarangByKeyword($keyword);
         $data['kategori'] = $this->barang->getKategoriByKeyword($keyword);
-        $this->load->view('ajax/index',$data);
+        $this->load->view('ajax/index', $data);
     }
 }

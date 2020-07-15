@@ -132,6 +132,7 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
                     <th>Qty</th>
                     <th>Harga</th>
                     <th>Sub Total</th>
+                    <th>Kondisi</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -140,17 +141,33 @@ if($baris['selesai'] == 0 && $baris['konfirmasi'] == 1){
                     <th>Qty</th>
                     <th>Harga</th>
                     <th>Sub Total</th>
+                    <th>Kondisi</th>
                 </tr>
                 </tfoot>
                 <tbody>
                 <?php
                     foreach($transaksi as $t) :
+                        switch ($t['kondisi_barang']) {
+                            case 1:
+                                $kondisi = 'Baik';
+                                break;
+                            case 2:
+                                $kondisi = 'Rusak';
+                                break;
+                            case 3:
+                                $kondisi = 'Hilang';
+                                break;                            
+                            default:
+                                $kondisi = 'Tidak terdeteksi';
+                                break;
+                        }
                 ?>
                 <tr>
                     <td><?= $t['nama'] ?></td>
                     <td><?= $t['jumlah_barang'] ?></td>
                     <td>Rp <?= rupiah($t['harga']) ?></td>
                     <td>Rp <?= rupiah($t['harga']*$t['jumlah_barang']) ?></td>
+                    <td><?= $kondisi ?></td>
                 </tr>
                 <?php
                   endforeach;
